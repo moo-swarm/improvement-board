@@ -1,0 +1,88 @@
+{
+  "app": { "title": "Improvement Board" },
+  "nav": {
+    "board": "Board",
+    "timer": "Problem Time",
+    "dialogue": "Dialogue",
+    "team": "Team"
+  },
+  "board": {
+    "title": "Improvement Board",
+    "addItem": "Add Item",
+    "itemTitle": "Title",
+    "itemTitlePlaceholder": "What needs to improve?",
+    "description": "Description",
+    "descriptionPlaceholder": "Context and details...",
+    "category": "Category",
+    "copilot": "Copilot",
+    "noCopilot": "Unassigned",
+    "outcome": "Outcome",
+    "outcomePlaceholder": "What was the result?",
+    "add": "Add",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "moveTo": "Move to",
+    "identified": "Identified",
+    "in_progress": "In Progress",
+    "done": "Done",
+    "noItems": "No items yet",
+    "categories": {
+      "process": "Process",
+      "people": "People",
+      "tools": "Tools",
+      "environment": "Environment",
+      "other": "Other"
+    }
+  },
+  "timer": {
+    "title": "Problem Time",
+    "explainer": "Problem Time is a Management 3.0 practice for structured problem discussion. Set a timer, state the problem clearly, discuss without blame, and focus on actionable solutions.",
+    "duration": "Duration (minutes)",
+    "start": "Start",
+    "pause": "Pause",
+    "resume": "Resume",
+    "reset": "Reset",
+    "timeUp": "Time's up!",
+    "guide": {
+      "title": "Facilitation Guide",
+      "steps": [
+        "State the problem in one sentence — no blame, no solutions yet",
+        "Who is affected? What is the impact?",
+        "What has already been tried?",
+        "What small experiment can we run this week?",
+        "Who owns the next step and by when?"
+      ]
+    }
+  },
+  "dialogue": {
+    "title": "Improvement Dialogue",
+    "explainer": "An Improvement Dialogue is a structured 1:1 or group conversation to deeply understand a problem and co-create solutions. Use the guiding questions to facilitate.",
+    "selectItem": "Select an improvement item",
+    "noItems": "Add improvement items on the Board first.",
+    "questions": [
+      "What is the root cause of this problem?",
+      "What does success look like after improvement?",
+      "What barriers are in the way?",
+      "What resources or support are needed?",
+      "What is the smallest step we can take today?"
+    ],
+    "yourAnswer": "Notes / Answer",
+    "answerPlaceholder": "Write your observations...",
+    "saveNote": "Save Note",
+    "savedNotes": "Saved Notes",
+    "noNotes": "No notes yet for this item.",
+    "clearNotes": "Clear notes"
+  },
+  "team": {
+    "title": "Team & Copilots",
+    "explainer": "Copilots are peer coaches assigned to improvement items. They support the owner without taking over — asking questions, checking in, and celebrating progress.",
+    "addMember": "Add Member",
+    "namePlaceholder": "Team member name",
+    "add": "Add",
+    "remove": "Remove",
+    "noMembers": "No team members yet.",
+    "copilotAssignments": "Copilot Assignments",
+    "noCopilotAssignments": "No active items with copilots assigned."
+  },
+  "common": { "back": "Back", "language": "RU", "save": "Save" }
+}
