@@ -1,6 +1,36 @@
 {
   "app": { "title": "Improvement Board" },
-  "nav": { "board": "Board", "dialogue": "Dialogue", "timer": "Problem Time", "learn": "Learn" },
+  "nav": {
+    "board": "Board",
+    "kanban": "Kanban",
+    "team": "Team",
+    "dialogue": "Dialogue",
+    "timer": "Problem Time",
+    "learn": "Learn"
+  },
+  "kanban": {
+    "title": "Kanban view",
+    "addItem": "Add item",
+    "itemTitlePlaceholder": "Short title",
+    "descriptionPlaceholder": "What needs to improve?",
+    "noCopilot": "No copilot",
+    "add": "Add",
+    "cancel": "Cancel",
+    "noItems": "Drop items here",
+    "outcomePlaceholder": "What was the outcome or learning?"
+  },
+  "team": {
+    "title": "Team & copilots",
+    "explainer": "Add people who can act as copilots on improvement items. Assign them from the Kanban view when creating a card.",
+    "namePlaceholder": "Name",
+    "add": "Add member",
+    "noMembers": "No team members yet.",
+    "remove": "Remove",
+    "copilot_prefix": "Copilot on",
+    "items_one": "item",
+    "items_plural": "items",
+    "copilotAssignments": "Active copilot assignments"
+  },
   "board": {
     "title": "Improvement Board",
     "add": "Add Item",
@@ -56,6 +86,7 @@
   },
   "timer": {
     "title": "Problem Time",
+    "facilitation_intro": "Use the ring timer to keep Problem Time focused. Follow the steps below so the team explores the problem before jumping to solutions.",
     "description": "Problem Time is a timeboxed team practice from Management 3.0. The team allocates a fixed slot (e.g. 10–15 min) during a meeting to discuss one problem using a structured format.",
     "duration_label": "Duration (minutes)",
     "start": "Start Timer",
