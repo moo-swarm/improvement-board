@@ -1,40 +1,34 @@
-# BRIEF — Improvement Board
+# BRIEF
 
-## What this app does
-A team improvement tracking tool based on Management 3.0's "Improvement Dialogues" and "Copilot Programs" practices. Teams identify problems, run structured improvement dialogues, assign copilots (peer coaches), and track progress on improvement items over time.
+Derived per [`agent-state.NO-BRIEF.md`](https://github.com/agile-toolkit/.github/blob/main/agent-state.NO-BRIEF.md). There was **no prior** `BRIEF.md`. Sources: `README.md`, `src/i18n/en.json` / `ru.json`, `src/`. Generated **2026-04-19**.
 
-## Target users
-Agile coaches, Scrum Masters, and team leads facilitating continuous improvement. Teams of 3–15 people running regular retrospectives or improvement cycles.
+## Product scope (from `README.md`)
 
-## Core features (MVP)
-- Problem capture board: add improvement items with category tags
-- "Problem Time" timer: facilitates the structured problem-discussion practice
-- Improvement dialogue flow: structured 1:1 or group dialogue with guided questions
-- Copilot assignment: pair team members as improvement buddies
-- Progress tracker: kanban-style board for improvement items (Identified → In Progress → Done)
-- History view: closed items with outcomes
+- **Improvement Dialogues / Copilot Programs** style tracking: capture problems, structured dialogues, peer coaches, progress.
+- Stack: React 18, TypeScript, Vite, Tailwind, react-i18next (EN/RU).
+- Deploy: GitHub Pages via Actions on `main`.
 
-## Educational layer
-- "What is an Improvement Dialogue?" explainer panel
-- Copilot Program guide: roles, responsibilities, how to run a copilot session
-- "Problem Time" practice explainer with M3.0 rationale
-- Reference to source materials
+## Build
 
-## Tech stack
-React 18 + TypeScript + Vite + Tailwind CSS. Firebase for persistence (optional team mode). GitHub Pages deployment.
+- `npm run build` — **passes** (verified **2026-04-19**).
 
-## Source materials in `.artefacts/`
-- `improvement dialogues & copilot programs.pdf` — M3.0 improvement dialogue and copilot program methodology
-- `problem time.pdf` — Problem Time practice guide
+## TODO / FIXME in `src/`
 
-## i18n
-English + Russian (react-i18next).
+- None.
 
-## Agentic pipeline roles
-- `/vadavik` — spec & requirements validation
-- `/lojma` — UX/UI design (improvement board, dialogue flow, copilot pairing UI)
-- `/laznik` — architecture (board state, timer, Firebase optional persistence)
-- `@cmok` — implementation
-- `@bahnik` — QA (timer accuracy, board state persistence, copilot assignment logic)
-- `@piarun` — documentation
-- `@zlydni` — git commits & GitHub Pages deploy
+## i18n — dynamic keys
+
+- `add_form.categories.*` are referenced via `` t(`add_form.categories.${c}`) `` in `ImprovementBoard.tsx`, `ImprovementCard.tsx`, `AddItemModal.tsx` — **not** orphaned; literal-path scanners will false-positive.
+
+## i18n — follow-up
+
+- Run a literal-key audit after any copy change; ensure `ru.json` mirrors `en.json` for every `add_form` / board string.
+
+## Hardcoded user-visible strings
+
+- No systematic scan in this pass; spot-check new UI in PRs.
+
+## Classification (NO-BRIEF)
+
+- **Status:** `stable` — components present, build passes, README scope reflected in app; no confirmed orphaned keys from literal scan beyond false positives.
+- **First next task:** `null` (optional: add automated i18n key coverage check).
