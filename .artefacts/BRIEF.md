@@ -1,34 +1,26 @@
-# BRIEF
+# Improvement Board — Brief
 
-Derived per [`agent-state.NO-BRIEF.md`](https://github.com/agile-toolkit/.github/blob/main/agent-state.NO-BRIEF.md). There was **no prior** `BRIEF.md`. Sources: `README.md`, `src/i18n/en.json` / `ru.json`, `src/`. Generated **2026-04-19**.
+## Overview
 
-## Product scope (from `README.md`)
+Team improvement tracking aligned with Management 3.0 Improvement Dialogues / Copilot Programs: capture problems, dialogues, coaches, progress. React 18, Vite, Tailwind, react-i18next. Deploy: GitHub Pages.
 
-- **Improvement Dialogues / Copilot Programs** style tracking: capture problems, structured dialogues, peer coaches, progress.
-- Stack: React 18, TypeScript, Vite, Tailwind, react-i18next (EN/RU).
-- Deploy: GitHub Pages via Actions on `main`.
+## Features
 
-## Build
+- [x] Board views — add/edit items, categories via `` t(`add_form.categories.${id}`) ``, timers where implemented
+- [x] EN + RU parity for wired keys
+- [x] `npm run build` green; no confirmed orphan **literal** i18n keys from NO-BRIEF pass (dynamic category keys used)
 
-- `npm run build` — **passes** (verified **2026-04-19**).
+## Backlog
 
-## TODO / FIXME in `src/`
+<!-- Research issues (`needs-review`) — agent appends after stable research runs -->
 
-- None.
+## Tech notes
 
-## i18n — dynamic keys
+- Re-run literal-key audit after large copy changes; keep `ru.json` in sync with `en.json`.
 
-- `add_form.categories.*` are referenced via `` t(`add_form.categories.${c}`) `` in `ImprovementBoard.tsx`, `ImprovementCard.tsx`, `AddItemModal.tsx` — **not** orphaned; literal-path scanners will false-positive.
+## Agent Log
 
-## i18n — follow-up
+### 2026-04-19 — docs: BRIEF template (AGENT_AUTONOMOUS)
 
-- Run a literal-key audit after any copy change; ensure `ru.json` mirrors `en.json` for every `add_form` / board string.
-
-## Hardcoded user-visible strings
-
-- No systematic scan in this pass; spot-check new UI in PRs.
-
-## Classification (NO-BRIEF)
-
-- **Status:** `stable` — components present, build passes, README scope reflected in app; no confirmed orphaned keys from literal scan beyond false positives.
-- **First next task:** `null` (optional: add automated i18n key coverage check).
+- Done: Migrated to agent BRIEF structure; suite treats this repo as **stable** for agent-state.
+- Next task: `check needs-review issues for human feedback` (`gh issue list --repo agile-toolkit/improvement-board --state open --json labels`).
