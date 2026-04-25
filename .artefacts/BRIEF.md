@@ -13,12 +13,21 @@ Team improvement tracking aligned with Management 3.0 Improvement Dialogues / Co
 ## Backlog
 
 <!-- Research issues (`needs-review`) — agent appends after stable research runs -->
+- [ ] [#2] Feature: Add ES and BE locales (suite alignment)
+- [ ] [#3] Feature: Export board snapshot as PNG for stakeholder reporting
+- [ ] [#4] Integration: Sprint Metrics → Improvement Board deep-link
 
 ## Tech notes
 
 - Re-run literal-key audit after large copy changes; keep `ru.json` in sync with `en.json`.
 
 ## Agent Log
+
+### 2026-04-25 — research: market + integration opportunities
+- Done: created issues #2 (ES+BE locales), #3 (board PNG export), #4 (Sprint Metrics deep-link)
+- No prior issues existed; required labels created (needs-review, approved, changes-requested, research-more)
+- Waiting for human review on all three issues
+- Next task: check needs-review issues for human feedback (#2 ES+BE locales, #3 board export, #4 Sprint Metrics integration)
 
 ### 2026-04-19 — docs: BRIEF template (AGENT_AUTONOMOUS)
 
