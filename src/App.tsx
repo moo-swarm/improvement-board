@@ -87,13 +87,22 @@ export default function App() {
                 {item.label}
               </button>
             ))}
-            <button
-              type="button"
-              onClick={() => i18n.changeLanguage(i18n.language.startsWith('ru') ? 'en' : 'ru')}
-              className="ml-2 text-sm text-gray-500 hover:text-gray-700 px-2 py-1 rounded hover:bg-gray-100 transition-colors"
-            >
-              {i18n.language.startsWith('ru') ? 'EN' : 'RU'}
-            </button>
+            <div className="ml-2 flex items-center gap-0.5">
+              {(['en', 'es', 'be', 'ru'] as const).map(lang => (
+                <button
+                  key={lang}
+                  type="button"
+                  onClick={() => i18n.changeLanguage(lang)}
+                  className={`text-xs px-1.5 py-1 rounded transition-colors ${
+                    i18n.language.startsWith(lang)
+                      ? 'bg-brand-100 text-brand-700 font-semibold'
+                      : 'text-gray-500 hover:text-gray-700 hover:bg-gray-100'
+                  }`}
+                >
+                  {lang.toUpperCase()}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       </header>

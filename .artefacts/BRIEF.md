@@ -9,11 +9,11 @@ Team improvement tracking aligned with Management 3.0 Improvement Dialogues / Co
 - [x] Board views — add/edit items, categories via `` t(`add_form.categories.${id}`) ``, timers where implemented
 - [x] EN + RU parity for wired keys
 - [x] `npm run build` green; no confirmed orphan **literal** i18n keys from NO-BRIEF pass (dynamic category keys used)
+- [x] ES + BE locales — full translation of all keys; 4-language selector (EN/ES/BE/RU) in header
 
 ## Backlog
 
 <!-- Research issues (`needs-review`) — agent appends after stable research runs -->
-- [ ] [#2] Feature: Add ES and BE locales (suite alignment)
 - [ ] [#3] Feature: Export board snapshot as PNG for stakeholder reporting
 - [ ] [#4] Integration: Sprint Metrics → Improvement Board deep-link
 
@@ -22,6 +22,11 @@ Team improvement tracking aligned with Management 3.0 Improvement Dialogues / Co
 - Re-run literal-key audit after large copy changes; keep `ru.json` in sync with `en.json`.
 
 ## Agent Log
+
+### 2026-04-28 — feat: ES + BE locales and 4-language selector
+- Done: added `src/i18n/es.json` (Spanish), `src/i18n/be.json` (Belarusian); registered both in `src/i18n/index.ts`; replaced EN↔RU toggle in `App.tsx` with a 4-button EN/ES/BE/RU selector; issue #2 resolved
+- Remaining backlog: #3 (PNG export), #4 (Sprint Metrics deep-link)
+- Next task: implement issue #4 (Sprint Metrics deep-link) — approved
 
 ### 2026-04-25 — research: market + integration opportunities
 - Done: created issues #2 (ES+BE locales), #3 (board PNG export), #4 (Sprint Metrics deep-link)
