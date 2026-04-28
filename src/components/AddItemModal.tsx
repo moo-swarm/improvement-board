@@ -7,11 +7,12 @@ const CATEGORIES: Category[] = ['process', 'technical', 'people', 'product', 'ot
 interface Props {
   onAdd: (item: ImprovementItem) => void
   onClose: () => void
+  initialTitle?: string
 }
 
-export default function AddItemModal({ onAdd, onClose }: Props) {
+export default function AddItemModal({ onAdd, onClose, initialTitle }: Props) {
   const { t } = useTranslation()
-  const [title, setTitle] = useState('')
+  const [title, setTitle] = useState(initialTitle ?? '')
   const [description, setDescription] = useState('')
   const [category, setCategory] = useState<Category>('process')
   const [owner, setOwner] = useState('')

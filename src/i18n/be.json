@@ -1,5 +1,7 @@
 {
-  "app": { "title": "Дошка Паляпшэнняў" },
+  "app": {
+    "title": "Дошка Паляпшэнняў"
+  },
   "nav": {
     "board": "Дошка",
     "kanban": "Канбан",
@@ -45,7 +47,10 @@
     "copilot": "Капілот",
     "owner": "Адказны",
     "no_copilot": "Без капілота",
-    "start_dialogue": "Пачаць Дыялог"
+    "start_dialogue": "Пачаць Дыялог",
+    "from_sprint_metrics": "Адкрыта з Sprint Metrics — элемент паляпшэння папярэдне запоўнены.",
+    "open_sprint_metrics": "Адкрыць Sprint Metrics",
+    "suite_link_label": "Інтэграцыя набору"
   },
   "add_form": {
     "title": "Новы Элемент Паляпшэння",

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { Screen, ImprovementItem, TeamMember } from './types'
 import BoardView from './components/BoardView'
@@ -41,6 +41,10 @@ export default function App() {
   const [items, setItems] = useState<ImprovementItem[]>(loadItems)
   const [members, setMembers] = useState<TeamMember[]>(loadMembers)
   const [dialogueId, setDialogueId] = useState<string | null>(null)
+
+  const urlParams = useMemo(() => new URLSearchParams(window.location.search), [])
+  const prefillTitle = urlParams.get('prefill') ?? undefined
+  const fromSprintMetrics = urlParams.get('utm_source') === 'sprint-metrics'
 
   const updateItems = (updated: ImprovementItem[]) => {
     setItems(updated)
@@ -118,6 +122,8 @@ export default function App() {
               setDialogueId(item.id)
               setScreen('dialogue')
             }}
+            prefillTitle={prefillTitle}
+            fromSprintMetrics={fromSprintMetrics}
           />
         )}
         {screen === 'kanban' && (

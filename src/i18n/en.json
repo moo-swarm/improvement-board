@@ -1,5 +1,7 @@
 {
-  "app": { "title": "Improvement Board" },
+  "app": {
+    "title": "Improvement Board"
+  },
   "nav": {
     "board": "Board",
     "kanban": "Kanban",
@@ -45,7 +47,10 @@
     "copilot": "Copilot",
     "owner": "Owner",
     "no_copilot": "No copilot",
-    "start_dialogue": "Run Dialogue"
+    "start_dialogue": "Run Dialogue",
+    "from_sprint_metrics": "Opened from Sprint Metrics — your improvement item is pre-filled.",
+    "open_sprint_metrics": "Open Sprint Metrics",
+    "suite_link_label": "Suite integration"
   },
   "add_form": {
     "title": "New Improvement Item",

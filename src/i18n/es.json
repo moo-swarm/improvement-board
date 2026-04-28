@@ -1,5 +1,7 @@
 {
-  "app": { "title": "Tablero de Mejoras" },
+  "app": {
+    "title": "Tablero de Mejoras"
+  },
   "nav": {
     "board": "Tablero",
     "kanban": "Kanban",
@@ -45,7 +47,10 @@
     "copilot": "Copiloto",
     "owner": "Responsable",
     "no_copilot": "Sin copiloto",
-    "start_dialogue": "Iniciar Diálogo"
+    "start_dialogue": "Iniciar Diálogo",
+    "from_sprint_metrics": "Abierto desde Sprint Metrics — el elemento de mejora está precompletado.",
+    "open_sprint_metrics": "Abrir Sprint Metrics",
+    "suite_link_label": "Integración de suite"
   },
   "add_form": {
     "title": "Nuevo Ítem de Mejora",

@@ -1,5 +1,7 @@
 {
-  "app": { "title": "Доска улучшений" },
+  "app": {
+    "title": "Доска улучшений"
+  },
   "nav": {
     "board": "Доска",
     "kanban": "Канбан",
@@ -45,7 +47,10 @@
     "copilot": "Копилот",
     "owner": "Владелец",
     "no_copilot": "Без копилота",
-    "start_dialogue": "Диалог"
+    "start_dialogue": "Диалог",
+    "from_sprint_metrics": "Открыто из Sprint Metrics — элемент улучшения предварительно заполнен.",
+    "open_sprint_metrics": "Открыть Sprint Metrics",
+    "suite_link_label": "Интеграция набора"
   },
   "add_form": {
     "title": "Новый элемент улучшения",

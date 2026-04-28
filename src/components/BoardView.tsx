@@ -1,10 +1,11 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { ImprovementItem, ImprovementStatus } from '../types'
 import ImprovementCard from './ImprovementCard'
 import AddItemModal from './AddItemModal'
 
 const COLUMNS: ImprovementStatus[] = ['identified', 'in_progress', 'done']
+const SPRINT_METRICS_URL = 'https://agile-toolkit.github.io/sprint-metrics/'
 
 interface Props {
   items: ImprovementItem[]
@@ -12,11 +13,17 @@ interface Props {
   onUpdate: (item: ImprovementItem) => void
   onDelete: (id: string) => void
   onDialogue: (item: ImprovementItem) => void
+  prefillTitle?: string
+  fromSprintMetrics?: boolean
 }
 
-export default function BoardView({ items, onAdd, onUpdate, onDelete, onDialogue }: Props) {
+export default function BoardView({ items, onAdd, onUpdate, onDelete, onDialogue, prefillTitle, fromSprintMetrics }: Props) {
   const { t } = useTranslation()
   const [showAdd, setShowAdd] = useState(false)
+
+  useEffect(() => {
+    if (prefillTitle) setShowAdd(true)
+  }, [prefillTitle])
 
   const getNext = (status: ImprovementStatus): ImprovementStatus | null => {
     if (status === 'identified') return 'in_progress'
@@ -28,6 +35,20 @@ export default function BoardView({ items, onAdd, onUpdate, onDelete, onDialogue
 
   return (
     <div>
+      {fromSprintMetrics && (
+        <div className="mb-4 flex items-center gap-2 text-sm text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
+          <span>📊</span>
+          <span>{t('board.from_sprint_metrics')}</span>
+          <a
+            href={SPRINT_METRICS_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="ml-auto underline hover:text-amber-900 text-xs"
+          >
+            {t('board.open_sprint_metrics')}
+          </a>
+        </div>
+      )}
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold text-gray-900">{t('board.title')}</h1>
         <button onClick={() => setShowAdd(true)} className="btn-primary">
@@ -72,10 +93,23 @@ export default function BoardView({ items, onAdd, onUpdate, onDelete, onDialogue
         ))}
       </div>
 
+      <div className="mt-8 pt-4 border-t border-gray-100 flex items-center justify-between text-xs text-gray-400">
+        <span>{t('board.suite_link_label')}</span>
+        <a
+          href={SPRINT_METRICS_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center gap-1 hover:text-brand-600 transition-colors"
+        >
+          📊 {t('board.open_sprint_metrics')}
+        </a>
+      </div>
+
       {showAdd && (
         <AddItemModal
           onAdd={item => { onAdd(item); setShowAdd(false) }}
           onClose={() => setShowAdd(false)}
+          initialTitle={prefillTitle}
         />
       )}
     </div>
