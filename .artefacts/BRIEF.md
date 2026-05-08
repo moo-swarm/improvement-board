@@ -16,12 +16,20 @@ Team improvement tracking aligned with Management 3.0 Improvement Dialogues / Co
 
 <!-- Research issues (`needs-review`) — agent appends after stable research runs -->
 - [ ] [#3] Feature: Export board snapshot as PNG for stakeholder reporting
+- [ ] [#7] Integration: link Improvement Board items to Kanban Designer
+- [ ] [#8] Feature: team priority voting on improvement items
+- [ ] [#9] Research: keyboard accessibility and ARIA audit for board views
 
 ## Tech notes
 
 - Re-run literal-key audit after large copy changes; keep `ru.json` in sync with `en.json`.
 
 ## Agent Log
+
+### 2026-05-08 — research: integration + feature + accessibility opportunities
+- Done: created issues #7 (Kanban Designer deep-link integration), #8 (team priority voting with localStorage), #9 (keyboard accessibility / ARIA audit); all added to improvement-board project (number 12) with status Backlog; labels created; issue #3 (PNG export) confirmed still needs-review
+- Waiting for human review on #3, #7, #8, #9
+- Next task: check issues for human feedback; implement whichever issue is approved first (#3 PNG export uses html2canvas precedent from moving-motivators; #7 Kanban integration; #8 voting; #9 a11y)
 
 ### 2026-04-28 — feat: Sprint Metrics → Improvement Board deep-link integration
 - Done: `?prefill=<title>&utm_source=sprint-metrics` URL params parsed in `App.tsx`; `BoardView` auto-opens `AddItemModal` with title pre-filled when `prefillTitle` is set; source banner shown when `utm_source=sprint-metrics`; footer link to `https://agile-toolkit.github.io/sprint-metrics/` added to all board views; i18n keys added for EN/ES/BE/RU
