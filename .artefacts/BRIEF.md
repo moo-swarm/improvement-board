@@ -19,12 +19,20 @@ Team improvement tracking aligned with Management 3.0 Improvement Dialogues / Co
 - [ ] [#7] Integration: link Improvement Board items to Kanban Designer
 - [ ] [#8] Feature: team priority voting on improvement items
 - [ ] [#9] Research: keyboard accessibility and ARIA audit for board views
+- [ ] [#10] Integration: Dashboard card via improvement-board:lastSession localStorage key
+- [ ] [#11] Feature: due dates on improvement items with overdue highlighting
+- [ ] [#12] Feature: item aging indicator for stale improvements
 
 ## Tech notes
 
 - Re-run literal-key audit after large copy changes; keep `ru.json` in sync with `en.json`.
 
 ## Agent Log
+
+### 2026-05-11 — research: Dashboard integration + feature opportunities
+- Done: created issues #10 (Dashboard card via improvement-board:lastSession localStorage key), #11 (due dates with overdue highlighting), #12 (item aging indicator for stale improvements); all added to improvement-board project (number 12) as Backlog; existing issues #3, #7, #8, #9 still awaiting human review
+- Waiting for human review on #3, #7, #8, #9, #10, #11, #12
+- Next task: check issues for human feedback; implement first approved item (#10 localStorage session key is highest-value — write improvement-board:lastSession in App.tsx updateItems/updateMembers; add readImprovementBoard() to agile-toolkit.github.io dashboard readers)
 
 ### 2026-05-08 — research: integration + feature + accessibility opportunities
 - Done: created issues #7 (Kanban Designer deep-link integration), #8 (team priority voting with localStorage), #9 (keyboard accessibility / ARIA audit); all added to improvement-board project (number 12) with status Backlog; labels created; issue #3 (PNG export) confirmed still needs-review
