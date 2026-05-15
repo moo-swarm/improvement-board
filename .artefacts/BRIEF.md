@@ -22,12 +22,20 @@ Team improvement tracking aligned with Management 3.0 Improvement Dialogues / Co
 - [ ] [#10] Integration: Dashboard card via improvement-board:lastSession localStorage key
 - [ ] [#11] Feature: due dates on improvement items with overdue highlighting
 - [ ] [#12] Feature: item aging indicator for stale improvements
+- [ ] [#13] Integration: Moving Motivators → Improvement Board (motivation health to action items)
+- [ ] [#14] Feature: Sprint cycle reset — archive done items with sprint summary
+- [ ] [#15] Feature: item comment thread in Dialogue view (async team notes with timestamps)
 
 ## Tech notes
 
 - Re-run literal-key audit after large copy changes; keep `ru.json` in sync with `en.json`.
 
 ## Agent Log
+
+### 2026-05-15 — research: cross-app integrations + sprint workflow + dialogue features
+- Done: created issues #13 (Moving Motivators → Improvement Board deep-link + localStorage import), #14 (Sprint cycle reset — archive done items + sprint history), #15 (item comment thread in Dialogue view for async team notes); all added to project #12 as Backlog
+- No approved/incomplete/changes-requested issues found — all 10 open issues are awaiting human review
+- Next task: check issues for human feedback; implement first approved item among #10 (localStorage session key, highest-value for Dashboard), #13 (Moving Motivators integration, same URL param pattern as #4), or #14 (sprint cycle reset)
 
 ### 2026-05-11 — research: Dashboard integration + feature opportunities
 - Done: created issues #10 (Dashboard card via improvement-board:lastSession localStorage key), #11 (due dates with overdue highlighting), #12 (item aging indicator for stale improvements); all added to improvement-board project (number 12) as Backlog; existing issues #3, #7, #8, #9 still awaiting human review
