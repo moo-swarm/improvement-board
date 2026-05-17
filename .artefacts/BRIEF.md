@@ -25,12 +25,20 @@ Team improvement tracking aligned with Management 3.0 Improvement Dialogues / Co
 - [ ] [#13] Integration: Moving Motivators → Improvement Board (motivation health to action items)
 - [ ] [#14] Feature: Sprint cycle reset — archive done items with sprint summary
 - [ ] [#15] Feature: item comment thread in Dialogue view (async team notes with timestamps)
+- [ ] [#16] Feature: PWA offline mode for in-room facilitation
+- [ ] [#17] Integration: Promote improvement item to Change Planner
+- [ ] [#18] Feature: bulk status actions (multi-select cards)
 
 ## Tech notes
 
 - Re-run literal-key audit after large copy changes; keep `ru.json` in sync with `en.json`.
 
 ## Agent Log
+
+### 2026-05-17 — research: PWA offline + Change Planner integration + bulk actions
+- Done: created issues #16 (PWA offline mode via vite-plugin-pwa — cache-first strategy, manifest, update banner), #17 (Promote improvement item to Change Planner — deep-link with prefill+utm_source params), #18 (bulk status actions — multi-select cards + sticky action bar in Board view); all added to project #12 as Backlog
+- No approved/incomplete/changes-requested issues found — all 15 open issues awaiting human review
+- Next task: check issues for human feedback; implement first approved item among #10 (improvement-board:lastSession localStorage key — write in App.tsx updateItems/updateMembers, add readImprovementBoard() to agile-toolkit.github.io), #13 (Moving Motivators integration — same URL param pattern as #4), #14 (Sprint cycle reset — archive done items)
 
 ### 2026-05-15 — research: cross-app integrations + sprint workflow + dialogue features
 - Done: created issues #13 (Moving Motivators → Improvement Board deep-link + localStorage import), #14 (Sprint cycle reset — archive done items + sprint history), #15 (item comment thread in Dialogue view for async team notes); all added to project #12 as Backlog
