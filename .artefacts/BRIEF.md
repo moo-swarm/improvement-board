@@ -11,6 +11,7 @@ Team improvement tracking aligned with Management 3.0 Improvement Dialogues / Co
 - [x] `npm run build` green; no confirmed orphan **literal** i18n keys from NO-BRIEF pass (dynamic category keys used)
 - [x] ES + BE locales — full translation of all keys; 4-language selector (EN/ES/BE/RU) in header
 - [x] Sprint Metrics deep-link — `?prefill=<title>&utm_source=sprint-metrics` auto-opens Add Item modal with pre-filled title; source banner + footer link back to Sprint Metrics
+- [x] Dashboard localStorage key — `improvement-board:lastSession` written on every item/member update (counts by status, memberCount, lastUpdated)
 
 ## Backlog
 
@@ -19,7 +20,7 @@ Team improvement tracking aligned with Management 3.0 Improvement Dialogues / Co
 - [ ] [#7] Integration: link Improvement Board items to Kanban Designer
 - [ ] [#8] Feature: team priority voting on improvement items
 - [ ] [#9] Research: keyboard accessibility and ARIA audit for board views
-- [ ] [#10] Integration: Dashboard card via improvement-board:lastSession localStorage key
+- [x] [#10] Integration: Dashboard card via improvement-board:lastSession localStorage key
 - [ ] [#11] Feature: due dates on improvement items with overdue highlighting
 - [ ] [#12] Feature: item aging indicator for stale improvements
 - [ ] [#13] Integration: Moving Motivators → Improvement Board (motivation health to action items)
@@ -29,11 +30,26 @@ Team improvement tracking aligned with Management 3.0 Improvement Dialogues / Co
 - [ ] [#17] Integration: Promote improvement item to Change Planner
 - [ ] [#18] Feature: bulk status actions (multi-select cards)
 
+## localStorage keys
+
+| Key | Written by | Shape |
+|-----|-----------|-------|
+| `improvement-board-items` | `App.tsx` saveItems() | `ImprovementItem[]` |
+| `improvement-board-members` | `App.tsx` saveMembers() | `TeamMember[]` |
+| `improvement-board:lastSession` | `App.tsx` saveSession() | `{ identified, inProgress, done, total, memberCount, lastUpdated }` |
+
 ## Tech notes
 
 - Re-run literal-key audit after large copy changes; keep `ru.json` in sync with `en.json`.
 
 ## Agent Log
+
+### 2026-05-23 — feat: improvement-board:lastSession localStorage key (#10)
+- Done: added `SESSION_KEY = 'improvement-board:lastSession'` constant and `saveSession()` function to `App.tsx`; called from `updateItems` and `updateMembers`; session shape: `{ identified, inProgress, done, total, memberCount, lastUpdated }`
+- Marked issue #10 as In Review in project #12
+- Dashboard side (readImprovementBoard() reader in agile-toolkit.github.io) is a separate run
+- Remaining approved issues: #3, #7, #8, #9, #11, #12, #14, #15, #16
+- Next task: implement #11 (due dates on improvement items: add dueDate?: number to ImprovementItem in types.ts, date picker in AddItemModal, coloured badge on cards in Board/Kanban views, sort-by-due-date option, i18n keys board.due/board.overdue/board.due_today in all 4 locales)
 
 ### 2026-05-17 — research: PWA offline + Change Planner integration + bulk actions
 - Done: created issues #16 (PWA offline mode via vite-plugin-pwa — cache-first strategy, manifest, update banner), #17 (Promote improvement item to Change Planner — deep-link with prefill+utm_source params), #18 (bulk status actions — multi-select cards + sticky action bar in Board view); all added to project #12 as Backlog

@@ -10,6 +10,7 @@ import LearnView from './components/LearnView'
 
 const STORAGE_KEY = 'improvement-board-items'
 const MEMBERS_KEY = 'improvement-board-members'
+const SESSION_KEY = 'improvement-board:lastSession'
 
 function loadItems(): ImprovementItem[] {
   try {
@@ -35,6 +36,18 @@ function saveMembers(members: TeamMember[]) {
   localStorage.setItem(MEMBERS_KEY, JSON.stringify(members))
 }
 
+function saveSession(items: ImprovementItem[], members: TeamMember[]) {
+  const session = {
+    identified: items.filter(i => i.status === 'identified').length,
+    inProgress: items.filter(i => i.status === 'in_progress').length,
+    done: items.filter(i => i.status === 'done').length,
+    total: items.length,
+    memberCount: members.length,
+    lastUpdated: new Date().toISOString(),
+  }
+  localStorage.setItem(SESSION_KEY, JSON.stringify(session))
+}
+
 export default function App() {
   const { t, i18n } = useTranslation()
   const [screen, setScreen] = useState<Screen>('board')
@@ -49,11 +62,13 @@ export default function App() {
   const updateItems = (updated: ImprovementItem[]) => {
     setItems(updated)
     saveItems(updated)
+    saveSession(updated, members)
   }
 
   const updateMembers = (next: TeamMember[]) => {
     setMembers(next)
     saveMembers(next)
+    saveSession(items, next)
   }
 
   const navItems: { key: Screen; label: string }[] = [
