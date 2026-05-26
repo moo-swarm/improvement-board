@@ -50,7 +50,12 @@
     "start_dialogue": "Пачаць Дыялог",
     "from_sprint_metrics": "Адкрыта з Sprint Metrics — элемент паляпшэння папярэдне запоўнены.",
     "open_sprint_metrics": "Адкрыць Sprint Metrics",
-    "suite_link_label": "Інтэграцыя набору"
+    "suite_link_label": "Інтэграцыя набору",
+    "due": "Тэрмін",
+    "due_today": "Тэрмін сёння",
+    "overdue": "Прасрочана",
+    "sort_default": "Па змаўчанні",
+    "sort_due": "Па тэрміне"
   },
   "add_form": {
     "title": "Новы Элемент Паляпшэння",
@@ -59,6 +64,7 @@
     "label_category": "Катэгорыя",
     "label_owner": "Адказны",
     "label_copilot": "Капілот (не абавязкова)",
+    "label_due_date": "Тэрмін (не абавязкова)",
     "placeholder_title": "Што трэба паляпшыць?",
     "placeholder_description": "Апішыце праблему або магчымасць...",
     "placeholder_owner": "Хто адказвае за гэта?",

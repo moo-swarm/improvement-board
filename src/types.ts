@@ -20,4 +20,6 @@ export interface ImprovementItem {
   dialogueNotes: string
   /** Outcome notes when status is done (Kanban view) */
   outcome?: string
+  /** Unix timestamp (ms) for optional due date */
+  dueDate?: number
 }

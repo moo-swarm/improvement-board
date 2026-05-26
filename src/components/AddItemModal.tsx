@@ -17,9 +17,11 @@ export default function AddItemModal({ onAdd, onClose, initialTitle }: Props) {
   const [category, setCategory] = useState<Category>('process')
   const [owner, setOwner] = useState('')
   const [copilot, setCopilot] = useState('')
+  const [dueDateStr, setDueDateStr] = useState('')
 
   const handleSubmit = () => {
     if (!title.trim()) return
+    const dueDate = dueDateStr ? new Date(dueDateStr).getTime() : undefined
     onAdd({
       id: crypto.randomUUID(),
       title: title.trim(),
@@ -31,6 +33,7 @@ export default function AddItemModal({ onAdd, onClose, initialTitle }: Props) {
       createdAt: Date.now(),
       updatedAt: Date.now(),
       dialogueNotes: '',
+      dueDate,
     })
   }
 
@@ -101,6 +104,16 @@ export default function AddItemModal({ onAdd, onClose, initialTitle }: Props) {
                   onChange={e => setCopilot(e.target.value)}
                 />
               </div>
+            </div>
+
+            <div>
+              <label className="label">{t('add_form.label_due_date')}</label>
+              <input
+                type="date"
+                className="input"
+                value={dueDateStr}
+                onChange={e => setDueDateStr(e.target.value)}
+              />
             </div>
           </div>
         </div>

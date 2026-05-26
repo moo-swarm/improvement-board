@@ -50,7 +50,12 @@
     "start_dialogue": "Iniciar Diálogo",
     "from_sprint_metrics": "Abierto desde Sprint Metrics — el elemento de mejora está precompletado.",
     "open_sprint_metrics": "Abrir Sprint Metrics",
-    "suite_link_label": "Integración de suite"
+    "suite_link_label": "Integración de suite",
+    "due": "Vence",
+    "due_today": "Vence hoy",
+    "overdue": "Vencido",
+    "sort_default": "Predeterminado",
+    "sort_due": "Por fecha límite"
   },
   "add_form": {
     "title": "Nuevo Ítem de Mejora",
@@ -59,6 +64,7 @@
     "label_category": "Categoría",
     "label_owner": "Responsable",
     "label_copilot": "Copiloto (opcional)",
+    "label_due_date": "Fecha límite (opcional)",
     "placeholder_title": "¿Qué necesita mejorar?",
     "placeholder_description": "Describe el problema u oportunidad...",
     "placeholder_owner": "¿Quién es el responsable?",

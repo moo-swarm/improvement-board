@@ -50,7 +50,12 @@
     "start_dialogue": "Диалог",
     "from_sprint_metrics": "Открыто из Sprint Metrics — элемент улучшения предварительно заполнен.",
     "open_sprint_metrics": "Открыть Sprint Metrics",
-    "suite_link_label": "Интеграция набора"
+    "suite_link_label": "Интеграция набора",
+    "due": "Срок",
+    "due_today": "Срок сегодня",
+    "overdue": "Просрочено",
+    "sort_default": "По умолчанию",
+    "sort_due": "По сроку"
   },
   "add_form": {
     "title": "Новый элемент улучшения",
@@ -59,6 +64,7 @@
     "label_category": "Категория",
     "label_owner": "Владелец",
     "label_copilot": "Копилот (необязательно)",
+    "label_due_date": "Срок (необязательно)",
     "placeholder_title": "Что нужно улучшить?",
     "placeholder_description": "Опишите проблему или возможность...",
     "placeholder_owner": "Кто отвечает?",

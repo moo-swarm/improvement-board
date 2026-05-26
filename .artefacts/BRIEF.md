@@ -12,6 +12,7 @@ Team improvement tracking aligned with Management 3.0 Improvement Dialogues / Co
 - [x] ES + BE locales — full translation of all keys; 4-language selector (EN/ES/BE/RU) in header
 - [x] Sprint Metrics deep-link — `?prefill=<title>&utm_source=sprint-metrics` auto-opens Add Item modal with pre-filled title; source banner + footer link back to Sprint Metrics
 - [x] Dashboard localStorage key — `improvement-board:lastSession` written on every item/member update (counts by status, memberCount, lastUpdated)
+- [x] Due dates on improvement items — optional `dueDate` field, date picker in Add modals, coloured badges (grey/amber/red) on Board and Kanban cards, sort-by-due-date toggle in both views; i18n keys in EN/ES/BE/RU
 
 ## Backlog
 
@@ -21,7 +22,7 @@ Team improvement tracking aligned with Management 3.0 Improvement Dialogues / Co
 - [ ] [#8] Feature: team priority voting on improvement items
 - [ ] [#9] Research: keyboard accessibility and ARIA audit for board views
 - [x] [#10] Integration: Dashboard card via improvement-board:lastSession localStorage key
-- [ ] [#11] Feature: due dates on improvement items with overdue highlighting
+- [x] [#11] Feature: due dates on improvement items with overdue highlighting
 - [ ] [#12] Feature: item aging indicator for stale improvements
 - [ ] [#13] Integration: Moving Motivators → Improvement Board (motivation health to action items)
 - [ ] [#14] Feature: Sprint cycle reset — archive done items with sprint summary
@@ -43,6 +44,12 @@ Team improvement tracking aligned with Management 3.0 Improvement Dialogues / Co
 - Re-run literal-key audit after large copy changes; keep `ru.json` in sync with `en.json`.
 
 ## Agent Log
+
+### 2026-05-26 — feat: due dates on improvement items (#11)
+- Done: `dueDate?: number` added to `ImprovementItem` in `types.ts`; `src/utils/dueDate.ts` helper with `getDueDateState` / `dueBadgeClasses` / `formatDueDate`; date picker in `AddItemModal.tsx`; coloured badge (grey future / amber today+soon / red overdue) in `ImprovementCard.tsx` (Board view) and `ItemCard` in `ImprovementBoard.tsx` (Kanban view); date picker in Kanban inline add form; sort-by-due-date toggle in both `BoardView.tsx` and `ImprovementBoard.tsx`; `board.due`, `board.due_today`, `board.overdue`, `board.sort_default`, `board.sort_due`, `add_form.label_due_date` added to EN/ES/BE/RU locales
+- Marked issue #11 as In Review in project #12
+- Remaining backlog: #3, #7, #8, #9, #12, #13, #14, #15, #16, #17, #18
+- Next task: check issues for human feedback
 
 ### 2026-05-23 — feat: improvement-board:lastSession localStorage key (#10)
 - Done: added `SESSION_KEY = 'improvement-board:lastSession'` constant and `saveSession()` function to `App.tsx`; called from `updateItems` and `updateMembers`; session shape: `{ identified, inProgress, done, total, memberCount, lastUpdated }`

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { ImprovementItem, TeamMember, Category, ImprovementStatus } from '../types'
+import { getDueDateState, dueBadgeClasses, formatDueDate } from '../utils/dueDate'
 
 interface Props {
   items: ImprovementItem[]
@@ -25,18 +26,23 @@ const CAT_BADGE: Record<Category, string> = {
   other: 'bg-slate-100 text-slate-600',
 }
 
+type SortMode = 'default' | 'due'
+
 export default function ImprovementBoard({ items, members, onItems }: Props) {
   const { t } = useTranslation()
   const [adding, setAdding] = useState(false)
+  const [sortMode, setSortMode] = useState<SortMode>('default')
   const [form, setForm] = useState({
     title: '',
     description: '',
     category: 'process' as Category,
     copilotName: '',
+    dueDateStr: '',
   })
 
   function addItem() {
     if (!form.title.trim()) return
+    const dueDate = form.dueDateStr ? new Date(form.dueDateStr).getTime() : undefined
     const item: ImprovementItem = {
       id: crypto.randomUUID(),
       title: form.title.trim(),
@@ -48,9 +54,10 @@ export default function ImprovementBoard({ items, members, onItems }: Props) {
       createdAt: Date.now(),
       updatedAt: Date.now(),
       dialogueNotes: '',
+      dueDate,
     }
     onItems([...items, item])
-    setForm({ title: '', description: '', category: 'process', copilotName: '' })
+    setForm({ title: '', description: '', category: 'process', copilotName: '', dueDateStr: '' })
     setAdding(false)
   }
 
@@ -74,17 +81,52 @@ export default function ImprovementBoard({ items, members, onItems }: Props) {
     )
   }
 
+  function colItems(status: ImprovementStatus) {
+    const filtered = items.filter(i => i.status === status)
+    if (sortMode === 'due') {
+      return [...filtered].sort((a, b) => {
+        if (a.dueDate && b.dueDate) return a.dueDate - b.dueDate
+        if (a.dueDate) return -1
+        if (b.dueDate) return 1
+        return 0
+      })
+    }
+    return filtered
+  }
+
   return (
     <div className="space-y-5">
       <div className="flex items-center justify-between">
         <h2 className="text-2xl font-bold text-slate-800">{t('kanban.title')}</h2>
-        <button
-          type="button"
-          onClick={() => setAdding(true)}
-          className="bg-brand-600 hover:bg-brand-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
-        >
-          + {t('kanban.addItem')}
-        </button>
+        <div className="flex items-center gap-2">
+          <div className="flex rounded-lg border border-slate-200 overflow-hidden text-xs">
+            <button
+              type="button"
+              onClick={() => setSortMode('default')}
+              className={`px-3 py-1.5 font-medium transition-colors ${
+                sortMode === 'default' ? 'bg-brand-600 text-white' : 'text-slate-600 hover:bg-slate-50'
+              }`}
+            >
+              {t('board.sort_default')}
+            </button>
+            <button
+              type="button"
+              onClick={() => setSortMode('due')}
+              className={`px-3 py-1.5 font-medium transition-colors border-l border-slate-200 ${
+                sortMode === 'due' ? 'bg-brand-600 text-white' : 'text-slate-600 hover:bg-slate-50'
+              }`}
+            >
+              {t('board.sort_due')}
+            </button>
+          </div>
+          <button
+            type="button"
+            onClick={() => setAdding(true)}
+            className="bg-brand-600 hover:bg-brand-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+          >
+            + {t('kanban.addItem')}
+          </button>
+        </div>
       </div>
 
       {adding && (
@@ -130,6 +172,13 @@ export default function ImprovementBoard({ items, members, onItems }: Props) {
                 ))}
               </select>
             )}
+            <input
+              type="date"
+              value={form.dueDateStr}
+              onChange={e => setForm(f => ({ ...f, dueDateStr: e.target.value }))}
+              className="border border-slate-300 rounded-lg px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400"
+              placeholder={t('add_form.label_due_date')}
+            />
           </div>
           <div className="flex gap-2">
             <button
@@ -160,21 +209,19 @@ export default function ImprovementBoard({ items, members, onItems }: Props) {
               </span>
             </h3>
             <div className="space-y-2 min-h-[60px]">
-              {items
-                .filter(i => i.status === status)
-                .map(item => (
-                  <ItemCard
-                    key={item.id}
-                    item={item}
-                    members={members}
-                    statuses={STATUSES}
-                    catBadge={CAT_BADGE[item.category]}
-                    onMove={moveItem}
-                    onDelete={deleteItem}
-                    onOutcome={updateOutcome}
-                    t={t}
-                  />
-                ))}
+              {colItems(status).map(item => (
+                <ItemCard
+                  key={item.id}
+                  item={item}
+                  members={members}
+                  statuses={STATUSES}
+                  catBadge={CAT_BADGE[item.category]}
+                  onMove={moveItem}
+                  onDelete={deleteItem}
+                  onOutcome={updateOutcome}
+                  t={t}
+                />
+              ))}
               {items.filter(i => i.status === status).length === 0 && (
                 <p className="text-slate-400 text-xs italic text-center py-2">{t('kanban.noItems')}</p>
               )}
@@ -207,6 +254,7 @@ function ItemCard({
 }) {
   const [expanded, setExpanded] = useState(false)
   const copilot = members.find(m => m.name === item.copilot)
+  const dueDateState = getDueDateState(item.dueDate, item.status === 'done')
 
   return (
     <div className="bg-white rounded-lg border border-slate-200 shadow-sm p-3">
@@ -233,6 +281,15 @@ function ItemCard({
         {(copilot || item.copilot) && (
           <span className="text-xs text-slate-400">
             👤 {copilot?.name ?? item.copilot}
+          </span>
+        )}
+        {dueDateState !== 'none' && item.dueDate && (
+          <span className={`text-xs px-1.5 py-0.5 rounded-full font-medium ${dueBadgeClasses(dueDateState)}`}>
+            {dueDateState === 'overdue'
+              ? t('board.overdue')
+              : dueDateState === 'today'
+              ? t('board.due_today')
+              : `${t('board.due')}: ${formatDueDate(item.dueDate)}`}
           </span>
         )}
       </div>

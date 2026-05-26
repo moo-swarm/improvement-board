@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import type { ImprovementItem } from '../types'
+import { getDueDateState, dueBadgeClasses, formatDueDate } from '../utils/dueDate'
 
 const CATEGORY_COLORS: Record<string, string> = {
   process: 'bg-blue-100 text-blue-700',
@@ -18,6 +19,7 @@ interface Props {
 
 export default function ImprovementCard({ item, onMoveForward, onDelete, onDialogue }: Props) {
   const { t } = useTranslation()
+  const dueDateState = getDueDateState(item.dueDate, item.status === 'done')
 
   return (
     <div className="bg-white rounded-xl border border-gray-200 p-4 shadow-sm">
@@ -33,13 +35,24 @@ export default function ImprovementCard({ item, onMoveForward, onDelete, onDialo
       {item.description && (
         <p className="text-xs text-gray-500 mb-2 leading-relaxed">{item.description}</p>
       )}
-      <div className="text-xs text-gray-400 space-y-0.5 mb-3">
+      <div className="text-xs text-gray-400 space-y-0.5 mb-2">
         <div>{t('board.owner')}: <span className="text-gray-600">{item.owner || '—'}</span></div>
         <div>
           {t('board.copilot')}:{' '}
           <span className="text-gray-600">{item.copilot || t('board.no_copilot')}</span>
         </div>
       </div>
+      {dueDateState !== 'none' && item.dueDate && (
+        <div className="mb-3">
+          <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${dueBadgeClasses(dueDateState)}`}>
+            {dueDateState === 'overdue'
+              ? t('board.overdue')
+              : dueDateState === 'today'
+              ? t('board.due_today')
+              : `${t('board.due')}: ${formatDueDate(item.dueDate)}`}
+          </span>
+        </div>
+      )}
       <div className="flex gap-2">
         {onMoveForward && (
           <button onClick={onMoveForward} className="btn-primary text-xs py-1 px-3">

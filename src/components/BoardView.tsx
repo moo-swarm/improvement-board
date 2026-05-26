@@ -7,6 +7,8 @@ import AddItemModal from './AddItemModal'
 const COLUMNS: ImprovementStatus[] = ['identified', 'in_progress', 'done']
 const SPRINT_METRICS_URL = 'https://agile-toolkit.github.io/sprint-metrics/'
 
+type SortMode = 'default' | 'due'
+
 interface Props {
   items: ImprovementItem[]
   onAdd: (item: ImprovementItem) => void
@@ -20,6 +22,7 @@ interface Props {
 export default function BoardView({ items, onAdd, onUpdate, onDelete, onDialogue, prefillTitle, fromSprintMetrics }: Props) {
   const { t } = useTranslation()
   const [showAdd, setShowAdd] = useState(false)
+  const [sortMode, setSortMode] = useState<SortMode>('default')
 
   useEffect(() => {
     if (prefillTitle) setShowAdd(true)
@@ -31,7 +34,18 @@ export default function BoardView({ items, onAdd, onUpdate, onDelete, onDialogue
     return null
   }
 
-  const colItems = (status: ImprovementStatus) => items.filter(i => i.status === status)
+  const colItems = (status: ImprovementStatus) => {
+    const filtered = items.filter(i => i.status === status)
+    if (sortMode === 'due') {
+      return [...filtered].sort((a, b) => {
+        if (a.dueDate && b.dueDate) return a.dueDate - b.dueDate
+        if (a.dueDate) return -1
+        if (b.dueDate) return 1
+        return 0
+      })
+    }
+    return filtered
+  }
 
   return (
     <div>
@@ -49,11 +63,31 @@ export default function BoardView({ items, onAdd, onUpdate, onDelete, onDialogue
           </a>
         </div>
       )}
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex items-center justify-between mb-4">
         <h1 className="text-2xl font-bold text-gray-900">{t('board.title')}</h1>
-        <button onClick={() => setShowAdd(true)} className="btn-primary">
-          + {t('board.add')}
-        </button>
+        <div className="flex items-center gap-2">
+          <div className="flex rounded-lg border border-gray-200 overflow-hidden text-xs">
+            <button
+              onClick={() => setSortMode('default')}
+              className={`px-3 py-1.5 font-medium transition-colors ${
+                sortMode === 'default' ? 'bg-brand-600 text-white' : 'text-gray-600 hover:bg-gray-50'
+              }`}
+            >
+              {t('board.sort_default')}
+            </button>
+            <button
+              onClick={() => setSortMode('due')}
+              className={`px-3 py-1.5 font-medium transition-colors border-l border-gray-200 ${
+                sortMode === 'due' ? 'bg-brand-600 text-white' : 'text-gray-600 hover:bg-gray-50'
+              }`}
+            >
+              {t('board.sort_due')}
+            </button>
+          </div>
+          <button onClick={() => setShowAdd(true)} className="btn-primary">
+            + {t('board.add')}
+          </button>
+        </div>
       </div>
 
       {items.length === 0 && (

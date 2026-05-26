@@ -50,7 +50,12 @@
     "start_dialogue": "Run Dialogue",
     "from_sprint_metrics": "Opened from Sprint Metrics — your improvement item is pre-filled.",
     "open_sprint_metrics": "Open Sprint Metrics",
-    "suite_link_label": "Suite integration"
+    "suite_link_label": "Suite integration",
+    "due": "Due",
+    "due_today": "Due today",
+    "overdue": "Overdue",
+    "sort_default": "Default",
+    "sort_due": "By due date"
   },
   "add_form": {
     "title": "New Improvement Item",
@@ -59,6 +64,7 @@
     "label_category": "Category",
     "label_owner": "Owner",
     "label_copilot": "Copilot (optional)",
+    "label_due_date": "Due date (optional)",
     "placeholder_title": "What needs to improve?",
     "placeholder_description": "Describe the problem or opportunity...",
     "placeholder_owner": "Who owns this?",
