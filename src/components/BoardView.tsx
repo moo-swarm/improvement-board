@@ -7,7 +7,7 @@ import AddItemModal from './AddItemModal'
 const COLUMNS: ImprovementStatus[] = ['identified', 'in_progress', 'done']
 const SPRINT_METRICS_URL = 'https://agile-toolkit.github.io/sprint-metrics/'
 
-type SortMode = 'default' | 'due'
+type SortMode = 'default' | 'due' | 'stale'
 
 interface Props {
   items: ImprovementItem[]
@@ -43,6 +43,9 @@ export default function BoardView({ items, onAdd, onUpdate, onDelete, onDialogue
         if (b.dueDate) return 1
         return 0
       })
+    }
+    if (sortMode === 'stale') {
+      return [...filtered].sort((a, b) => a.updatedAt - b.updatedAt)
     }
     return filtered
   }
@@ -82,6 +85,14 @@ export default function BoardView({ items, onAdd, onUpdate, onDelete, onDialogue
               }`}
             >
               {t('board.sort_due')}
+            </button>
+            <button
+              onClick={() => setSortMode('stale')}
+              className={`px-3 py-1.5 font-medium transition-colors border-l border-gray-200 ${
+                sortMode === 'stale' ? 'bg-brand-600 text-white' : 'text-gray-600 hover:bg-gray-50'
+              }`}
+            >
+              {t('board.sort_stale_first')}
             </button>
           </div>
           <button onClick={() => setShowAdd(true)} className="btn-primary">

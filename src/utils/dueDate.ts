@@ -1,4 +1,5 @@
 export type DueDateState = 'overdue' | 'today' | 'soon' | 'future' | 'done' | 'none'
+export type AgeState = 'fresh' | 'aging' | 'stale'
 
 export function getDueDateState(dueDate: number | undefined, isDone: boolean): DueDateState {
   if (!dueDate) return 'none'
@@ -25,4 +26,16 @@ export function dueBadgeClasses(state: DueDateState): string {
 
 export function formatDueDate(dueDate: number): string {
   return new Date(dueDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })
+}
+
+export function getAgeState(updatedAt: number, isDone: boolean): AgeState {
+  if (isDone) return 'fresh'
+  const daysOld = (Date.now() - updatedAt) / 86_400_000
+  if (daysOld > 21) return 'stale'
+  if (daysOld > 7) return 'aging'
+  return 'fresh'
+}
+
+export function ageDaysOld(updatedAt: number): number {
+  return Math.floor((Date.now() - updatedAt) / 86_400_000)
 }

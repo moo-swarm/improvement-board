@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { ImprovementItem, TeamMember, Category, ImprovementStatus } from '../types'
-import { getDueDateState, dueBadgeClasses, formatDueDate } from '../utils/dueDate'
+import { getDueDateState, dueBadgeClasses, formatDueDate, getAgeState, ageDaysOld } from '../utils/dueDate'
 
 interface Props {
   items: ImprovementItem[]
@@ -26,7 +26,7 @@ const CAT_BADGE: Record<Category, string> = {
   other: 'bg-slate-100 text-slate-600',
 }
 
-type SortMode = 'default' | 'due'
+type SortMode = 'default' | 'due' | 'stale'
 
 export default function ImprovementBoard({ items, members, onItems }: Props) {
   const { t } = useTranslation()
@@ -91,6 +91,9 @@ export default function ImprovementBoard({ items, members, onItems }: Props) {
         return 0
       })
     }
+    if (sortMode === 'stale') {
+      return [...filtered].sort((a, b) => a.updatedAt - b.updatedAt)
+    }
     return filtered
   }
 
@@ -117,6 +120,15 @@ export default function ImprovementBoard({ items, members, onItems }: Props) {
               }`}
             >
               {t('board.sort_due')}
+            </button>
+            <button
+              type="button"
+              onClick={() => setSortMode('stale')}
+              className={`px-3 py-1.5 font-medium transition-colors border-l border-slate-200 ${
+                sortMode === 'stale' ? 'bg-brand-600 text-white' : 'text-slate-600 hover:bg-slate-50'
+              }`}
+            >
+              {t('board.sort_stale_first')}
             </button>
           </div>
           <button
@@ -250,11 +262,13 @@ function ItemCard({
   onMove: (id: string, s: ImprovementStatus) => void
   onDelete: (id: string) => void
   onOutcome: (id: string, o: string) => void
-  t: (k: string) => string
+  t: (k: string, opts?: Record<string, unknown>) => string
 }) {
   const [expanded, setExpanded] = useState(false)
   const copilot = members.find(m => m.name === item.copilot)
   const dueDateState = getDueDateState(item.dueDate, item.status === 'done')
+  const ageState = getAgeState(item.updatedAt, item.status === 'done')
+  const daysOld = ageDaysOld(item.updatedAt)
 
   return (
     <div className="bg-white rounded-lg border border-slate-200 shadow-sm p-3">
@@ -278,6 +292,18 @@ function ItemCard({
         <span className={`text-xs px-1.5 py-0.5 rounded-full ${catBadge}`}>
           {t(`add_form.categories.${item.category}`)}
         </span>
+        {ageState === 'aging' && (
+          <span
+            className="inline-block w-2 h-2 rounded-full bg-amber-400 shrink-0"
+            title={t('board.age_aging_tooltip', { days: daysOld })}
+          />
+        )}
+        {ageState === 'stale' && (
+          <span
+            className="inline-block w-2 h-2 rounded-full bg-red-500 shrink-0"
+            title={t('board.age_stale_tooltip', { days: daysOld })}
+          />
+        )}
         {(copilot || item.copilot) && (
           <span className="text-xs text-slate-400">
             👤 {copilot?.name ?? item.copilot}

@@ -55,7 +55,12 @@
     "due_today": "Vence hoy",
     "overdue": "Vencido",
     "sort_default": "Predeterminado",
-    "sort_due": "Por fecha límite"
+    "sort_due": "Por fecha límite",
+    "sort_stale_first": "Más antiguos primero",
+    "age_aging": "Envejeciendo",
+    "age_stale": "Estancado",
+    "age_aging_tooltip": "Actualizado hace {{days}} días (envejeciendo)",
+    "age_stale_tooltip": "Actualizado hace {{days}} días (estancado)"
   },
   "add_form": {
     "title": "Nuevo Ítem de Mejora",

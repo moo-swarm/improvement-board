@@ -55,7 +55,12 @@
     "due_today": "Due today",
     "overdue": "Overdue",
     "sort_default": "Default",
-    "sort_due": "By due date"
+    "sort_due": "By due date",
+    "sort_stale_first": "Stale first",
+    "age_aging": "Aging",
+    "age_stale": "Stale",
+    "age_aging_tooltip": "Last updated {{days}} days ago (aging)",
+    "age_stale_tooltip": "Last updated {{days}} days ago (stale)"
   },
   "add_form": {
     "title": "New Improvement Item",

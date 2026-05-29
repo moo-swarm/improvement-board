@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import type { ImprovementItem } from '../types'
-import { getDueDateState, dueBadgeClasses, formatDueDate } from '../utils/dueDate'
+import { getDueDateState, dueBadgeClasses, formatDueDate, getAgeState, ageDaysOld } from '../utils/dueDate'
 
 const CATEGORY_COLORS: Record<string, string> = {
   process: 'bg-blue-100 text-blue-700',
@@ -20,13 +20,29 @@ interface Props {
 export default function ImprovementCard({ item, onMoveForward, onDelete, onDialogue }: Props) {
   const { t } = useTranslation()
   const dueDateState = getDueDateState(item.dueDate, item.status === 'done')
+  const ageState = getAgeState(item.updatedAt, item.status === 'done')
+  const daysOld = ageDaysOld(item.updatedAt)
 
   return (
     <div className="bg-white rounded-xl border border-gray-200 p-4 shadow-sm">
       <div className="flex items-start justify-between gap-2 mb-2">
-        <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${CATEGORY_COLORS[item.category]}`}>
-          {t(`add_form.categories.${item.category}`)}
-        </span>
+        <div className="flex items-center gap-1.5 flex-wrap">
+          <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${CATEGORY_COLORS[item.category]}`}>
+            {t(`add_form.categories.${item.category}`)}
+          </span>
+          {ageState === 'aging' && (
+            <span
+              className="inline-block w-2 h-2 rounded-full bg-amber-400 shrink-0"
+              title={t('board.age_aging_tooltip', { days: daysOld })}
+            />
+          )}
+          {ageState === 'stale' && (
+            <span
+              className="inline-block w-2 h-2 rounded-full bg-red-500 shrink-0"
+              title={t('board.age_stale_tooltip', { days: daysOld })}
+            />
+          )}
+        </div>
         <button onClick={onDelete} className="text-gray-300 hover:text-red-400 transition-colors text-xs">
           ✕
         </button>
