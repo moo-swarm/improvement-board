@@ -14,11 +14,12 @@ Team improvement tracking aligned with Management 3.0 Improvement Dialogues / Co
 - [x] Dashboard localStorage key — `improvement-board:lastSession` written on every item/member update (counts by status, memberCount, lastUpdated)
 - [x] Due dates on improvement items — optional `dueDate` field, date picker in Add modals, coloured badges (grey/amber/red) on Board and Kanban cards, sort-by-due-date toggle in both views; i18n keys in EN/ES/BE/RU
 - [x] Item aging indicator — amber dot (8–21 days inactive), red dot (>21 days), tooltip with day count; "Stale first" sort in Board and Kanban views; i18n keys in EN/ES/BE/RU
+- [x] Export board snapshot as PNG — "Export PNG" button in Board and Kanban view headers; html2canvas capture; clipboard-first with download fallback; `improvement-board-YYYY-MM-DD.png`; busy/done toast state; i18n keys in EN/ES/BE/RU
 
 ## Backlog
 
 <!-- Research issues (`needs-review`) — agent appends after stable research runs -->
-- [ ] [#3] Feature: Export board snapshot as PNG for stakeholder reporting
+- [x] [#3] Feature: Export board snapshot as PNG for stakeholder reporting
 - [ ] [#7] Integration: link Improvement Board items to Kanban Designer
 - [ ] [#8] Feature: team priority voting on improvement items
 - [ ] [#9] Research: keyboard accessibility and ARIA audit for board views
@@ -45,6 +46,12 @@ Team improvement tracking aligned with Management 3.0 Improvement Dialogues / Co
 - Re-run literal-key audit after large copy changes; keep `ru.json` in sync with `en.json`.
 
 ## Agent Log
+
+### 2026-05-30 — feat: Export board snapshot as PNG (#3)
+- Done: installed `html2canvas`; added `handleExport` in `BoardView.tsx` and `ImprovementBoard.tsx` (Kanban); "Export PNG" button in both view headers; html2canvas captures the columns grid; clipboard write attempted first, falls back to `improvement-board-YYYY-MM-DD.png` download; busy/done toast with 2 s auto-reset; i18n keys `board.export_png`, `board.export_downloading`, `board.export_copied` added to EN/ES/BE/RU
+- Marked issue #3 as In Review
+- Remaining: #7, #8, #9, #13, #14, #15, #16, #17, #18
+- Next task: check issues for human feedback
 
 ### 2026-05-29 — feat: item aging indicator for stale improvements (#12)
 - Done: `getAgeState()` and `ageDaysOld()` added to `src/utils/dueDate.ts`; amber dot (8–21 days) and red dot (>21 days) with `title` tooltip in `ImprovementCard.tsx` (Board view) and `ItemCard` in `ImprovementBoard.tsx` (Kanban view); `sort_stale_first` sort mode added to both views sorting by `updatedAt` ascending; `t` prop in `ItemCard` widened to accept optional `opts` arg; i18n keys `sort_stale_first`, `age_aging`, `age_stale`, `age_aging_tooltip`, `age_stale_tooltip` added to EN/ES/BE/RU

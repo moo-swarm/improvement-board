@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
+import html2canvas from 'html2canvas'
 import type { ImprovementItem, ImprovementStatus } from '../types'
 import ImprovementCard from './ImprovementCard'
 import AddItemModal from './AddItemModal'
@@ -23,10 +24,34 @@ export default function BoardView({ items, onAdd, onUpdate, onDelete, onDialogue
   const { t } = useTranslation()
   const [showAdd, setShowAdd] = useState(false)
   const [sortMode, setSortMode] = useState<SortMode>('default')
+  const [exportState, setExportState] = useState<'idle' | 'busy' | 'done'>('idle')
+  const boardRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     if (prefillTitle) setShowAdd(true)
   }, [prefillTitle])
+
+  async function handleExport() {
+    if (!boardRef.current || exportState === 'busy') return
+    setExportState('busy')
+    try {
+      const canvas = await html2canvas(boardRef.current, { useCORS: true, backgroundColor: '#f9fafb' })
+      const blob = await new Promise<Blob | null>(resolve => canvas.toBlob(resolve, 'image/png'))
+      if (blob && navigator.clipboard?.write) {
+        await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })])
+      } else {
+        const date = new Date().toISOString().slice(0, 10)
+        const link = document.createElement('a')
+        link.download = `improvement-board-${date}.png`
+        link.href = canvas.toDataURL('image/png')
+        link.click()
+      }
+      setExportState('done')
+      setTimeout(() => setExportState('idle'), 2000)
+    } catch {
+      setExportState('idle')
+    }
+  }
 
   const getNext = (status: ImprovementStatus): ImprovementStatus | null => {
     if (status === 'identified') return 'in_progress'
@@ -95,6 +120,17 @@ export default function BoardView({ items, onAdd, onUpdate, onDelete, onDialogue
               {t('board.sort_stale_first')}
             </button>
           </div>
+          <button
+            onClick={handleExport}
+            disabled={exportState === 'busy'}
+            className="btn-secondary text-xs"
+          >
+            {exportState === 'busy'
+              ? t('board.export_downloading')
+              : exportState === 'done'
+              ? t('board.export_copied')
+              : t('board.export_png')}
+          </button>
           <button onClick={() => setShowAdd(true)} className="btn-primary">
             + {t('board.add')}
           </button>
@@ -108,7 +144,7 @@ export default function BoardView({ items, onAdd, onUpdate, onDelete, onDialogue
         </div>
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div ref={boardRef} className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {COLUMNS.map(col => (
           <div key={col}>
             <div className="flex items-center gap-2 mb-3">

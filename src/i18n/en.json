@@ -60,7 +60,10 @@
     "age_aging": "Aging",
     "age_stale": "Stale",
     "age_aging_tooltip": "Last updated {{days}} days ago (aging)",
-    "age_stale_tooltip": "Last updated {{days}} days ago (stale)"
+    "age_stale_tooltip": "Last updated {{days}} days ago (stale)",
+    "export_png": "Export PNG",
+    "export_downloading": "Exporting…",
+    "export_copied": "Saved!"
   },
   "add_form": {
     "title": "New Improvement Item",

@@ -60,7 +60,10 @@
     "age_aging": "Старэе",
     "age_stale": "Застарэлы",
     "age_aging_tooltip": "Апошняе абнаўленне {{days}} дзён таму (старэе)",
-    "age_stale_tooltip": "Апошняе абнаўленне {{days}} дзён таму (застарэлы)"
+    "age_stale_tooltip": "Апошняе абнаўленне {{days}} дзён таму (застарэлы)",
+    "export_png": "Экспарт PNG",
+    "export_downloading": "Экспарт…",
+    "export_copied": "Захавана!"
   },
   "add_form": {
     "title": "Новы Элемент Паляпшэння",

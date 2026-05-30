@@ -60,7 +60,10 @@
     "age_aging": "Устаревает",
     "age_stale": "Застрявший",
     "age_aging_tooltip": "Последнее обновление {{days}} дней назад (устаревает)",
-    "age_stale_tooltip": "Последнее обновление {{days}} дней назад (застрявший)"
+    "age_stale_tooltip": "Последнее обновление {{days}} дней назад (застрявший)",
+    "export_png": "Экспорт PNG",
+    "export_downloading": "Экспорт…",
+    "export_copied": "Сохранено!"
   },
   "add_form": {
     "title": "Новый элемент улучшения",

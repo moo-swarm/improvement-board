@@ -60,7 +60,10 @@
     "age_aging": "Envejeciendo",
     "age_stale": "Estancado",
     "age_aging_tooltip": "Actualizado hace {{days}} días (envejeciendo)",
-    "age_stale_tooltip": "Actualizado hace {{days}} días (estancado)"
+    "age_stale_tooltip": "Actualizado hace {{days}} días (estancado)",
+    "export_png": "Exportar PNG",
+    "export_downloading": "Exportando…",
+    "export_copied": "¡Guardado!"
   },
   "add_form": {
     "title": "Nuevo Ítem de Mejora",

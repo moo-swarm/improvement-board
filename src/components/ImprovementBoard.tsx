@@ -1,5 +1,6 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
+import html2canvas from 'html2canvas'
 import type { ImprovementItem, TeamMember, Category, ImprovementStatus } from '../types'
 import { getDueDateState, dueBadgeClasses, formatDueDate, getAgeState, ageDaysOld } from '../utils/dueDate'
 
@@ -32,6 +33,30 @@ export default function ImprovementBoard({ items, members, onItems }: Props) {
   const { t } = useTranslation()
   const [adding, setAdding] = useState(false)
   const [sortMode, setSortMode] = useState<SortMode>('default')
+  const [exportState, setExportState] = useState<'idle' | 'busy' | 'done'>('idle')
+  const boardRef = useRef<HTMLDivElement>(null)
+
+  async function handleExport() {
+    if (!boardRef.current || exportState === 'busy') return
+    setExportState('busy')
+    try {
+      const canvas = await html2canvas(boardRef.current, { useCORS: true, backgroundColor: '#f9fafb' })
+      const blob = await new Promise<Blob | null>(resolve => canvas.toBlob(resolve, 'image/png'))
+      if (blob && navigator.clipboard?.write) {
+        await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })])
+      } else {
+        const date = new Date().toISOString().slice(0, 10)
+        const link = document.createElement('a')
+        link.download = `improvement-board-${date}.png`
+        link.href = canvas.toDataURL('image/png')
+        link.click()
+      }
+      setExportState('done')
+      setTimeout(() => setExportState('idle'), 2000)
+    } catch {
+      setExportState('idle')
+    }
+  }
   const [form, setForm] = useState({
     title: '',
     description: '',
@@ -133,6 +158,18 @@ export default function ImprovementBoard({ items, members, onItems }: Props) {
           </div>
           <button
             type="button"
+            onClick={handleExport}
+            disabled={exportState === 'busy'}
+            className="border border-gray-200 text-gray-600 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+          >
+            {exportState === 'busy'
+              ? t('board.export_downloading')
+              : exportState === 'done'
+              ? t('board.export_copied')
+              : t('board.export_png')}
+          </button>
+          <button
+            type="button"
             onClick={() => setAdding(true)}
             className="bg-brand-600 hover:bg-brand-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
           >
@@ -211,7 +248,7 @@ export default function ImprovementBoard({ items, members, onItems }: Props) {
         </div>
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div ref={boardRef} className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {STATUSES.map(status => (
           <div key={status} className={`rounded-xl border-2 p-3 ${STATUS_COLORS[status]}`}>
             <h3 className="font-semibold text-slate-700 text-sm mb-3 flex items-center justify-between">
