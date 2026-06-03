@@ -63,7 +63,9 @@
     "age_stale_tooltip": "Последнее обновление {{days}} дней назад (застрявший)",
     "export_png": "Экспорт PNG",
     "export_downloading": "Экспорт…",
-    "export_copied": "Сохранено!"
+    "export_copied": "Сохранено!",
+    "open_kanban_designer": "Открыть в Kanban Designer",
+    "open_kanban_designer_title": "Открыть все элементы в Kanban Designer (новая вкладка)"
   },
   "add_form": {
     "title": "Новый элемент улучшения",

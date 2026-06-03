@@ -63,7 +63,9 @@
     "age_stale_tooltip": "Last updated {{days}} days ago (stale)",
     "export_png": "Export PNG",
     "export_downloading": "Exporting…",
-    "export_copied": "Saved!"
+    "export_copied": "Saved!",
+    "open_kanban_designer": "Open in Kanban Designer",
+    "open_kanban_designer_title": "Open all items in Kanban Designer (opens in new tab)"
   },
   "add_form": {
     "title": "New Improvement Item",

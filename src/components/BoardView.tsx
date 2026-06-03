@@ -4,6 +4,7 @@ import html2canvas from 'html2canvas'
 import type { ImprovementItem, ImprovementStatus } from '../types'
 import ImprovementCard from './ImprovementCard'
 import AddItemModal from './AddItemModal'
+import { buildKanbanUrl } from '../utils/kanbanLink'
 
 const COLUMNS: ImprovementStatus[] = ['identified', 'in_progress', 'done']
 const SPRINT_METRICS_URL = 'https://agile-toolkit.github.io/sprint-metrics/'
@@ -120,6 +121,15 @@ export default function BoardView({ items, onAdd, onUpdate, onDelete, onDialogue
               {t('board.sort_stale_first')}
             </button>
           </div>
+          <a
+            href={buildKanbanUrl(items)}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-secondary text-xs"
+            title={t('board.open_kanban_designer_title')}
+          >
+            {t('board.open_kanban_designer')}
+          </a>
           <button
             onClick={handleExport}
             disabled={exportState === 'busy'}

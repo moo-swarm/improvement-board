@@ -20,7 +20,7 @@ Team improvement tracking aligned with Management 3.0 Improvement Dialogues / Co
 
 <!-- Research issues (`needs-review`) — agent appends after stable research runs -->
 - [x] [#3] Feature: Export board snapshot as PNG for stakeholder reporting
-- [ ] [#7] Integration: link Improvement Board items to Kanban Designer
+- [x] [#7] Integration: link Improvement Board items to Kanban Designer
 - [ ] [#8] Feature: team priority voting on improvement items
 - [ ] [#9] Research: keyboard accessibility and ARIA audit for board views
 - [x] [#10] Integration: Dashboard card via improvement-board:lastSession localStorage key
@@ -46,6 +46,12 @@ Team improvement tracking aligned with Management 3.0 Improvement Dialogues / Co
 - Re-run literal-key audit after large copy changes; keep `ru.json` in sync with `en.json`.
 
 ## Agent Log
+
+### 2026-06-03 — feat: Improvement Board → Kanban Designer deep-link (#7)
+- Done: added `src/utils/kanbanLink.ts` with `buildKanbanUrl()` — serialises all items into KanbanBoard prefill JSON (columns: Identified/In Progress/Done, cards: title + description) and builds `https://agile-toolkit.github.io/kanban-designer/?prefill=<json>&utm_source=improvement-board`; added "Open in Kanban Designer" `<a>` button in `BoardView.tsx` and `ImprovementBoard.tsx` (Kanban view) headers; i18n keys `board.open_kanban_designer` and `board.open_kanban_designer_title` added to EN/ES/BE/RU; Kanban Designer prefill receiving side to be implemented in a kanban-designer run
+- Marked issue #7 as In Review
+- Remaining approved issues: #8, #9, #14, #15, #16
+- Next task: implement #14 (Sprint cycle reset — archive done items with sprint summary; add "End Sprint" button in Board view, archive done items to localStorage key improvement-board:sprintHistory, show sprint count badge, clear done column, i18n keys in EN/ES/BE/RU)
 
 ### 2026-05-30 — feat: Export board snapshot as PNG (#3)
 - Done: installed `html2canvas`; added `handleExport` in `BoardView.tsx` and `ImprovementBoard.tsx` (Kanban); "Export PNG" button in both view headers; html2canvas captures the columns grid; clipboard write attempted first, falls back to `improvement-board-YYYY-MM-DD.png` download; busy/done toast with 2 s auto-reset; i18n keys `board.export_png`, `board.export_downloading`, `board.export_copied` added to EN/ES/BE/RU

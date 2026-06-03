@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import html2canvas from 'html2canvas'
 import type { ImprovementItem, TeamMember, Category, ImprovementStatus } from '../types'
 import { getDueDateState, dueBadgeClasses, formatDueDate, getAgeState, ageDaysOld } from '../utils/dueDate'
+import { buildKanbanUrl } from '../utils/kanbanLink'
 
 interface Props {
   items: ImprovementItem[]
@@ -156,6 +157,15 @@ export default function ImprovementBoard({ items, members, onItems }: Props) {
               {t('board.sort_stale_first')}
             </button>
           </div>
+          <a
+            href={buildKanbanUrl(items)}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="border border-gray-200 text-gray-600 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors"
+            title={t('board.open_kanban_designer_title')}
+          >
+            {t('board.open_kanban_designer')}
+          </a>
           <button
             type="button"
             onClick={handleExport}

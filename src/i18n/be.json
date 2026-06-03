@@ -63,7 +63,9 @@
     "age_stale_tooltip": "Апошняе абнаўленне {{days}} дзён таму (застарэлы)",
     "export_png": "Экспарт PNG",
     "export_downloading": "Экспарт…",
-    "export_copied": "Захавана!"
+    "export_copied": "Захавана!",
+    "open_kanban_designer": "Адкрыць у Kanban Designer",
+    "open_kanban_designer_title": "Адкрыць усе элементы ў Kanban Designer (новая ўкладка)"
   },
   "add_form": {
     "title": "Новы Элемент Паляпшэння",

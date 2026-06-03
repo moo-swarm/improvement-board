@@ -63,7 +63,9 @@
     "age_stale_tooltip": "Actualizado hace {{days}} días (estancado)",
     "export_png": "Exportar PNG",
     "export_downloading": "Exportando…",
-    "export_copied": "¡Guardado!"
+    "export_copied": "¡Guardado!",
+    "open_kanban_designer": "Abrir en Kanban Designer",
+    "open_kanban_designer_title": "Abrir todos los elementos en Kanban Designer (nueva pestaña)"
   },
   "add_form": {
     "title": "Nuevo Ítem de Mejora",
