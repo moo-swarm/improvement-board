@@ -2,6 +2,12 @@ export type ImprovementStatus = 'identified' | 'in_progress' | 'done'
 export type Category = 'process' | 'technical' | 'people' | 'product' | 'other'
 export type Screen = 'board' | 'kanban' | 'team' | 'dialogue' | 'timer' | 'learn'
 
+export interface SprintArchive {
+  sprintNumber: number
+  archivedAt: string
+  items: ImprovementItem[]
+}
+
 export interface TeamMember {
   id: string
   name: string

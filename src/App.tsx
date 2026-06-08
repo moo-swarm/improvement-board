@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-import type { Screen, ImprovementItem, TeamMember } from './types'
+import type { Screen, ImprovementItem, TeamMember, SprintArchive } from './types'
 import BoardView from './components/BoardView'
 import ImprovementBoard from './components/ImprovementBoard'
 import DialogueView from './components/DialogueView'
@@ -11,6 +11,7 @@ import LearnView from './components/LearnView'
 const STORAGE_KEY = 'improvement-board-items'
 const MEMBERS_KEY = 'improvement-board-members'
 const SESSION_KEY = 'improvement-board:lastSession'
+const SPRINT_HISTORY_KEY = 'improvement-board:sprintHistory'
 
 function loadItems(): ImprovementItem[] {
   try {
@@ -36,6 +37,14 @@ function saveMembers(members: TeamMember[]) {
   localStorage.setItem(MEMBERS_KEY, JSON.stringify(members))
 }
 
+function loadSprintHistory(): SprintArchive[] {
+  try {
+    return JSON.parse(localStorage.getItem(SPRINT_HISTORY_KEY) ?? '[]')
+  } catch {
+    return []
+  }
+}
+
 function saveSession(items: ImprovementItem[], members: TeamMember[]) {
   const session = {
     identified: items.filter(i => i.status === 'identified').length,
@@ -53,6 +62,7 @@ export default function App() {
   const [screen, setScreen] = useState<Screen>('board')
   const [items, setItems] = useState<ImprovementItem[]>(loadItems)
   const [members, setMembers] = useState<TeamMember[]>(loadMembers)
+  const [sprintHistory, setSprintHistory] = useState<SprintArchive[]>(loadSprintHistory)
   const [dialogueId, setDialogueId] = useState<string | null>(null)
 
   const urlParams = useMemo(() => new URLSearchParams(window.location.search), [])
@@ -69,6 +79,20 @@ export default function App() {
     setMembers(next)
     saveMembers(next)
     saveSession(items, next)
+  }
+
+  const handleEndSprint = () => {
+    const doneItems = items.filter(i => i.status === 'done')
+    if (doneItems.length === 0) return
+    const archive: SprintArchive = {
+      sprintNumber: sprintHistory.length + 1,
+      archivedAt: new Date().toISOString(),
+      items: doneItems,
+    }
+    const updated = [...sprintHistory, archive]
+    setSprintHistory(updated)
+    localStorage.setItem(SPRINT_HISTORY_KEY, JSON.stringify(updated))
+    updateItems(items.filter(i => i.status !== 'done'))
   }
 
   const navItems: { key: Screen; label: string }[] = [
@@ -153,6 +177,8 @@ export default function App() {
             }}
             prefillTitle={prefillTitle}
             fromSprintMetrics={fromSprintMetrics}
+            currentSprint={sprintHistory.length + 1}
+            onEndSprint={handleEndSprint}
           />
         )}
         {screen === 'kanban' && (
@@ -160,6 +186,8 @@ export default function App() {
             items={items}
             members={members}
             onItems={updateItems}
+            currentSprint={sprintHistory.length + 1}
+            onEndSprint={handleEndSprint}
           />
         )}
         {screen === 'team' && (

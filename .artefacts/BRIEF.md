@@ -15,6 +15,7 @@ Team improvement tracking aligned with Management 3.0 Improvement Dialogues / Co
 - [x] Due dates on improvement items — optional `dueDate` field, date picker in Add modals, coloured badges (grey/amber/red) on Board and Kanban cards, sort-by-due-date toggle in both views; i18n keys in EN/ES/BE/RU
 - [x] Item aging indicator — amber dot (8–21 days inactive), red dot (>21 days), tooltip with day count; "Stale first" sort in Board and Kanban views; i18n keys in EN/ES/BE/RU
 - [x] Export board snapshot as PNG — "Export PNG" button in Board and Kanban view headers; html2canvas capture; clipboard-first with download fallback; `improvement-board-YYYY-MM-DD.png`; busy/done toast state; i18n keys in EN/ES/BE/RU
+- [x] Sprint cycle reset — "End Sprint" button in Board and Kanban views (visible only when done items exist); native confirm dialog; archives done items to `improvement-board:sprintHistory`; clears done column; sprint count badge ("Sprint N") in both view headers; i18n keys in EN/ES/BE/RU
 
 ## Backlog
 
@@ -27,7 +28,7 @@ Team improvement tracking aligned with Management 3.0 Improvement Dialogues / Co
 - [x] [#11] Feature: due dates on improvement items with overdue highlighting
 - [x] [#12] Feature: item aging indicator for stale improvements
 - [ ] [#13] Integration: Moving Motivators → Improvement Board (motivation health to action items)
-- [ ] [#14] Feature: Sprint cycle reset — archive done items with sprint summary
+- [x] [#14] Feature: Sprint cycle reset — archive done items with sprint summary
 - [ ] [#15] Feature: item comment thread in Dialogue view (async team notes with timestamps)
 - [ ] [#16] Feature: PWA offline mode for in-room facilitation
 - [ ] [#17] Integration: Promote improvement item to Change Planner
@@ -40,12 +41,19 @@ Team improvement tracking aligned with Management 3.0 Improvement Dialogues / Co
 | `improvement-board-items` | `App.tsx` saveItems() | `ImprovementItem[]` |
 | `improvement-board-members` | `App.tsx` saveMembers() | `TeamMember[]` |
 | `improvement-board:lastSession` | `App.tsx` saveSession() | `{ identified, inProgress, done, total, memberCount, lastUpdated }` |
+| `improvement-board:sprintHistory` | `App.tsx` handleEndSprint() | `SprintArchive[]` — `{ sprintNumber, archivedAt, items[] }` |
 
 ## Tech notes
 
 - Re-run literal-key audit after large copy changes; keep `ru.json` in sync with `en.json`.
 
 ## Agent Log
+
+### 2026-06-08 — feat: Sprint cycle reset — archive done items (#14)
+- Done: Added `SprintArchive` type to `types.ts`; `SPRINT_HISTORY_KEY = 'improvement-board:sprintHistory'`, `loadSprintHistory()`, `sprintHistory` state, and `handleEndSprint()` in `App.tsx`; `currentSprint` + `onEndSprint` props wired to both `BoardView` and `ImprovementBoard`; "Sprint N" badge in both view headers; "End Sprint" button (shown only when done items exist) with native confirm in both views; 3 i18n keys (`sprint_count`, `end_sprint`, `end_sprint_confirm`) in EN/ES/BE/RU
+- Marked issue #14 as In Review
+- Remaining approved issues: #15, #16
+- Next task: implement #15 (item comment thread in Dialogue view — async team notes with timestamps on improvement items; textarea + submit in DialogueView, comments stored in ImprovementItem, i18n keys in EN/ES/BE/RU)
 
 ### 2026-06-03 — feat: Improvement Board → Kanban Designer deep-link (#7)
 - Done: added `src/utils/kanbanLink.ts` with `buildKanbanUrl()` — serialises all items into KanbanBoard prefill JSON (columns: Identified/In Progress/Done, cards: title + description) and builds `https://agile-toolkit.github.io/kanban-designer/?prefill=<json>&utm_source=improvement-board`; added "Open in Kanban Designer" `<a>` button in `BoardView.tsx` and `ImprovementBoard.tsx` (Kanban view) headers; i18n keys `board.open_kanban_designer` and `board.open_kanban_designer_title` added to EN/ES/BE/RU; Kanban Designer prefill receiving side to be implemented in a kanban-designer run

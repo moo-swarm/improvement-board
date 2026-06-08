@@ -65,7 +65,10 @@
     "export_downloading": "Exportando…",
     "export_copied": "¡Guardado!",
     "open_kanban_designer": "Abrir en Kanban Designer",
-    "open_kanban_designer_title": "Abrir todos los elementos en Kanban Designer (nueva pestaña)"
+    "open_kanban_designer_title": "Abrir todos los elementos en Kanban Designer (nueva pestaña)",
+    "sprint_count": "Sprint {{n}}",
+    "end_sprint": "Finalizar Sprint",
+    "end_sprint_confirm": "¿Archivar {{count}} elemento(s) completado(s) e iniciar Sprint {{next}}?"
   },
   "add_form": {
     "title": "Nuevo Ítem de Mejora",

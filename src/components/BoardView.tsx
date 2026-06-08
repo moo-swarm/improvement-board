@@ -19,9 +19,11 @@ interface Props {
   onDialogue: (item: ImprovementItem) => void
   prefillTitle?: string
   fromSprintMetrics?: boolean
+  currentSprint: number
+  onEndSprint: () => void
 }
 
-export default function BoardView({ items, onAdd, onUpdate, onDelete, onDialogue, prefillTitle, fromSprintMetrics }: Props) {
+export default function BoardView({ items, onAdd, onUpdate, onDelete, onDialogue, prefillTitle, fromSprintMetrics, currentSprint, onEndSprint }: Props) {
   const { t } = useTranslation()
   const [showAdd, setShowAdd] = useState(false)
   const [sortMode, setSortMode] = useState<SortMode>('default')
@@ -93,7 +95,12 @@ export default function BoardView({ items, onAdd, onUpdate, onDelete, onDialogue
         </div>
       )}
       <div className="flex items-center justify-between mb-4">
-        <h1 className="text-2xl font-bold text-gray-900">{t('board.title')}</h1>
+        <div className="flex items-center gap-2">
+          <h1 className="text-2xl font-bold text-gray-900">{t('board.title')}</h1>
+          <span className="text-xs bg-brand-100 text-brand-700 px-2 py-0.5 rounded-full font-medium">
+            {t('board.sprint_count', { n: currentSprint })}
+          </span>
+        </div>
         <div className="flex items-center gap-2">
           <div className="flex rounded-lg border border-gray-200 overflow-hidden text-xs">
             <button
@@ -141,6 +148,19 @@ export default function BoardView({ items, onAdd, onUpdate, onDelete, onDialogue
               ? t('board.export_copied')
               : t('board.export_png')}
           </button>
+          {items.some(i => i.status === 'done') && (
+            <button
+              onClick={() => {
+                const count = items.filter(i => i.status === 'done').length
+                if (window.confirm(t('board.end_sprint_confirm', { count, next: currentSprint + 1 }))) {
+                  onEndSprint()
+                }
+              }}
+              className="btn-secondary text-xs"
+            >
+              {t('board.end_sprint')}
+            </button>
+          )}
           <button onClick={() => setShowAdd(true)} className="btn-primary">
             + {t('board.add')}
           </button>

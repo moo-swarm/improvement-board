@@ -9,6 +9,8 @@ interface Props {
   items: ImprovementItem[]
   members: TeamMember[]
   onItems: (items: ImprovementItem[]) => void
+  currentSprint: number
+  onEndSprint: () => void
 }
 
 const STATUSES: ImprovementStatus[] = ['identified', 'in_progress', 'done']
@@ -30,7 +32,7 @@ const CAT_BADGE: Record<Category, string> = {
 
 type SortMode = 'default' | 'due' | 'stale'
 
-export default function ImprovementBoard({ items, members, onItems }: Props) {
+export default function ImprovementBoard({ items, members, onItems, currentSprint, onEndSprint }: Props) {
   const { t } = useTranslation()
   const [adding, setAdding] = useState(false)
   const [sortMode, setSortMode] = useState<SortMode>('default')
@@ -126,7 +128,12 @@ export default function ImprovementBoard({ items, members, onItems }: Props) {
   return (
     <div className="space-y-5">
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold text-slate-800">{t('kanban.title')}</h2>
+        <div className="flex items-center gap-2">
+          <h2 className="text-2xl font-bold text-slate-800">{t('kanban.title')}</h2>
+          <span className="text-xs bg-brand-100 text-brand-700 px-2 py-0.5 rounded-full font-medium">
+            {t('board.sprint_count', { n: currentSprint })}
+          </span>
+        </div>
         <div className="flex items-center gap-2">
           <div className="flex rounded-lg border border-slate-200 overflow-hidden text-xs">
             <button
@@ -178,6 +185,20 @@ export default function ImprovementBoard({ items, members, onItems }: Props) {
               ? t('board.export_copied')
               : t('board.export_png')}
           </button>
+          {items.some(i => i.status === 'done') && (
+            <button
+              type="button"
+              onClick={() => {
+                const count = items.filter(i => i.status === 'done').length
+                if (window.confirm(t('board.end_sprint_confirm', { count, next: currentSprint + 1 }))) {
+                  onEndSprint()
+                }
+              }}
+              className="border border-gray-200 text-gray-600 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors"
+            >
+              {t('board.end_sprint')}
+            </button>
+          )}
           <button
             type="button"
             onClick={() => setAdding(true)}

@@ -65,7 +65,10 @@
     "export_downloading": "Экспорт…",
     "export_copied": "Сохранено!",
     "open_kanban_designer": "Открыть в Kanban Designer",
-    "open_kanban_designer_title": "Открыть все элементы в Kanban Designer (новая вкладка)"
+    "open_kanban_designer_title": "Открыть все элементы в Kanban Designer (новая вкладка)",
+    "sprint_count": "Спринт {{n}}",
+    "end_sprint": "Завершить Спринт",
+    "end_sprint_confirm": "Архивировать {{count}} завершённый(х) элемент(ов) и начать Спринт {{next}}?"
   },
   "add_form": {
     "title": "Новый элемент улучшения",

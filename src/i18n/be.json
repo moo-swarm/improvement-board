@@ -65,7 +65,10 @@
     "export_downloading": "Экспарт…",
     "export_copied": "Захавана!",
     "open_kanban_designer": "Адкрыць у Kanban Designer",
-    "open_kanban_designer_title": "Адкрыць усе элементы ў Kanban Designer (новая ўкладка)"
+    "open_kanban_designer_title": "Адкрыць усе элементы ў Kanban Designer (новая ўкладка)",
+    "sprint_count": "Спрынт {{n}}",
+    "end_sprint": "Завяршыць Спрынт",
+    "end_sprint_confirm": "Архіваваць {{count}} завершаны(х) элемент(аў) і пачаць Спрынт {{next}}?"
   },
   "add_form": {
     "title": "Новы Элемент Паляпшэння",
