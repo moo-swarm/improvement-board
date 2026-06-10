@@ -386,6 +386,9 @@ function ItemCard({
               : `${t('board.due')}: ${formatDueDate(item.dueDate)}`}
           </span>
         )}
+        {(item.comments?.length ?? 0) > 0 && (
+          <span className="text-xs text-slate-400">💬 {item.comments!.length}</span>
+        )}
       </div>
       {expanded && (
         <div className="mt-2 space-y-2">

@@ -29,7 +29,7 @@ Team improvement tracking aligned with Management 3.0 Improvement Dialogues / Co
 - [x] [#12] Feature: item aging indicator for stale improvements
 - [ ] [#13] Integration: Moving Motivators → Improvement Board (motivation health to action items)
 - [x] [#14] Feature: Sprint cycle reset — archive done items with sprint summary
-- [ ] [#15] Feature: item comment thread in Dialogue view (async team notes with timestamps)
+- [x] [#15] Feature: item comment thread in Dialogue view (async team notes with timestamps)
 - [ ] [#16] Feature: PWA offline mode for in-room facilitation
 - [ ] [#17] Integration: Promote improvement item to Change Planner
 - [ ] [#18] Feature: bulk status actions (multi-select cards)
@@ -48,6 +48,12 @@ Team improvement tracking aligned with Management 3.0 Improvement Dialogues / Co
 - Re-run literal-key audit after large copy changes; keep `ru.json` in sync with `en.json`.
 
 ## Agent Log
+
+### 2026-06-10 — feat: item comment thread in Dialogue view (#15)
+- Done: Added `ItemComment` type to `types.ts`; `comments?: ItemComment[]` field on `ImprovementItem`; migration in `loadItems()` (converts old `dialogueNotes` string to a comment on first load); `onAddComment` handler in `App.tsx` appends comments via `updateItems`; `DialogueView.tsx` replaced single textarea with timestamped comment thread + author selector (from members list + item owner/copilot) + textarea + "Add Comment" button (Ctrl/Cmd+Enter submits); `💬 N` badge on item cards in `ImprovementCard.tsx` and `ImprovementBoard.tsx` Kanban cards; i18n keys `dialogue.comment_empty`, `dialogue.comment_placeholder`, `dialogue.comment_add`, `dialogue.comment_author` added to EN/ES/BE/RU
+- Marked issue #15 as In Review
+- Remaining approved issues: #8, #16
+- Next task: check issues for human feedback; implement #8 (team priority voting on improvement items — upvote button on cards, sort by votes, persist in ImprovementItem) if approved, else #16 (PWA offline mode)
 
 ### 2026-06-08 — feat: Sprint cycle reset — archive done items (#14)
 - Done: Added `SprintArchive` type to `types.ts`; `SPRINT_HISTORY_KEY = 'improvement-board:sprintHistory'`, `loadSprintHistory()`, `sprintHistory` state, and `handleEndSprint()` in `App.tsx`; `currentSprint` + `onEndSprint` props wired to both `BoardView` and `ImprovementBoard`; "Sprint N" badge in both view headers; "End Sprint" button (shown only when done items exist) with native confirm in both views; 3 i18n keys (`sprint_count`, `end_sprint`, `end_sprint_confirm`) in EN/ES/BE/RU

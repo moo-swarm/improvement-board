@@ -13,6 +13,13 @@ export interface TeamMember {
   name: string
 }
 
+export interface ItemComment {
+  id: string
+  text: string
+  author: string
+  createdAt: number
+}
+
 export interface ImprovementItem {
   id: string
   title: string
@@ -23,7 +30,10 @@ export interface ImprovementItem {
   copilot: string
   createdAt: number
   updatedAt: number
+  /** @deprecated migrated to comments on load */
   dialogueNotes: string
+  /** Timestamped comment thread for async dialogue notes */
+  comments?: ItemComment[]
   /** Outcome notes when status is done (Kanban view) */
   outcome?: string
   /** Unix timestamp (ms) for optional due date */

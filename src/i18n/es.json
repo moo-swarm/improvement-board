@@ -101,12 +101,16 @@
     "step3": "¿Qué has intentado ya?",
     "step4": "¿Cómo se vería el éxito?",
     "step5": "¿Cuál es el primer pequeño paso que puedes dar?",
-    "notes_label": "Notas",
+    "notes_label": "Notas del Diálogo",
     "notes_placeholder": "Captura los puntos clave del diálogo...",
     "save": "Guardar Notas",
     "saved": "¡Guardado!",
     "guide": "Guía del Diálogo de Mejora",
-    "guide_body": "Un Diálogo de Mejora es una conversación estructurada de 1:1 o en grupo pequeño. El objetivo no es resolver el problema por la persona, sino ayudarla a reflexionar usando preguntas guía. El copiloto pregunta, escucha y refleja — no aconseja."
+    "guide_body": "Un Diálogo de Mejora es una conversación estructurada de 1:1 o en grupo pequeño. El objetivo no es resolver el problema por la persona, sino ayudarla a reflexionar usando preguntas guía. El copiloto pregunta, escucha y refleja — no aconseja.",
+    "comment_empty": "Sin notas aún. Añade el primer comentario.",
+    "comment_placeholder": "Añade una nota al diálogo…",
+    "comment_add": "Añadir Comentario",
+    "comment_author": "Autor"
   },
   "timer": {
     "title": "Tiempo Problema",

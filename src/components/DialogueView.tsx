@@ -1,38 +1,56 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import type { ImprovementItem } from '../types'
+import type { ImprovementItem, TeamMember } from '../types'
 
 const QUESTIONS = ['step1', 'step2', 'step3', 'step4', 'step5'] as const
 
 interface Props {
   items: ImprovementItem[]
+  members: TeamMember[]
   selectedId: string | null
   onSelect: (id: string) => void
-  onSaveNotes: (id: string, notes: string) => void
+  onAddComment: (id: string, text: string, author: string) => void
 }
 
-export default function DialogueView({ items, selectedId, onSelect, onSaveNotes }: Props) {
+function formatTs(ts: number): string {
+  return new Intl.DateTimeFormat(undefined, {
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  }).format(new Date(ts))
+}
+
+export default function DialogueView({ items, members, selectedId, onSelect, onAddComment }: Props) {
   const { t } = useTranslation()
-  const [notes, setNotes] = useState('')
-  const [saved, setSaved] = useState(false)
+  const [commentText, setCommentText] = useState('')
   const [activeQ, setActiveQ] = useState(0)
+  const [authorOverride, setAuthorOverride] = useState<string>('')
 
   const inProgress = items.filter(i => i.status === 'in_progress')
   const selected = inProgress.find(i => i.id === selectedId)
 
   const handleSelect = (id: string) => {
     const item = inProgress.find(i => i.id === id)
-    setNotes(item?.dialogueNotes ?? '')
-    setSaved(false)
+    setCommentText('')
     setActiveQ(0)
+    setAuthorOverride(item?.owner ?? '')
     onSelect(id)
   }
 
-  const handleSave = () => {
-    if (!selected) return
-    onSaveNotes(selected.id, notes)
-    setSaved(true)
-    setTimeout(() => setSaved(false), 2000)
+  const handleAdd = () => {
+    if (!selected || !commentText.trim()) return
+    onAddComment(selected.id, commentText.trim(), authorOverride || selected.owner || 'Unknown')
+    setCommentText('')
+  }
+
+  const effectiveAuthor = authorOverride || selected?.owner || ''
+  const memberOptions = members.length > 0 ? members.map(m => m.name) : []
+  if (selected?.owner && !memberOptions.includes(selected.owner)) {
+    memberOptions.unshift(selected.owner)
+  }
+  if (selected?.copilot && selected.copilot !== selected.owner && !memberOptions.includes(selected.copilot)) {
+    memberOptions.push(selected.copilot)
   }
 
   return (
@@ -57,7 +75,14 @@ export default function DialogueView({ items, selectedId, onSelect, onSaveNotes 
                       : 'border-gray-200 hover:bg-gray-50'
                   }`}
                 >
-                  <div className="font-medium text-sm text-gray-900">{item.title}</div>
+                  <div className="flex items-center justify-between gap-2">
+                    <div className="font-medium text-sm text-gray-900">{item.title}</div>
+                    {(item.comments?.length ?? 0) > 0 && (
+                      <span className="text-xs text-gray-400 shrink-0">
+                        💬 {item.comments!.length}
+                      </span>
+                    )}
+                  </div>
                   {item.copilot && (
                     <div className="text-xs text-gray-400">Copilot: {item.copilot}</div>
                   )}
@@ -100,19 +125,61 @@ export default function DialogueView({ items, selectedId, onSelect, onSaveNotes 
                 </div>
               </div>
 
-              {/* Notes */}
+              {/* Comment thread */}
               <div className="card">
-                <label className="label">{t('dialogue.notes_label')}</label>
-                <textarea
-                  className="input resize-none mb-3"
-                  rows={5}
-                  placeholder={t('dialogue.notes_placeholder')}
-                  value={notes}
-                  onChange={e => setNotes(e.target.value)}
-                />
-                <button onClick={handleSave} className="btn-primary">
-                  {saved ? t('dialogue.saved') : t('dialogue.save')}
-                </button>
+                <h3 className="font-semibold text-gray-800 text-sm mb-3">{t('dialogue.notes_label')}</h3>
+
+                {/* Existing comments */}
+                {(selected.comments?.length ?? 0) === 0 ? (
+                  <p className="text-sm text-gray-400 mb-4">{t('dialogue.comment_empty')}</p>
+                ) : (
+                  <div className="space-y-3 mb-4">
+                    {selected.comments!.map(c => (
+                      <div key={c.id} className="bg-gray-50 rounded-lg px-3 py-2.5">
+                        <div className="flex items-center justify-between mb-1">
+                          <span className="text-xs font-medium text-gray-700">{c.author}</span>
+                          <span className="text-xs text-gray-400">{formatTs(c.createdAt)}</span>
+                        </div>
+                        <p className="text-sm text-gray-700 whitespace-pre-wrap">{c.text}</p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {/* Add comment form */}
+                <div className="border-t border-gray-100 pt-3 space-y-2">
+                  {memberOptions.length > 0 && (
+                    <div className="flex items-center gap-2">
+                      <label className="text-xs text-gray-500 shrink-0">{t('dialogue.comment_author')}:</label>
+                      <select
+                        className="input py-1 text-xs"
+                        value={effectiveAuthor}
+                        onChange={e => setAuthorOverride(e.target.value)}
+                      >
+                        {memberOptions.map(name => (
+                          <option key={name} value={name}>{name}</option>
+                        ))}
+                      </select>
+                    </div>
+                  )}
+                  <textarea
+                    className="input resize-none"
+                    rows={3}
+                    placeholder={t('dialogue.comment_placeholder')}
+                    value={commentText}
+                    onChange={e => setCommentText(e.target.value)}
+                    onKeyDown={e => {
+                      if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) handleAdd()
+                    }}
+                  />
+                  <button
+                    onClick={handleAdd}
+                    disabled={!commentText.trim()}
+                    className="btn-primary disabled:opacity-40 disabled:cursor-not-allowed"
+                  >
+                    {t('dialogue.comment_add')}
+                  </button>
+                </div>
               </div>
             </>
           )}

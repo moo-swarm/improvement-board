@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-import type { Screen, ImprovementItem, TeamMember, SprintArchive } from './types'
+import type { Screen, ImprovementItem, TeamMember, SprintArchive, ItemComment } from './types'
 import BoardView from './components/BoardView'
 import ImprovementBoard from './components/ImprovementBoard'
 import DialogueView from './components/DialogueView'
@@ -13,9 +13,25 @@ const MEMBERS_KEY = 'improvement-board-members'
 const SESSION_KEY = 'improvement-board:lastSession'
 const SPRINT_HISTORY_KEY = 'improvement-board:sprintHistory'
 
+function migrateItems(items: ImprovementItem[]): ImprovementItem[] {
+  return items.map(item => {
+    if (item.dialogueNotes && (!item.comments || item.comments.length === 0)) {
+      const migrated: ItemComment = {
+        id: `migrated-${item.id}`,
+        text: item.dialogueNotes,
+        author: item.owner || 'Unknown',
+        createdAt: item.updatedAt,
+      }
+      return { ...item, comments: [migrated], dialogueNotes: '' }
+    }
+    return item
+  })
+}
+
 function loadItems(): ImprovementItem[] {
   try {
-    return JSON.parse(localStorage.getItem(STORAGE_KEY) ?? '[]')
+    const raw: ImprovementItem[] = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? '[]')
+    return migrateItems(raw)
   } catch {
     return []
   }
@@ -201,11 +217,22 @@ export default function App() {
         {screen === 'dialogue' && (
           <DialogueView
             items={items}
+            members={members}
             selectedId={dialogueId}
             onSelect={setDialogueId}
-            onSaveNotes={(id, notes) =>
-              updateItems(items.map(i => (i.id === id ? { ...i, dialogueNotes: notes } : i)))
-            }
+            onAddComment={(id, text, author) => {
+              const comment: ItemComment = {
+                id: `c-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+                text,
+                author,
+                createdAt: Date.now(),
+              }
+              updateItems(
+                items.map(i =>
+                  i.id === id ? { ...i, comments: [...(i.comments ?? []), comment] } : i
+                )
+              )
+            }}
           />
         )}
         {screen === 'timer' && <ProblemTimer />}

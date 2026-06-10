@@ -101,12 +101,16 @@
     "step3": "What have you already tried?",
     "step4": "What would success look like?",
     "step5": "What's the first small step you can take?",
-    "notes_label": "Notes",
+    "notes_label": "Dialogue Notes",
     "notes_placeholder": "Capture key insights from the dialogue...",
     "save": "Save Notes",
     "saved": "Saved!",
     "guide": "Improvement Dialogue Guide",
-    "guide_body": "An Improvement Dialogue is a structured 1:1 or small-group conversation. The goal is not to solve the problem for the person, but to help them think through it using guiding questions. The copilot asks, listens, and reflects — not advises."
+    "guide_body": "An Improvement Dialogue is a structured 1:1 or small-group conversation. The goal is not to solve the problem for the person, but to help them think through it using guiding questions. The copilot asks, listens, and reflects — not advises.",
+    "comment_empty": "No notes yet. Add the first comment.",
+    "comment_placeholder": "Add a note to the dialogue…",
+    "comment_add": "Add Comment",
+    "comment_author": "Author"
   },
   "timer": {
     "title": "Problem Time",

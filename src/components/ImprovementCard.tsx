@@ -69,16 +69,21 @@ export default function ImprovementCard({ item, onMoveForward, onDelete, onDialo
           </span>
         </div>
       )}
-      <div className="flex gap-2">
-        {onMoveForward && (
-          <button onClick={onMoveForward} className="btn-primary text-xs py-1 px-3">
-            {item.status === 'identified' ? t('board.move_to_progress') : t('board.move_to_done')}
-          </button>
-        )}
-        {onDialogue && item.status === 'in_progress' && (
-          <button onClick={onDialogue} className="btn-secondary text-xs py-1 px-3">
-            {t('board.start_dialogue')}
-          </button>
+      <div className="flex items-center justify-between gap-2">
+        <div className="flex gap-2">
+          {onMoveForward && (
+            <button onClick={onMoveForward} className="btn-primary text-xs py-1 px-3">
+              {item.status === 'identified' ? t('board.move_to_progress') : t('board.move_to_done')}
+            </button>
+          )}
+          {onDialogue && item.status === 'in_progress' && (
+            <button onClick={onDialogue} className="btn-secondary text-xs py-1 px-3">
+              {t('board.start_dialogue')}
+            </button>
+          )}
+        </div>
+        {(item.comments?.length ?? 0) > 0 && (
+          <span className="text-xs text-gray-400 shrink-0">💬 {item.comments!.length}</span>
         )}
       </div>
     </div>
