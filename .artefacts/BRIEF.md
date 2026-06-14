@@ -16,13 +16,14 @@ Team improvement tracking aligned with Management 3.0 Improvement Dialogues / Co
 - [x] Item aging indicator — amber dot (8–21 days inactive), red dot (>21 days), tooltip with day count; "Stale first" sort in Board and Kanban views; i18n keys in EN/ES/BE/RU
 - [x] Export board snapshot as PNG — "Export PNG" button in Board and Kanban view headers; html2canvas capture; clipboard-first with download fallback; `improvement-board-YYYY-MM-DD.png`; busy/done toast state; i18n keys in EN/ES/BE/RU
 - [x] Sprint cycle reset — "End Sprint" button in Board and Kanban views (visible only when done items exist); native confirm dialog; archives done items to `improvement-board:sprintHistory`; clears done column; sprint count badge ("Sprint N") in both view headers; i18n keys in EN/ES/BE/RU
+- [x] Team priority voting — ▲ upvote button on every card in Board and Kanban views; `votes?: number` field on `ImprovementItem`; "Most voted" sort mode in both views; "Reset votes" button (shown when any votes exist, requires confirm); i18n keys `board.vote`, `board.sort_votes`, `board.reset_votes`, `board.reset_votes_confirm` in EN/ES/BE/RU
 
 ## Backlog
 
 <!-- Research issues (`needs-review`) — agent appends after stable research runs -->
 - [x] [#3] Feature: Export board snapshot as PNG for stakeholder reporting
 - [x] [#7] Integration: link Improvement Board items to Kanban Designer
-- [ ] [#8] Feature: team priority voting on improvement items
+- [x] [#8] Feature: team priority voting on improvement items
 - [ ] [#9] Research: keyboard accessibility and ARIA audit for board views
 - [x] [#10] Integration: Dashboard card via improvement-board:lastSession localStorage key
 - [x] [#11] Feature: due dates on improvement items with overdue highlighting
@@ -48,6 +49,12 @@ Team improvement tracking aligned with Management 3.0 Improvement Dialogues / Co
 - Re-run literal-key audit after large copy changes; keep `ru.json` in sync with `en.json`.
 
 ## Agent Log
+
+### 2026-06-14 — feat: team priority voting on improvement items (#8)
+- Done: Added `votes?: number` to `ImprovementItem` in `types.ts`; `handleVote` and `handleResetVotes` in `App.tsx`; ▲ upvote button with vote count on cards in `ImprovementCard.tsx` (Board view) and `ItemCard` in `ImprovementBoard.tsx` (Kanban view); "Most voted" sort mode added to `SortMode` type and `colItems` in both views; "Reset votes" button visible in both view headers when any item has votes (requires window.confirm); i18n keys `board.vote`, `board.sort_votes`, `board.reset_votes`, `board.reset_votes_confirm` in EN/ES/BE/RU
+- Marked issue #8 as In Review
+- Remaining approved issues: #9, #13 (needs-review), #16, #17, #19, #20
+- Next task: check issues for human feedback; implement #16 (PWA offline mode via vite-plugin-pwa) or #17 (Promote to Change Planner deep-link) or #19 (header unification) if ready
 
 ### 2026-06-10 — feat: item comment thread in Dialogue view (#15)
 - Done: Added `ItemComment` type to `types.ts`; `comments?: ItemComment[]` field on `ImprovementItem`; migration in `loadItems()` (converts old `dialogueNotes` string to a comment on first load); `onAddComment` handler in `App.tsx` appends comments via `updateItems`; `DialogueView.tsx` replaced single textarea with timestamped comment thread + author selector (from members list + item owner/copilot) + textarea + "Add Comment" button (Ctrl/Cmd+Enter submits); `💬 N` badge on item cards in `ImprovementCard.tsx` and `ImprovementBoard.tsx` Kanban cards; i18n keys `dialogue.comment_empty`, `dialogue.comment_placeholder`, `dialogue.comment_add`, `dialogue.comment_author` added to EN/ES/BE/RU

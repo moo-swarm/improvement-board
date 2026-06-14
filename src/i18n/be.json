@@ -68,7 +68,11 @@
     "open_kanban_designer_title": "Адкрыць усе элементы ў Kanban Designer (новая ўкладка)",
     "sprint_count": "Спрынт {{n}}",
     "end_sprint": "Завяршыць Спрынт",
-    "end_sprint_confirm": "Архіваваць {{count}} завершаны(х) элемент(аў) і пачаць Спрынт {{next}}?"
+    "end_sprint_confirm": "Архіваваць {{count}} завершаны(х) элемент(аў) і пачаць Спрынт {{next}}?",
+    "vote": "Прагаласаваць за гэты элемент",
+    "sort_votes": "Па галасах",
+    "reset_votes": "Скінуць галасы",
+    "reset_votes_confirm": "Скінуць усе лічыльнікі галасоў да нуля?"
   },
   "add_form": {
     "title": "Новы Элемент Паляпшэння",

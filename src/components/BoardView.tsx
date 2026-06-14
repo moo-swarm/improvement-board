@@ -9,7 +9,7 @@ import { buildKanbanUrl } from '../utils/kanbanLink'
 const COLUMNS: ImprovementStatus[] = ['identified', 'in_progress', 'done']
 const SPRINT_METRICS_URL = 'https://agile-toolkit.github.io/sprint-metrics/'
 
-type SortMode = 'default' | 'due' | 'stale'
+type SortMode = 'default' | 'due' | 'stale' | 'votes'
 
 interface Props {
   items: ImprovementItem[]
@@ -17,13 +17,15 @@ interface Props {
   onUpdate: (item: ImprovementItem) => void
   onDelete: (id: string) => void
   onDialogue: (item: ImprovementItem) => void
+  onVote: (id: string) => void
+  onResetVotes: () => void
   prefillTitle?: string
   fromSprintMetrics?: boolean
   currentSprint: number
   onEndSprint: () => void
 }
 
-export default function BoardView({ items, onAdd, onUpdate, onDelete, onDialogue, prefillTitle, fromSprintMetrics, currentSprint, onEndSprint }: Props) {
+export default function BoardView({ items, onAdd, onUpdate, onDelete, onDialogue, onVote, onResetVotes, prefillTitle, fromSprintMetrics, currentSprint, onEndSprint }: Props) {
   const { t } = useTranslation()
   const [showAdd, setShowAdd] = useState(false)
   const [sortMode, setSortMode] = useState<SortMode>('default')
@@ -74,6 +76,9 @@ export default function BoardView({ items, onAdd, onUpdate, onDelete, onDialogue
     }
     if (sortMode === 'stale') {
       return [...filtered].sort((a, b) => a.updatedAt - b.updatedAt)
+    }
+    if (sortMode === 'votes') {
+      return [...filtered].sort((a, b) => (b.votes ?? 0) - (a.votes ?? 0))
     }
     return filtered
   }
@@ -127,7 +132,25 @@ export default function BoardView({ items, onAdd, onUpdate, onDelete, onDialogue
             >
               {t('board.sort_stale_first')}
             </button>
+            <button
+              onClick={() => setSortMode('votes')}
+              className={`px-3 py-1.5 font-medium transition-colors border-l border-gray-200 ${
+                sortMode === 'votes' ? 'bg-brand-600 text-white' : 'text-gray-600 hover:bg-gray-50'
+              }`}
+            >
+              {t('board.sort_votes')}
+            </button>
           </div>
+          {items.some(i => (i.votes ?? 0) > 0) && (
+            <button
+              onClick={() => {
+                if (window.confirm(t('board.reset_votes_confirm'))) onResetVotes()
+              }}
+              className="btn-secondary text-xs"
+            >
+              {t('board.reset_votes')}
+            </button>
+          )}
           <a
             href={buildKanbanUrl(items)}
             target="_blank"
@@ -197,6 +220,7 @@ export default function BoardView({ items, onAdd, onUpdate, onDelete, onDialogue
                       : undefined
                   }
                   onDialogue={item.status === 'in_progress' ? () => onDialogue(item) : undefined}
+                  onVote={() => onVote(item.id)}
                 />
               ))}
             </div>

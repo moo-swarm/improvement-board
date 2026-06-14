@@ -9,6 +9,8 @@ interface Props {
   items: ImprovementItem[]
   members: TeamMember[]
   onItems: (items: ImprovementItem[]) => void
+  onVote: (id: string) => void
+  onResetVotes: () => void
   currentSprint: number
   onEndSprint: () => void
 }
@@ -30,9 +32,9 @@ const CAT_BADGE: Record<Category, string> = {
   other: 'bg-slate-100 text-slate-600',
 }
 
-type SortMode = 'default' | 'due' | 'stale'
+type SortMode = 'default' | 'due' | 'stale' | 'votes'
 
-export default function ImprovementBoard({ items, members, onItems, currentSprint, onEndSprint }: Props) {
+export default function ImprovementBoard({ items, members, onItems, onVote, onResetVotes, currentSprint, onEndSprint }: Props) {
   const { t } = useTranslation()
   const [adding, setAdding] = useState(false)
   const [sortMode, setSortMode] = useState<SortMode>('default')
@@ -122,6 +124,9 @@ export default function ImprovementBoard({ items, members, onItems, currentSprin
     if (sortMode === 'stale') {
       return [...filtered].sort((a, b) => a.updatedAt - b.updatedAt)
     }
+    if (sortMode === 'votes') {
+      return [...filtered].sort((a, b) => (b.votes ?? 0) - (a.votes ?? 0))
+    }
     return filtered
   }
 
@@ -163,7 +168,27 @@ export default function ImprovementBoard({ items, members, onItems, currentSprin
             >
               {t('board.sort_stale_first')}
             </button>
+            <button
+              type="button"
+              onClick={() => setSortMode('votes')}
+              className={`px-3 py-1.5 font-medium transition-colors border-l border-slate-200 ${
+                sortMode === 'votes' ? 'bg-brand-600 text-white' : 'text-slate-600 hover:bg-slate-50'
+              }`}
+            >
+              {t('board.sort_votes')}
+            </button>
           </div>
+          {items.some(i => (i.votes ?? 0) > 0) && (
+            <button
+              type="button"
+              onClick={() => {
+                if (window.confirm(t('board.reset_votes_confirm'))) onResetVotes()
+              }}
+              className="border border-gray-200 text-gray-600 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors"
+            >
+              {t('board.reset_votes')}
+            </button>
+          )}
           <a
             href={buildKanbanUrl(items)}
             target="_blank"
@@ -299,6 +324,7 @@ export default function ImprovementBoard({ items, members, onItems, currentSprin
                   onMove={moveItem}
                   onDelete={deleteItem}
                   onOutcome={updateOutcome}
+                  onVote={onVote}
                   t={t}
                 />
               ))}
@@ -321,6 +347,7 @@ function ItemCard({
   onMove,
   onDelete,
   onOutcome,
+  onVote,
   t,
 }: {
   item: ImprovementItem
@@ -330,6 +357,7 @@ function ItemCard({
   onMove: (id: string, s: ImprovementStatus) => void
   onDelete: (id: string) => void
   onOutcome: (id: string, o: string) => void
+  onVote: (id: string) => void
   t: (k: string, opts?: Record<string, unknown>) => string
 }) {
   const [expanded, setExpanded] = useState(false)
@@ -389,6 +417,15 @@ function ItemCard({
         {(item.comments?.length ?? 0) > 0 && (
           <span className="text-xs text-slate-400">💬 {item.comments!.length}</span>
         )}
+        <button
+          type="button"
+          onClick={() => onVote(item.id)}
+          title={t('board.vote')}
+          className="flex items-center gap-0.5 text-xs text-slate-400 hover:text-brand-600 transition-colors ml-auto"
+        >
+          <span>▲</span>
+          <span className={item.votes ? 'text-brand-600 font-semibold' : ''}>{item.votes ?? 0}</span>
+        </button>
       </div>
       {expanded && (
         <div className="mt-2 space-y-2">

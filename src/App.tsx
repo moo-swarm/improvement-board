@@ -97,6 +97,14 @@ export default function App() {
     saveSession(items, next)
   }
 
+  const handleVote = (id: string) => {
+    updateItems(items.map(i => i.id === id ? { ...i, votes: (i.votes ?? 0) + 1 } : i))
+  }
+
+  const handleResetVotes = () => {
+    updateItems(items.map(i => ({ ...i, votes: 0 })))
+  }
+
   const handleEndSprint = () => {
     const doneItems = items.filter(i => i.status === 'done')
     if (doneItems.length === 0) return
@@ -191,6 +199,8 @@ export default function App() {
               setDialogueId(item.id)
               setScreen('dialogue')
             }}
+            onVote={handleVote}
+            onResetVotes={handleResetVotes}
             prefillTitle={prefillTitle}
             fromSprintMetrics={fromSprintMetrics}
             currentSprint={sprintHistory.length + 1}
@@ -202,6 +212,8 @@ export default function App() {
             items={items}
             members={members}
             onItems={updateItems}
+            onVote={handleVote}
+            onResetVotes={handleResetVotes}
             currentSprint={sprintHistory.length + 1}
             onEndSprint={handleEndSprint}
           />

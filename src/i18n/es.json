@@ -68,7 +68,11 @@
     "open_kanban_designer_title": "Abrir todos los elementos en Kanban Designer (nueva pestaña)",
     "sprint_count": "Sprint {{n}}",
     "end_sprint": "Finalizar Sprint",
-    "end_sprint_confirm": "¿Archivar {{count}} elemento(s) completado(s) e iniciar Sprint {{next}}?"
+    "end_sprint_confirm": "¿Archivar {{count}} elemento(s) completado(s) e iniciar Sprint {{next}}?",
+    "vote": "Votar por este elemento",
+    "sort_votes": "Más votados",
+    "reset_votes": "Restablecer votos",
+    "reset_votes_confirm": "¿Restablecer todos los conteos de votos a cero?"
   },
   "add_form": {
     "title": "Nuevo Ítem de Mejora",

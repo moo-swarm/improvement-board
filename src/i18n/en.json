@@ -68,7 +68,11 @@
     "open_kanban_designer_title": "Open all items in Kanban Designer (opens in new tab)",
     "sprint_count": "Sprint {{n}}",
     "end_sprint": "End Sprint",
-    "end_sprint_confirm": "Archive {{count}} done item(s) and start Sprint {{next}}?"
+    "end_sprint_confirm": "Archive {{count}} done item(s) and start Sprint {{next}}?",
+    "vote": "Upvote this item",
+    "sort_votes": "Most voted",
+    "reset_votes": "Reset votes",
+    "reset_votes_confirm": "Reset all vote counts to zero?"
   },
   "add_form": {
     "title": "New Improvement Item",

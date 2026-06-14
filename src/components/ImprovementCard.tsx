@@ -15,9 +15,10 @@ interface Props {
   onMoveForward?: () => void
   onDelete: () => void
   onDialogue?: () => void
+  onVote?: () => void
 }
 
-export default function ImprovementCard({ item, onMoveForward, onDelete, onDialogue }: Props) {
+export default function ImprovementCard({ item, onMoveForward, onDelete, onDialogue, onVote }: Props) {
   const { t } = useTranslation()
   const dueDateState = getDueDateState(item.dueDate, item.status === 'done')
   const ageState = getAgeState(item.updatedAt, item.status === 'done')
@@ -82,9 +83,19 @@ export default function ImprovementCard({ item, onMoveForward, onDelete, onDialo
             </button>
           )}
         </div>
-        {(item.comments?.length ?? 0) > 0 && (
-          <span className="text-xs text-gray-400 shrink-0">💬 {item.comments!.length}</span>
-        )}
+        <div className="flex items-center gap-2 shrink-0">
+          {(item.comments?.length ?? 0) > 0 && (
+            <span className="text-xs text-gray-400">💬 {item.comments!.length}</span>
+          )}
+          <button
+            onClick={onVote}
+            title={t('board.vote')}
+            className="flex items-center gap-1 text-xs text-gray-400 hover:text-brand-600 transition-colors"
+          >
+            <span>▲</span>
+            <span className={item.votes ? 'text-brand-600 font-semibold' : ''}>{item.votes ?? 0}</span>
+          </button>
+        </div>
       </div>
     </div>
   )

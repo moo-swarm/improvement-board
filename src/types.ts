@@ -38,4 +38,6 @@ export interface ImprovementItem {
   outcome?: string
   /** Unix timestamp (ms) for optional due date */
   dueDate?: number
+  /** Team upvote count for priority sorting */
+  votes?: number
 }
