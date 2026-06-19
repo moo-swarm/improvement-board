@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { Screen, ImprovementItem, TeamMember, SprintArchive, ItemComment } from './types'
+import AppHeader from './components/AppHeader'
 import BoardView from './components/BoardView'
 import ImprovementBoard from './components/ImprovementBoard'
 import DialogueView from './components/DialogueView'
@@ -74,7 +75,7 @@ function saveSession(items: ImprovementItem[], members: TeamMember[]) {
 }
 
 export default function App() {
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
   const [screen, setScreen] = useState<Screen>('board')
   const [items, setItems] = useState<ImprovementItem[]>(loadItems)
   const [members, setMembers] = useState<TeamMember[]>(loadMembers)
@@ -119,74 +120,20 @@ export default function App() {
     updateItems(items.filter(i => i.status !== 'done'))
   }
 
-  const navItems: { key: Screen; label: string }[] = [
-    { key: 'board', label: t('nav.board') },
-    { key: 'kanban', label: t('nav.kanban') },
-    { key: 'team', label: t('nav.team') },
-    { key: 'dialogue', label: t('nav.dialogue') },
-    { key: 'timer', label: t('nav.timer') },
-    { key: 'learn', label: t('nav.learn') },
-  ]
-
   return (
     <div className="min-h-screen flex flex-col" data-accent="violet">
-      <header className="bg-white border-b border-gray-200 sticky top-0 z-10">
-        <div className="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <a
-              href="https://agile-toolkit.github.io/"
-              title="Agile Toolkit"
-              className="text-gray-400 hover:text-gray-600 transition-colors flex-shrink-0"
-            >
-              <svg className="w-4 h-4" viewBox="0 0 16 16" fill="currentColor">
-                <rect x="1" y="1" width="6" height="6" rx="1"/>
-                <rect x="9" y="1" width="6" height="6" rx="1"/>
-                <rect x="1" y="9" width="6" height="6" rx="1"/>
-                <rect x="9" y="9" width="6" height="6" rx="1"/>
-              </svg>
-            </a>
-            <button
-              type="button"
-              onClick={() => setScreen('board')}
-              className="font-semibold text-brand-600 hover:text-brand-700 transition-colors"
-            >
-              {t('app.title')}
-            </button>
-          </div>
-          <div className="flex items-center gap-1 flex-wrap justify-end">
-            {navItems.map(item => (
-              <button
-                key={item.key}
-                type="button"
-                onClick={() => setScreen(item.key)}
-                className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
-                  screen === item.key
-                    ? 'bg-brand-100 text-brand-700'
-                    : 'text-gray-500 hover:text-gray-700 hover:bg-gray-100'
-                }`}
-              >
-                {item.label}
-              </button>
-            ))}
-            <div className="ml-2 flex items-center gap-0.5">
-              {(['en', 'es', 'be', 'ru'] as const).map(lang => (
-                <button
-                  key={lang}
-                  type="button"
-                  onClick={() => i18n.changeLanguage(lang)}
-                  className={`text-xs px-1.5 py-1 rounded transition-colors ${
-                    i18n.language.startsWith(lang)
-                      ? 'bg-brand-100 text-brand-700 font-semibold'
-                      : 'text-gray-500 hover:text-gray-700 hover:bg-gray-100'
-                  }`}
-                >
-                  {lang.toUpperCase()}
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-      </header>
+      <AppHeader
+        title={t('app.title')}
+        onTitleClick={() => setScreen('board')}
+        navItems={[
+          { key: 'board', label: t('nav.board'), active: screen === 'board', onClick: () => setScreen('board') },
+          { key: 'kanban', label: t('nav.kanban'), active: screen === 'kanban', onClick: () => setScreen('kanban') },
+          { key: 'team', label: t('nav.team'), active: screen === 'team', onClick: () => setScreen('team') },
+          { key: 'dialogue', label: t('nav.dialogue'), active: screen === 'dialogue', onClick: () => setScreen('dialogue') },
+          { key: 'timer', label: t('nav.timer'), active: screen === 'timer', onClick: () => setScreen('timer') },
+          { key: 'learn', label: t('nav.learn'), active: screen === 'learn', onClick: () => setScreen('learn') },
+        ]}
+      />
 
       <main className="flex-1 max-w-5xl mx-auto w-full px-4 py-8">
         {screen === 'board' && (
