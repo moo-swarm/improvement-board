@@ -55,15 +55,15 @@ export default function DialogueView({ items, members, selectedId, onSelect, onA
 
   return (
     <div className="max-w-2xl mx-auto">
-      <h1 className="text-2xl font-bold text-gray-900 mb-6">{t('dialogue.title')}</h1>
+      <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-50 mb-6">{t('dialogue.title')}</h1>
 
       {inProgress.length === 0 ? (
-        <div className="card text-center py-10 text-gray-500">{t('dialogue.none_available')}</div>
+        <div className="card text-center py-10 text-gray-500 dark:text-gray-400">{t('dialogue.none_available')}</div>
       ) : (
         <>
           {/* Item selector */}
           <div className="card mb-6">
-            <p className="text-sm text-gray-600 mb-3">{t('dialogue.select_item')}</p>
+            <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">{t('dialogue.select_item')}</p>
             <div className="space-y-2">
               {inProgress.map(item => (
                 <button
@@ -71,20 +71,20 @@ export default function DialogueView({ items, members, selectedId, onSelect, onA
                   onClick={() => handleSelect(item.id)}
                   className={`w-full text-left px-4 py-3 rounded-xl border transition-colors ${
                     selectedId === item.id
-                      ? 'border-brand-400 bg-brand-50'
-                      : 'border-gray-200 hover:bg-gray-50'
+                      ? 'border-brand-400 bg-brand-50 dark:bg-brand-900/20'
+                      : 'border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800'
                   }`}
                 >
                   <div className="flex items-center justify-between gap-2">
-                    <div className="font-medium text-sm text-gray-900">{item.title}</div>
+                    <div className="font-medium text-sm text-gray-900 dark:text-gray-100">{item.title}</div>
                     {(item.comments?.length ?? 0) > 0 && (
-                      <span className="text-xs text-gray-400 shrink-0">
+                      <span className="text-xs text-gray-400 dark:text-gray-500 shrink-0">
                         💬 {item.comments!.length}
                       </span>
                     )}
                   </div>
                   {item.copilot && (
-                    <div className="text-xs text-gray-400">Copilot: {item.copilot}</div>
+                    <div className="text-xs text-gray-400 dark:text-gray-500">Copilot: {item.copilot}</div>
                   )}
                 </button>
               ))}
@@ -94,9 +94,9 @@ export default function DialogueView({ items, members, selectedId, onSelect, onA
           {selected && (
             <>
               {/* Guide */}
-              <div className="card mb-4 bg-brand-50 border-brand-100">
-                <h3 className="font-semibold text-brand-800 text-sm mb-1">{t('dialogue.guide')}</h3>
-                <p className="text-xs text-brand-700">{t('dialogue.guide_body')}</p>
+              <div className="card mb-4 bg-brand-50 dark:bg-brand-900/20 border-brand-100 dark:border-brand-800">
+                <h3 className="font-semibold text-brand-800 dark:text-brand-300 text-sm mb-1">{t('dialogue.guide')}</h3>
+                <p className="text-xs text-brand-700 dark:text-brand-400">{t('dialogue.guide_body')}</p>
               </div>
 
               {/* Questions */}
@@ -108,15 +108,15 @@ export default function DialogueView({ items, members, selectedId, onSelect, onA
                       onClick={() => setActiveQ(i)}
                       className={`w-full text-left px-4 py-3 rounded-xl border transition-all ${
                         activeQ === i
-                          ? 'border-brand-400 bg-brand-50 shadow-sm'
-                          : 'border-gray-100 hover:bg-gray-50'
+                          ? 'border-brand-400 bg-brand-50 dark:bg-brand-900/20 shadow-sm'
+                          : 'border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800'
                       }`}
                     >
                       <div className="flex items-start gap-3">
-                        <span className={`flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs font-semibold ${activeQ === i ? 'bg-brand-600 text-white' : 'bg-gray-100 text-gray-500'}`}>
+                        <span className={`flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs font-semibold ${activeQ === i ? 'bg-brand-600 text-white' : 'bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400'}`}>
                           {i + 1}
                         </span>
-                        <span className={`text-sm ${activeQ === i ? 'text-brand-800 font-medium' : 'text-gray-600'}`}>
+                        <span className={`text-sm ${activeQ === i ? 'text-brand-800 dark:text-brand-300 font-medium' : 'text-gray-600 dark:text-gray-400'}`}>
                           {t(`dialogue.${q}`)}
                         </span>
                       </div>
@@ -127,30 +127,30 @@ export default function DialogueView({ items, members, selectedId, onSelect, onA
 
               {/* Comment thread */}
               <div className="card">
-                <h3 className="font-semibold text-gray-800 text-sm mb-3">{t('dialogue.notes_label')}</h3>
+                <h3 className="font-semibold text-gray-800 dark:text-gray-200 text-sm mb-3">{t('dialogue.notes_label')}</h3>
 
                 {/* Existing comments */}
                 {(selected.comments?.length ?? 0) === 0 ? (
-                  <p className="text-sm text-gray-400 mb-4">{t('dialogue.comment_empty')}</p>
+                  <p className="text-sm text-gray-400 dark:text-gray-500 mb-4">{t('dialogue.comment_empty')}</p>
                 ) : (
                   <div className="space-y-3 mb-4">
                     {selected.comments!.map(c => (
-                      <div key={c.id} className="bg-gray-50 rounded-lg px-3 py-2.5">
+                      <div key={c.id} className="bg-gray-50 dark:bg-gray-800 rounded-lg px-3 py-2.5">
                         <div className="flex items-center justify-between mb-1">
-                          <span className="text-xs font-medium text-gray-700">{c.author}</span>
-                          <span className="text-xs text-gray-400">{formatTs(c.createdAt)}</span>
+                          <span className="text-xs font-medium text-gray-700 dark:text-gray-300">{c.author}</span>
+                          <span className="text-xs text-gray-400 dark:text-gray-500">{formatTs(c.createdAt)}</span>
                         </div>
-                        <p className="text-sm text-gray-700 whitespace-pre-wrap">{c.text}</p>
+                        <p className="text-sm text-gray-700 dark:text-gray-300 whitespace-pre-wrap">{c.text}</p>
                       </div>
                     ))}
                   </div>
                 )}
 
                 {/* Add comment form */}
-                <div className="border-t border-gray-100 pt-3 space-y-2">
+                <div className="border-t border-gray-100 dark:border-gray-800 pt-3 space-y-2">
                   {memberOptions.length > 0 && (
                     <div className="flex items-center gap-2">
-                      <label className="text-xs text-gray-500 shrink-0">{t('dialogue.comment_author')}:</label>
+                      <label className="text-xs text-gray-500 dark:text-gray-400 shrink-0">{t('dialogue.comment_author')}:</label>
                       <select
                         className="input py-1 text-xs"
                         value={effectiveAuthor}

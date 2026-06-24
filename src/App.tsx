@@ -2,6 +2,7 @@ import { useState, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { Screen, ImprovementItem, TeamMember, SprintArchive, ItemComment } from './types'
 import AppHeader from './components/AppHeader'
+import ThemeToggle from './components/ThemeToggle'
 import BoardView from './components/BoardView'
 import ImprovementBoard from './components/ImprovementBoard'
 import DialogueView from './components/DialogueView'
@@ -125,6 +126,7 @@ export default function App() {
       <AppHeader
         title={t('app.title')}
         onTitleClick={() => setScreen('board')}
+
         navItems={[
           { key: 'board', label: t('nav.board'), active: screen === 'board', onClick: () => setScreen('board') },
           { key: 'kanban', label: t('nav.kanban'), active: screen === 'kanban', onClick: () => setScreen('kanban') },
@@ -133,7 +135,9 @@ export default function App() {
           { key: 'timer', label: t('nav.timer'), active: screen === 'timer', onClick: () => setScreen('timer') },
           { key: 'learn', label: t('nav.learn'), active: screen === 'learn', onClick: () => setScreen('learn') },
         ]}
-      />
+      >
+        <ThemeToggle />
+      </AppHeader>
 
       <main className="flex-1 max-w-5xl mx-auto w-full px-4 py-8">
         {screen === 'board' && (

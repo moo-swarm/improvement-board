@@ -38,10 +38,10 @@ export default function AddItemModal({ onAdd, onClose, initialTitle }: Props) {
   }
 
   return (
-    <div className="fixed inset-0 bg-black/40 flex items-end sm:items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-2xl w-full max-w-md shadow-xl">
+    <div className="fixed inset-0 bg-black/40 dark:bg-black/60 flex items-end sm:items-center justify-center z-50 p-4">
+      <div className="bg-white dark:bg-gray-900 rounded-2xl w-full max-w-md shadow-xl">
         <div className="p-6">
-          <h2 className="font-semibold text-gray-900 mb-4">{t('add_form.title')}</h2>
+          <h2 className="font-semibold text-gray-900 dark:text-gray-50 mb-4">{t('add_form.title')}</h2>
 
           <div className="space-y-3">
             <div>
@@ -76,7 +76,7 @@ export default function AddItemModal({ onAdd, onClose, initialTitle }: Props) {
                     className={`px-3 py-1 rounded-lg text-xs font-medium border transition-colors ${
                       category === c
                         ? 'bg-brand-600 text-white border-brand-600'
-                        : 'border-gray-200 text-gray-600 hover:bg-gray-50'
+                        : 'border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800'
                     }`}
                   >
                     {t(`add_form.categories.${c}`)}
@@ -118,7 +118,7 @@ export default function AddItemModal({ onAdd, onClose, initialTitle }: Props) {
           </div>
         </div>
 
-        <div className="border-t border-gray-100 p-4 flex gap-3 justify-end">
+        <div className="border-t border-gray-100 dark:border-gray-800 p-4 flex gap-3 justify-end">
           <button onClick={onClose} className="btn-secondary">{t('add_form.cancel')}</button>
           <button onClick={handleSubmit} disabled={!title.trim()} className="btn-primary">
             {t('add_form.submit')}

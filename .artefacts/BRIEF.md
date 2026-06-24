@@ -36,6 +36,7 @@ Team improvement tracking aligned with Management 3.0 Improvement Dialogues / Co
 - [ ] [#17] Integration: Promote improvement item to Change Planner
 - [ ] [#18] Feature: bulk status actions (multi-select cards)
 - [x] [#19] Unify header: AppHeader component + LanguagePicker
+- [x] [#20] Feature: light/dark theme support (ThemeToggle + dark: Tailwind variants)
 
 ## localStorage keys
 
@@ -51,6 +52,12 @@ Team improvement tracking aligned with Management 3.0 Improvement Dialogues / Co
 - Re-run literal-key audit after large copy changes; keep `ru.json` in sync with `en.json`.
 
 ## Agent Log
+
+### 2026-06-24 — feat: light/dark theme support (#20)
+- Done: wired `<ThemeToggle />` into `AppHeader` children slot in `App.tsx`; added `dark:` Tailwind variants across all 9 affected components (`AppHeader`, `BoardView`, `ImprovementCard`, `ImprovementBoard`, `AddItemModal`, `DialogueView`, `TeamView`, `LearnView`, `ProblemTimer`, `TimerView`) and global CSS classes (`.card`, `.btn-secondary`, `.btn-ghost`, `.label`, `.input`, `body` in `index.css`); `tailwind.config.js` selector dark mode (`[data-theme="dark"]`) and `index.html` anti-flash script were already in place; build passes
+- Marked issue #20 as In Review
+- Remaining approved issues: #9, #16, #17
+- Next task: check issues for human feedback
 
 ### 2026-06-19 — feat: unified header AppHeader + LanguagePicker (#19)
 - Done: copied `AppHeader.tsx` and `LanguagePicker.tsx` from design system into `src/components/`; replaced inline `<header>` in `App.tsx` with `<AppHeader>` using `navItems` prop (all 6 screen tabs); removed four-button language pill group (LanguagePicker dropdown now embedded in AppHeader); removed `i18n` destructure from `useTranslation` in `App.tsx`; build passes

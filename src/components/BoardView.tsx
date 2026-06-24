@@ -86,7 +86,7 @@ export default function BoardView({ items, onAdd, onUpdate, onDelete, onDialogue
   return (
     <div>
       {fromSprintMetrics && (
-        <div className="mb-4 flex items-center gap-2 text-sm text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
+        <div className="mb-4 flex items-center gap-2 text-sm text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg px-3 py-2">
           <span>📊</span>
           <span>{t('board.from_sprint_metrics')}</span>
           <a
@@ -101,41 +101,41 @@ export default function BoardView({ items, onAdd, onUpdate, onDelete, onDialogue
       )}
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
-          <h1 className="text-2xl font-bold text-gray-900">{t('board.title')}</h1>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-50">{t('board.title')}</h1>
           <span className="text-xs bg-brand-100 text-brand-700 px-2 py-0.5 rounded-full font-medium">
             {t('board.sprint_count', { n: currentSprint })}
           </span>
         </div>
         <div className="flex items-center gap-2">
-          <div className="flex rounded-lg border border-gray-200 overflow-hidden text-xs">
+          <div className="flex rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden text-xs">
             <button
               onClick={() => setSortMode('default')}
               className={`px-3 py-1.5 font-medium transition-colors ${
-                sortMode === 'default' ? 'bg-brand-600 text-white' : 'text-gray-600 hover:bg-gray-50'
+                sortMode === 'default' ? 'bg-brand-600 text-white' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800'
               }`}
             >
               {t('board.sort_default')}
             </button>
             <button
               onClick={() => setSortMode('due')}
-              className={`px-3 py-1.5 font-medium transition-colors border-l border-gray-200 ${
-                sortMode === 'due' ? 'bg-brand-600 text-white' : 'text-gray-600 hover:bg-gray-50'
+              className={`px-3 py-1.5 font-medium transition-colors border-l border-gray-200 dark:border-gray-700 ${
+                sortMode === 'due' ? 'bg-brand-600 text-white' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800'
               }`}
             >
               {t('board.sort_due')}
             </button>
             <button
               onClick={() => setSortMode('stale')}
-              className={`px-3 py-1.5 font-medium transition-colors border-l border-gray-200 ${
-                sortMode === 'stale' ? 'bg-brand-600 text-white' : 'text-gray-600 hover:bg-gray-50'
+              className={`px-3 py-1.5 font-medium transition-colors border-l border-gray-200 dark:border-gray-700 ${
+                sortMode === 'stale' ? 'bg-brand-600 text-white' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800'
               }`}
             >
               {t('board.sort_stale_first')}
             </button>
             <button
               onClick={() => setSortMode('votes')}
-              className={`px-3 py-1.5 font-medium transition-colors border-l border-gray-200 ${
-                sortMode === 'votes' ? 'bg-brand-600 text-white' : 'text-gray-600 hover:bg-gray-50'
+              className={`px-3 py-1.5 font-medium transition-colors border-l border-gray-200 dark:border-gray-700 ${
+                sortMode === 'votes' ? 'bg-brand-600 text-white' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800'
               }`}
             >
               {t('board.sort_votes')}
@@ -191,7 +191,7 @@ export default function BoardView({ items, onAdd, onUpdate, onDelete, onDialogue
       </div>
 
       {items.length === 0 && (
-        <div className="text-center py-16 text-gray-400">
+        <div className="text-center py-16 text-gray-400 dark:text-gray-500">
           <div className="text-5xl mb-4">📋</div>
           <p>{t('board.empty')}</p>
         </div>
@@ -201,10 +201,10 @@ export default function BoardView({ items, onAdd, onUpdate, onDelete, onDialogue
         {COLUMNS.map(col => (
           <div key={col}>
             <div className="flex items-center gap-2 mb-3">
-              <h2 className="font-semibold text-gray-700 text-sm uppercase tracking-wider">
+              <h2 className="font-semibold text-gray-700 dark:text-gray-300 text-sm uppercase tracking-wider">
                 {t(`board.${col}`)}
               </h2>
-              <span className="bg-gray-100 text-gray-500 text-xs px-2 py-0.5 rounded-full">
+              <span className="bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 text-xs px-2 py-0.5 rounded-full">
                 {colItems(col).length}
               </span>
             </div>
@@ -228,7 +228,7 @@ export default function BoardView({ items, onAdd, onUpdate, onDelete, onDialogue
         ))}
       </div>
 
-      <div className="mt-8 pt-4 border-t border-gray-100 flex items-center justify-between text-xs text-gray-400">
+      <div className="mt-8 pt-4 border-t border-gray-100 dark:border-gray-800 flex items-center justify-between text-xs text-gray-400 dark:text-gray-500">
         <span>{t('board.suite_link_label')}</span>
         <a
           href={SPRINT_METRICS_URL}

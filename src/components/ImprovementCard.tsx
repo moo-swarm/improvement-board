@@ -25,7 +25,7 @@ export default function ImprovementCard({ item, onMoveForward, onDelete, onDialo
   const daysOld = ageDaysOld(item.updatedAt)
 
   return (
-    <div className="bg-white rounded-xl border border-gray-200 p-4 shadow-sm">
+    <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 p-4 shadow-sm">
       <div className="flex items-start justify-between gap-2 mb-2">
         <div className="flex items-center gap-1.5 flex-wrap">
           <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${CATEGORY_COLORS[item.category]}`}>
@@ -44,19 +44,19 @@ export default function ImprovementCard({ item, onMoveForward, onDelete, onDialo
             />
           )}
         </div>
-        <button onClick={onDelete} className="text-gray-300 hover:text-red-400 transition-colors text-xs">
+        <button onClick={onDelete} className="text-gray-300 dark:text-gray-600 hover:text-red-400 transition-colors text-xs">
           ✕
         </button>
       </div>
-      <h3 className="font-semibold text-gray-900 text-sm mb-1">{item.title}</h3>
+      <h3 className="font-semibold text-gray-900 dark:text-gray-50 text-sm mb-1">{item.title}</h3>
       {item.description && (
-        <p className="text-xs text-gray-500 mb-2 leading-relaxed">{item.description}</p>
+        <p className="text-xs text-gray-500 dark:text-gray-400 mb-2 leading-relaxed">{item.description}</p>
       )}
-      <div className="text-xs text-gray-400 space-y-0.5 mb-2">
-        <div>{t('board.owner')}: <span className="text-gray-600">{item.owner || '—'}</span></div>
+      <div className="text-xs text-gray-400 dark:text-gray-500 space-y-0.5 mb-2">
+        <div>{t('board.owner')}: <span className="text-gray-600 dark:text-gray-300">{item.owner || '—'}</span></div>
         <div>
           {t('board.copilot')}:{' '}
-          <span className="text-gray-600">{item.copilot || t('board.no_copilot')}</span>
+          <span className="text-gray-600 dark:text-gray-300">{item.copilot || t('board.no_copilot')}</span>
         </div>
       </div>
       {dueDateState !== 'none' && item.dueDate && (
@@ -85,12 +85,12 @@ export default function ImprovementCard({ item, onMoveForward, onDelete, onDialo
         </div>
         <div className="flex items-center gap-2 shrink-0">
           {(item.comments?.length ?? 0) > 0 && (
-            <span className="text-xs text-gray-400">💬 {item.comments!.length}</span>
+            <span className="text-xs text-gray-400 dark:text-gray-500">💬 {item.comments!.length}</span>
           )}
           <button
             onClick={onVote}
             title={t('board.vote')}
-            className="flex items-center gap-1 text-xs text-gray-400 hover:text-brand-600 transition-colors"
+            className="flex items-center gap-1 text-xs text-gray-400 dark:text-gray-500 hover:text-brand-600 transition-colors"
           >
             <span>▲</span>
             <span className={item.votes ? 'text-brand-600 font-semibold' : ''}>{item.votes ?? 0}</span>

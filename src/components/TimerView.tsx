@@ -50,15 +50,15 @@ export default function TimerView() {
 
   return (
     <div className="max-w-2xl mx-auto">
-      <h1 className="text-2xl font-bold text-gray-900 mb-2">{t('timer.title')}</h1>
-      <p className="text-gray-500 text-sm mb-6">{t('timer.description')}</p>
+      <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-50 mb-2">{t('timer.title')}</h1>
+      <p className="text-gray-500 dark:text-gray-400 text-sm mb-6">{t('timer.description')}</p>
 
       {/* Timer */}
       <div className="card text-center mb-6">
         {/* Ring */}
         <div className="relative inline-flex items-center justify-center mb-4">
           <svg className="w-40 h-40 -rotate-90" viewBox="0 0 160 160">
-            <circle cx="80" cy="80" r="70" stroke="#e5e7eb" strokeWidth="10" fill="none" />
+            <circle cx="80" cy="80" r="70" className="stroke-gray-200 dark:stroke-gray-700" strokeWidth="10" fill="none" />
             <circle
               cx="80" cy="80" r="70"
               stroke={done ? '#ef4444' : '#16a34a'}
@@ -69,13 +69,13 @@ export default function TimerView() {
               style={{ transition: 'stroke-dashoffset 1s linear' }}
             />
           </svg>
-          <span className={`absolute text-4xl font-bold tabular-nums ${done ? 'text-red-500' : 'text-gray-900'}`}>
+          <span className={`absolute text-4xl font-bold tabular-nums ${done ? 'text-red-500 dark:text-red-400' : 'text-gray-900 dark:text-gray-50'}`}>
             {mins}:{secs}
           </span>
         </div>
 
         {done && (
-          <p className="text-red-600 font-medium mb-4">{t('timer.done_msg')}</p>
+          <p className="text-red-600 dark:text-red-400 font-medium mb-4">{t('timer.done_msg')}</p>
         )}
 
         {/* Duration selector */}
@@ -88,7 +88,7 @@ export default function TimerView() {
               className={`px-3 py-1 rounded-lg text-sm font-medium border transition-colors ${
                 duration === p
                   ? 'bg-brand-600 text-white border-brand-600'
-                  : 'border-gray-200 text-gray-600 hover:bg-gray-50'
+                  : 'border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800'
               } disabled:opacity-50`}
             >
               {p}m
@@ -118,10 +118,10 @@ export default function TimerView() {
 
       {/* Practice guide */}
       <div className="card">
-        <h2 className="font-semibold text-gray-900 mb-4">{t('timer.practice_title')}</h2>
+        <h2 className="font-semibold text-gray-900 dark:text-gray-50 mb-4">{t('timer.practice_title')}</h2>
         <ol className="space-y-2">
           {steps.map((s, i) => (
-            <li key={s} className="flex gap-3 text-sm text-gray-600">
+            <li key={s} className="flex gap-3 text-sm text-gray-600 dark:text-gray-400">
               <span className="flex-shrink-0 w-5 h-5 bg-brand-100 text-brand-700 rounded-full flex items-center justify-center font-semibold text-xs">
                 {i + 1}
               </span>

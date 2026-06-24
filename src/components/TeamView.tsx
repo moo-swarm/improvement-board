@@ -35,9 +35,9 @@ export default function TeamView({ members, items, onMembers, onItems }: Props) 
 
   return (
     <div className="space-y-6 max-w-2xl mx-auto">
-      <h2 className="text-2xl font-bold text-slate-800">{t('team.title')}</h2>
+      <h2 className="text-2xl font-bold text-slate-800 dark:text-gray-50">{t('team.title')}</h2>
 
-      <div className="bg-brand-50 border border-brand-200 rounded-xl p-4 text-sm text-brand-800">
+      <div className="bg-brand-50 dark:bg-brand-900/20 border border-brand-200 dark:border-brand-800 rounded-xl p-4 text-sm text-brand-800 dark:text-brand-300">
         {t('team.explainer')}
       </div>
 
@@ -48,7 +48,7 @@ export default function TeamView({ members, items, onMembers, onItems }: Props) 
           placeholder={t('team.namePlaceholder')}
           onChange={e => setName(e.target.value)}
           onKeyDown={e => e.key === 'Enter' && addMember()}
-          className="flex-1 border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400"
+          className="flex-1 bg-white dark:bg-gray-900 border border-slate-300 dark:border-gray-700 text-gray-900 dark:text-gray-100 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400"
         />
         <button
           type="button"
@@ -60,18 +60,18 @@ export default function TeamView({ members, items, onMembers, onItems }: Props) 
       </div>
 
       {members.length === 0 ? (
-        <p className="text-slate-400 text-sm italic">{t('team.noMembers')}</p>
+        <p className="text-slate-400 dark:text-gray-500 text-sm italic">{t('team.noMembers')}</p>
       ) : (
-        <div className="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
+        <div className="bg-white dark:bg-gray-900 border border-slate-200 dark:border-gray-700 rounded-xl shadow-sm overflow-hidden">
           {members.map((m, idx) => {
             const activeCopilot = assignedItems.filter(i => i.copilot === m.name)
             return (
               <div
                 key={m.id}
-                className={`flex items-center justify-between px-4 py-3 ${idx > 0 ? 'border-t border-slate-100' : ''}`}
+                className={`flex items-center justify-between px-4 py-3 ${idx > 0 ? 'border-t border-slate-100 dark:border-gray-800' : ''}`}
               >
                 <div>
-                  <span className="font-medium text-slate-800">{m.name}</span>
+                  <span className="font-medium text-slate-800 dark:text-gray-100">{m.name}</span>
                   {activeCopilot.length > 0 && (
                     <span className="ml-2 text-xs text-brand-600">
                       {t('team.copilot_prefix')}{' '}
@@ -83,7 +83,7 @@ export default function TeamView({ members, items, onMembers, onItems }: Props) 
                 <button
                   type="button"
                   onClick={() => removeMember(m.id)}
-                  className="text-slate-300 hover:text-red-400 text-sm transition-colors"
+                  className="text-slate-300 dark:text-gray-600 hover:text-red-400 text-sm transition-colors"
                 >
                   {t('team.remove')}
                 </button>
@@ -95,14 +95,14 @@ export default function TeamView({ members, items, onMembers, onItems }: Props) 
 
       {assignedItems.length > 0 && (
         <div>
-          <h3 className="text-sm font-semibold text-slate-700 mb-2">{t('team.copilotAssignments')}</h3>
+          <h3 className="text-sm font-semibold text-slate-700 dark:text-gray-300 mb-2">{t('team.copilotAssignments')}</h3>
           <div className="space-y-2">
             {assignedItems.map(item => (
               <div
                 key={item.id}
-                className="bg-white border border-slate-200 rounded-lg px-4 py-2 flex items-center justify-between shadow-sm"
+                className="bg-white dark:bg-gray-900 border border-slate-200 dark:border-gray-700 rounded-lg px-4 py-2 flex items-center justify-between shadow-sm"
               >
-                <span className="text-sm text-slate-700">{item.title}</span>
+                <span className="text-sm text-slate-700 dark:text-gray-300">{item.title}</span>
                 <span className="text-xs text-brand-600 font-medium">👤 {item.copilot}</span>
               </div>
             ))}
