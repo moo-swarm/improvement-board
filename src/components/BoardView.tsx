@@ -36,6 +36,18 @@ export default function BoardView({ items, onAdd, onUpdate, onDelete, onDialogue
     if (prefillTitle) setShowAdd(true)
   }, [prefillTitle])
 
+  useEffect(() => {
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key !== 'n' && e.key !== 'N') return
+      const tag = (e.target as HTMLElement).tagName
+      if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return
+      e.preventDefault()
+      setShowAdd(true)
+    }
+    window.addEventListener('keydown', handleKey)
+    return () => window.removeEventListener('keydown', handleKey)
+  }, [])
+
   async function handleExport() {
     if (!boardRef.current || exportState === 'busy') return
     setExportState('busy')
@@ -184,7 +196,7 @@ export default function BoardView({ items, onAdd, onUpdate, onDelete, onDialogue
               {t('board.end_sprint')}
             </button>
           )}
-          <button onClick={() => setShowAdd(true)} className="btn-primary">
+          <button onClick={() => setShowAdd(true)} title={t('board.add_shortcut_hint')} className="btn-primary">
             + {t('board.add')}
           </button>
         </div>

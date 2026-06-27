@@ -379,6 +379,7 @@ function ItemCard({
         <button
           type="button"
           onClick={() => onDelete(item.id)}
+          aria-label={t('board.delete')}
           className="text-slate-300 dark:text-gray-600 hover:text-red-400 text-base leading-none shrink-0"
         >
           ×
@@ -421,6 +422,7 @@ function ItemCard({
           type="button"
           onClick={() => onVote(item.id)}
           title={t('board.vote')}
+          aria-label={t('board.vote')}
           className="flex items-center gap-0.5 text-xs text-slate-400 dark:text-gray-500 hover:text-brand-600 transition-colors ml-auto"
         >
           <span>▲</span>

@@ -72,7 +72,8 @@
     "vote": "Upvote this item",
     "sort_votes": "Most voted",
     "reset_votes": "Reset votes",
-    "reset_votes_confirm": "Reset all vote counts to zero?"
+    "reset_votes_confirm": "Reset all vote counts to zero?",
+    "add_shortcut_hint": "Press N to add a new item"
   },
   "add_form": {
     "title": "New Improvement Item",

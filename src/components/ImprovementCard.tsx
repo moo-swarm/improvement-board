@@ -44,7 +44,7 @@ export default function ImprovementCard({ item, onMoveForward, onDelete, onDialo
             />
           )}
         </div>
-        <button onClick={onDelete} className="text-gray-300 dark:text-gray-600 hover:text-red-400 transition-colors text-xs">
+        <button onClick={onDelete} aria-label={t('board.delete')} className="text-gray-300 dark:text-gray-600 hover:text-red-400 transition-colors text-xs">
           ✕
         </button>
       </div>
@@ -90,6 +90,7 @@ export default function ImprovementCard({ item, onMoveForward, onDelete, onDialo
           <button
             onClick={onVote}
             title={t('board.vote')}
+            aria-label={t('board.vote')}
             className="flex items-center gap-1 text-xs text-gray-400 dark:text-gray-500 hover:text-brand-600 transition-colors"
           >
             <span>▲</span>

@@ -18,6 +18,7 @@ Team improvement tracking aligned with Management 3.0 Improvement Dialogues / Co
 - [x] Sprint cycle reset — "End Sprint" button in Board and Kanban views (visible only when done items exist); native confirm dialog; archives done items to `improvement-board:sprintHistory`; clears done column; sprint count badge ("Sprint N") in both view headers; i18n keys in EN/ES/BE/RU
 - [x] Team priority voting — ▲ upvote button on every card in Board and Kanban views; `votes?: number` field on `ImprovementItem`; "Most voted" sort mode in both views; "Reset votes" button (shown when any votes exist, requires confirm); i18n keys `board.vote`, `board.sort_votes`, `board.reset_votes`, `board.reset_votes_confirm` in EN/ES/BE/RU
 - [x] Unified header — `AppHeader` + `LanguagePicker` from design system replace inline header; nav pills remain in header via `navItems` prop; language dropdown replaces four-button pill group
+- [x] Keyboard accessibility — `AddItemModal` focus trap (Tab/Shift+Tab cycles within modal, Escape closes); `role="dialog"` + `aria-modal="true"` + `aria-labelledby` on modal; `aria-label` on delete (✕) and vote (▲) icon buttons in `ImprovementCard` and `ImprovementBoard`; `N` shortcut in Board view opens Add modal (skips inputs); `aria-pressed` on category toggle buttons; i18n key `board.add_shortcut_hint` in EN/ES/BE/RU
 
 ## Backlog
 
@@ -25,7 +26,7 @@ Team improvement tracking aligned with Management 3.0 Improvement Dialogues / Co
 - [x] [#3] Feature: Export board snapshot as PNG for stakeholder reporting
 - [x] [#7] Integration: link Improvement Board items to Kanban Designer
 - [x] [#8] Feature: team priority voting on improvement items
-- [ ] [#9] Research: keyboard accessibility and ARIA audit for board views
+- [x] [#9] Research: keyboard accessibility and ARIA audit for board views
 - [x] [#10] Integration: Dashboard card via improvement-board:lastSession localStorage key
 - [x] [#11] Feature: due dates on improvement items with overdue highlighting
 - [x] [#12] Feature: item aging indicator for stale improvements
@@ -52,6 +53,12 @@ Team improvement tracking aligned with Management 3.0 Improvement Dialogues / Co
 - Re-run literal-key audit after large copy changes; keep `ru.json` in sync with `en.json`.
 
 ## Agent Log
+
+### 2026-06-27 — feat: keyboard accessibility and ARIA audit (#9)
+- Done: `AddItemModal` focus trap (Tab/Shift+Tab within modal, Escape closes), `role="dialog"` + `aria-modal` + `aria-labelledby`; `aria-pressed` on category toggle buttons; Enter submits from title field; `aria-label` on delete (✕) and vote (▲) icon buttons in `ImprovementCard.tsx` and `ImprovementBoard.tsx`; `N` shortcut in `BoardView` opens Add modal (ignored when focus is in input/textarea/select); `board.add_shortcut_hint` i18n key added to EN/ES/BE/RU
+- Marked issue #9 as In Review
+- Remaining approved issues: #16, #17, and many others (#7, #10–#15, #18 via new list)
+- Next task: implement #16 (PWA offline mode via vite-plugin-pwa — cache-first strategy, manifest with app name + theme-colour brand-600, update banner) or #17 (Promote improvement item to Change Planner — icon button on ImprovementCard, builds URL with ?prefill=<title>&description=<desc>&utm_source=improvement-board, opens new tab)
 
 ### 2026-06-24 — feat: light/dark theme support (#20)
 - Done: wired `<ThemeToggle />` into `AppHeader` children slot in `App.tsx`; added `dark:` Tailwind variants across all 9 affected components (`AppHeader`, `BoardView`, `ImprovementCard`, `ImprovementBoard`, `AddItemModal`, `DialogueView`, `TeamView`, `LearnView`, `ProblemTimer`, `TimerView`) and global CSS classes (`.card`, `.btn-secondary`, `.btn-ghost`, `.label`, `.input`, `body` in `index.css`); `tailwind.config.js` selector dark mode (`[data-theme="dark"]`) and `index.html` anti-flash script were already in place; build passes
