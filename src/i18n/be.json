@@ -73,7 +73,8 @@
     "sort_votes": "Па галасах",
     "reset_votes": "Скінуць галасы",
     "reset_votes_confirm": "Скінуць усе лічыльнікі галасоў да нуля?",
-    "add_shortcut_hint": "Націсніце N для дадання элемента"
+    "add_shortcut_hint": "Націсніце N для дадання элемента",
+    "promote_to_change_planner": "Прасунуць у Change Planner"
   },
   "add_form": {
     "title": "Новы Элемент Паляпшэння",

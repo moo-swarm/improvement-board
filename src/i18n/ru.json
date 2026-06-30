@@ -73,7 +73,8 @@
     "sort_votes": "По голосам",
     "reset_votes": "Сбросить голоса",
     "reset_votes_confirm": "Сбросить все счётчики голосов до нуля?",
-    "add_shortcut_hint": "Нажмите N для добавления элемента"
+    "add_shortcut_hint": "Нажмите N для добавления элемента",
+    "promote_to_change_planner": "Повысить до Change Planner"
   },
   "add_form": {
     "title": "Новый элемент улучшения",

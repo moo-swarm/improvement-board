@@ -34,7 +34,7 @@ Team improvement tracking aligned with Management 3.0 Improvement Dialogues / Co
 - [x] [#14] Feature: Sprint cycle reset — archive done items with sprint summary
 - [x] [#15] Feature: item comment thread in Dialogue view (async team notes with timestamps)
 - [ ] [#16] Feature: PWA offline mode for in-room facilitation
-- [ ] [#17] Integration: Promote improvement item to Change Planner
+- [x] [#17] Integration: Promote improvement item to Change Planner
 - [ ] [#18] Feature: bulk status actions (multi-select cards)
 - [x] [#19] Unify header: AppHeader component + LanguagePicker
 - [x] [#20] Feature: light/dark theme support (ThemeToggle + dark: Tailwind variants)
@@ -53,6 +53,12 @@ Team improvement tracking aligned with Management 3.0 Improvement Dialogues / Co
 - Re-run literal-key audit after large copy changes; keep `ru.json` in sync with `en.json`.
 
 ## Agent Log
+
+### 2026-06-30 — feat: Promote improvement item to Change Planner (#17)
+- Done: `src/utils/changePlannerLink.ts` with `buildChangePlannerUrl()` — builds `https://agile-toolkit.github.io/change-planner/?prefill=<title>&description=<desc>&utm_source=improvement-board`; ↗ icon link added to `ImprovementCard.tsx` (Board view) and `ItemCard` in `ImprovementBoard.tsx` (Kanban view); `board.promote_to_change_planner` i18n key added to EN/ES/BE/RU; Change Planner URL param parsing (#17 receiving side) to be implemented in a change-planner run
+- Marked issue #17 as In Review
+- Remaining approved issues: #16 (PWA offline mode)
+- Next task: implement #16 (PWA offline mode via vite-plugin-pwa — cache-first strategy, manifest with brand-600 theme color, update banner); then research cycle
 
 ### 2026-06-27 — feat: keyboard accessibility and ARIA audit (#9)
 - Done: `AddItemModal` focus trap (Tab/Shift+Tab within modal, Escape closes), `role="dialog"` + `aria-modal` + `aria-labelledby`; `aria-pressed` on category toggle buttons; Enter submits from title field; `aria-label` on delete (✕) and vote (▲) icon buttons in `ImprovementCard.tsx` and `ImprovementBoard.tsx`; `N` shortcut in `BoardView` opens Add modal (ignored when focus is in input/textarea/select); `board.add_shortcut_hint` i18n key added to EN/ES/BE/RU

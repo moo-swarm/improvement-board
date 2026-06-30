@@ -4,6 +4,7 @@ import html2canvas from 'html2canvas'
 import type { ImprovementItem, TeamMember, Category, ImprovementStatus } from '../types'
 import { getDueDateState, dueBadgeClasses, formatDueDate, getAgeState, ageDaysOld } from '../utils/dueDate'
 import { buildKanbanUrl } from '../utils/kanbanLink'
+import { buildChangePlannerUrl } from '../utils/changePlannerLink'
 
 interface Props {
   items: ImprovementItem[]
@@ -418,12 +419,22 @@ function ItemCard({
         {(item.comments?.length ?? 0) > 0 && (
           <span className="text-xs text-slate-400 dark:text-gray-500">💬 {item.comments!.length}</span>
         )}
+        <a
+          href={buildChangePlannerUrl(item)}
+          target="_blank"
+          rel="noopener noreferrer"
+          title={t('board.promote_to_change_planner')}
+          aria-label={t('board.promote_to_change_planner')}
+          className="text-xs text-slate-400 dark:text-gray-500 hover:text-brand-600 transition-colors leading-none ml-auto"
+        >
+          ↗
+        </a>
         <button
           type="button"
           onClick={() => onVote(item.id)}
           title={t('board.vote')}
           aria-label={t('board.vote')}
-          className="flex items-center gap-0.5 text-xs text-slate-400 dark:text-gray-500 hover:text-brand-600 transition-colors ml-auto"
+          className="flex items-center gap-0.5 text-xs text-slate-400 dark:text-gray-500 hover:text-brand-600 transition-colors"
         >
           <span>▲</span>
           <span className={item.votes ? 'text-brand-600 font-semibold' : ''}>{item.votes ?? 0}</span>

@@ -73,7 +73,8 @@
     "sort_votes": "Most voted",
     "reset_votes": "Reset votes",
     "reset_votes_confirm": "Reset all vote counts to zero?",
-    "add_shortcut_hint": "Press N to add a new item"
+    "add_shortcut_hint": "Press N to add a new item",
+    "promote_to_change_planner": "Promote to Change Planner"
   },
   "add_form": {
     "title": "New Improvement Item",

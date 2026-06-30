@@ -73,7 +73,8 @@
     "sort_votes": "Más votados",
     "reset_votes": "Restablecer votos",
     "reset_votes_confirm": "¿Restablecer todos los conteos de votos a cero?",
-    "add_shortcut_hint": "Pulsa N para añadir un elemento"
+    "add_shortcut_hint": "Pulsa N para añadir un elemento",
+    "promote_to_change_planner": "Promover a Change Planner"
   },
   "add_form": {
     "title": "Nuevo Ítem de Mejora",

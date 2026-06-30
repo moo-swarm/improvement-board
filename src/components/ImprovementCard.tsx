@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import type { ImprovementItem } from '../types'
 import { getDueDateState, dueBadgeClasses, formatDueDate, getAgeState, ageDaysOld } from '../utils/dueDate'
+import { buildChangePlannerUrl } from '../utils/changePlannerLink'
 
 const CATEGORY_COLORS: Record<string, string> = {
   process: 'bg-blue-100 text-blue-700',
@@ -87,6 +88,16 @@ export default function ImprovementCard({ item, onMoveForward, onDelete, onDialo
           {(item.comments?.length ?? 0) > 0 && (
             <span className="text-xs text-gray-400 dark:text-gray-500">💬 {item.comments!.length}</span>
           )}
+          <a
+            href={buildChangePlannerUrl(item)}
+            target="_blank"
+            rel="noopener noreferrer"
+            title={t('board.promote_to_change_planner')}
+            aria-label={t('board.promote_to_change_planner')}
+            className="text-xs text-gray-400 dark:text-gray-500 hover:text-brand-600 transition-colors leading-none"
+          >
+            ↗
+          </a>
           <button
             onClick={onVote}
             title={t('board.vote')}
