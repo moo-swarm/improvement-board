@@ -19,6 +19,7 @@ Team improvement tracking aligned with Management 3.0 Improvement Dialogues / Co
 - [x] Team priority voting — ▲ upvote button on every card in Board and Kanban views; `votes?: number` field on `ImprovementItem`; "Most voted" sort mode in both views; "Reset votes" button (shown when any votes exist, requires confirm); i18n keys `board.vote`, `board.sort_votes`, `board.reset_votes`, `board.reset_votes_confirm` in EN/ES/BE/RU
 - [x] Unified header — `AppHeader` + `LanguagePicker` from design system replace inline header; nav pills remain in header via `navItems` prop; language dropdown replaces four-button pill group
 - [x] Keyboard accessibility — `AddItemModal` focus trap (Tab/Shift+Tab cycles within modal, Escape closes); `role="dialog"` + `aria-modal="true"` + `aria-labelledby` on modal; `aria-label` on delete (✕) and vote (▲) icon buttons in `ImprovementCard` and `ImprovementBoard`; `N` shortcut in Board view opens Add modal (skips inputs); `aria-pressed` on category toggle buttons; i18n key `board.add_shortcut_hint` in EN/ES/BE/RU
+- [x] PWA offline mode — `vite-plugin-pwa` cache-first service worker (`registerType: 'autoUpdate'`, precaches JS/CSS/HTML/icons); `manifest.webmanifest` with brand-600 (`#16a34a`) theme colour, standalone display, 192×192/512×512 icons; `UpdateToast` shows a reload prompt via `useRegisterSW` when a new version is cached; i18n keys `app.update_available`, `app.reload` in EN/ES/BE/RU
 
 ## Backlog
 
@@ -33,7 +34,7 @@ Team improvement tracking aligned with Management 3.0 Improvement Dialogues / Co
 - [ ] [#13] Integration: Moving Motivators → Improvement Board (motivation health to action items)
 - [x] [#14] Feature: Sprint cycle reset — archive done items with sprint summary
 - [x] [#15] Feature: item comment thread in Dialogue view (async team notes with timestamps)
-- [ ] [#16] Feature: PWA offline mode for in-room facilitation
+- [x] [#16] Feature: PWA offline mode for in-room facilitation
 - [x] [#17] Integration: Promote improvement item to Change Planner
 - [ ] [#18] Feature: bulk status actions (multi-select cards)
 - [x] [#19] Unify header: AppHeader component + LanguagePicker
@@ -53,6 +54,12 @@ Team improvement tracking aligned with Management 3.0 Improvement Dialogues / Co
 - Re-run literal-key audit after large copy changes; keep `ru.json` in sync with `en.json`.
 
 ## Agent Log
+
+### 2026-07-02 — feat: PWA offline mode for in-room facilitation (#16)
+- Done: installed `vite-plugin-pwa`; `VitePWA({ registerType: 'autoUpdate' })` in `vite.config.ts` with cache-first Workbox precaching (`globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}']`); `manifest.webmanifest` (name/short_name, brand-600 `#16a34a` theme colour, standalone display, scope/start_url) referencing new `public/pwa-192x192.png` / `pwa-512x512.png` icons (generated from the existing favicon design — green rounded square, white ↑ glyph); `src/pwa.d.ts` type reference; `src/components/UpdateToast.tsx` using `useRegisterSW` from `virtual:pwa-register/react` — shows a dismissable-by-reload toast with brand-coloured button when a new service worker is waiting; wired into `App.tsx`; i18n keys `app.update_available`, `app.reload` added to EN/ES/BE/RU; `npm run build` passes and emits `sw.js` + `workbox-*.js` in `dist/`
+- Marked issue #16 as In Review (GitHub Projects v2/GraphQL writes are blocked in this environment — see #38 note in salary-formula BRIEF — so Project board status could not be set; relying on BRIEF + `needs-review`/`approved` labels instead)
+- Remaining: all previously-approved issues (#3, #7–#12, #14, #15, #16, #17, #19, #20) are now implemented and awaiting human "Done" close on the issue/Project board. #13 and #18 remain `needs-review`, both well past the 7-day auto-approve threshold for research/feature findings (created 2026-05-15 / 2026-05-17).
+- Next task: check issues for human feedback; auto-approve #13 (Moving Motivators → Improvement Board integration) and #18 (bulk status actions) — both stale needs-review, well past 7-day threshold — and implement first approved in next run; else research cycle for new findings
 
 ### 2026-06-30 — feat: Promote improvement item to Change Planner (#17)
 - Done: `src/utils/changePlannerLink.ts` with `buildChangePlannerUrl()` — builds `https://agile-toolkit.github.io/change-planner/?prefill=<title>&description=<desc>&utm_source=improvement-board`; ↗ icon link added to `ImprovementCard.tsx` (Board view) and `ItemCard` in `ImprovementBoard.tsx` (Kanban view); `board.promote_to_change_planner` i18n key added to EN/ES/BE/RU; Change Planner URL param parsing (#17 receiving side) to be implemented in a change-planner run

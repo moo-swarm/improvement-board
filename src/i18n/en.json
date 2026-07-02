@@ -1,6 +1,8 @@
 {
   "app": {
-    "title": "Improvement Board"
+    "title": "Improvement Board",
+    "update_available": "Update available",
+    "reload": "Reload"
   },
   "nav": {
     "board": "Board",

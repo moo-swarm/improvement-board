@@ -1,6 +1,8 @@
 {
   "app": {
-    "title": "Tablero de Mejoras"
+    "title": "Tablero de Mejoras",
+    "update_available": "Actualización disponible",
+    "reload": "Recargar"
   },
   "nav": {
     "board": "Tablero",

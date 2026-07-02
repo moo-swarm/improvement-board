@@ -9,6 +9,7 @@ import DialogueView from './components/DialogueView'
 import ProblemTimer from './components/ProblemTimer'
 import TeamView from './components/TeamView'
 import LearnView from './components/LearnView'
+import UpdateToast from './components/UpdateToast'
 
 const STORAGE_KEY = 'improvement-board-items'
 const MEMBERS_KEY = 'improvement-board-members'
@@ -201,6 +202,7 @@ export default function App() {
         {screen === 'timer' && <ProblemTimer />}
         {screen === 'learn' && <LearnView />}
       </main>
+      <UpdateToast />
     </div>
   )
 }
