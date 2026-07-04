@@ -52,6 +52,8 @@
     "start_dialogue": "Диалог",
     "from_sprint_metrics": "Открыто из Sprint Metrics — элемент улучшения предварительно заполнен.",
     "open_sprint_metrics": "Открыть Sprint Metrics",
+    "from_moving_motivators": "Открыто из Moving Motivators — элемент улучшения предварительно заполнен.",
+    "open_moving_motivators": "Открыть Moving Motivators",
     "suite_link_label": "Интеграция набора",
     "due": "Срок",
     "due_today": "Срок сегодня",
@@ -98,7 +100,25 @@
       "people": "Люди",
       "product": "Продукт",
       "other": "Другое"
+    },
+    "import_mm": {
+      "toggle": "Импорт из Moving Motivators",
+      "hint": "Мотиваторы вашей команды с наименьшей оценкой за последнюю сессию. Нажмите на один, чтобы предзаполнить элемент улучшения.",
+      "suggestion_title": "Улучшить «{{motivator}}»",
+      "suggestion_description": "Команда поставила «{{motivator}}» на {{rank}}-е место из 10 в последней сессии Moving Motivators."
     }
+  },
+  "motivators": {
+    "curiosity": "Любознательность",
+    "honor": "Честь",
+    "acceptance": "Принятие",
+    "mastery": "Мастерство",
+    "power": "Власть",
+    "freedom": "Свобода",
+    "relatedness": "Причастность",
+    "order": "Порядок",
+    "goal": "Цель",
+    "status": "Статус"
   },
   "dialogue": {
     "title": "Диалог об улучшении",

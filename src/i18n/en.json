@@ -52,6 +52,8 @@
     "start_dialogue": "Run Dialogue",
     "from_sprint_metrics": "Opened from Sprint Metrics — your improvement item is pre-filled.",
     "open_sprint_metrics": "Open Sprint Metrics",
+    "from_moving_motivators": "Opened from Moving Motivators — your improvement item is pre-filled.",
+    "open_moving_motivators": "Open Moving Motivators",
     "suite_link_label": "Suite integration",
     "due": "Due",
     "due_today": "Due today",
@@ -98,7 +100,25 @@
       "people": "People",
       "product": "Product",
       "other": "Other"
+    },
+    "import_mm": {
+      "toggle": "Import from Moving Motivators",
+      "hint": "Your team's lowest-scoring motivators from the last session. Click one to pre-fill an improvement item.",
+      "suggestion_title": "Improve {{motivator}}",
+      "suggestion_description": "Team ranked {{motivator}} {{rank}} of 10 in the latest Moving Motivators session."
     }
+  },
+  "motivators": {
+    "curiosity": "Curiosity",
+    "honor": "Honor",
+    "acceptance": "Acceptance",
+    "mastery": "Mastery",
+    "power": "Power",
+    "freedom": "Freedom",
+    "relatedness": "Relatedness",
+    "order": "Order",
+    "goal": "Goal",
+    "status": "Status"
   },
   "dialogue": {
     "title": "Improvement Dialogue",

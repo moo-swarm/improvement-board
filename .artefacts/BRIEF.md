@@ -20,6 +20,7 @@ Team improvement tracking aligned with Management 3.0 Improvement Dialogues / Co
 - [x] Unified header — `AppHeader` + `LanguagePicker` from design system replace inline header; nav pills remain in header via `navItems` prop; language dropdown replaces four-button pill group
 - [x] Keyboard accessibility — `AddItemModal` focus trap (Tab/Shift+Tab cycles within modal, Escape closes); `role="dialog"` + `aria-modal="true"` + `aria-labelledby` on modal; `aria-label` on delete (✕) and vote (▲) icon buttons in `ImprovementCard` and `ImprovementBoard`; `N` shortcut in Board view opens Add modal (skips inputs); `aria-pressed` on category toggle buttons; i18n key `board.add_shortcut_hint` in EN/ES/BE/RU
 - [x] PWA offline mode — `vite-plugin-pwa` cache-first service worker (`registerType: 'autoUpdate'`, precaches JS/CSS/HTML/icons); `manifest.webmanifest` with brand-600 (`#16a34a`) theme colour, standalone display, 192×192/512×512 icons; `UpdateToast` shows a reload prompt via `useRegisterSW` when a new version is cached; i18n keys `app.update_available`, `app.reload` in EN/ES/BE/RU
+- [x] Moving Motivators integration — reads `moving-motivators:lastSession` in `AddItemModal`; collapsible "Import from Moving Motivators" section suggests the bottom 3 ranked motivators as one-click item pre-fills; `?prefill=<title>&utm_source=moving-motivators` deep-link support with source banner (mirrors Sprint Metrics pattern); i18n keys in EN/ES/BE/RU
 
 ## Backlog
 
@@ -31,7 +32,7 @@ Team improvement tracking aligned with Management 3.0 Improvement Dialogues / Co
 - [x] [#10] Integration: Dashboard card via improvement-board:lastSession localStorage key
 - [x] [#11] Feature: due dates on improvement items with overdue highlighting
 - [x] [#12] Feature: item aging indicator for stale improvements
-- [ ] [#13] Integration: Moving Motivators → Improvement Board (motivation health to action items)
+- [x] [#13] Integration: Moving Motivators → Improvement Board (motivation health to action items)
 - [x] [#14] Feature: Sprint cycle reset — archive done items with sprint summary
 - [x] [#15] Feature: item comment thread in Dialogue view (async team notes with timestamps)
 - [x] [#16] Feature: PWA offline mode for in-room facilitation
@@ -54,6 +55,12 @@ Team improvement tracking aligned with Management 3.0 Improvement Dialogues / Co
 - Re-run literal-key audit after large copy changes; keep `ru.json` in sync with `en.json`.
 
 ## Agent Log
+
+### 2026-07-04 — feat: Moving Motivators → Improvement Board integration (#13)
+- Done: auto-approved #13 and #18 (both `needs-review`, 48+ days stale, classified as research/UX findings past the 7-day threshold) with an explanatory comment on each; implemented #13 — `src/utils/movingMotivatorsImport.ts` reads `moving-motivators:lastSession` (`{ ranked: MotivatorId[], ... }`) and exposes `bottomMotivators()` (worst-ranked first); `AddItemModal` shows a collapsible "Import from Moving Motivators" section (only when a session exists) listing the bottom 3 motivators as one-click buttons that pre-fill title/description; `App.tsx`/`BoardView.tsx` gained `fromMovingMotivators` (`?utm_source=moving-motivators`) mirroring the existing Sprint Metrics banner pattern; `motivators.*` + `add_form.import_mm.*` + `board.from_moving_motivators`/`open_moving_motivators` i18n keys added to EN/ES/BE/RU; `npm install` was required first (`vite-plugin-pwa` was in `package.json` but missing from `node_modules`, unrelated stale install, no lockfile change)
+- Marked issue #13 as In Review (Projects v2 write blocked in this environment — see prior entries — relying on BRIEF + labels)
+- Remaining: #18 (bulk status actions) now `approved`, ready to implement next; all other approved issues remain awaiting human "Done" close
+- Next task: implement #18 (bulk status actions — "Select items" toggle in Board view header, checkbox per card, sticky bottom action bar with Mark Done/In Progress/Identified/Delete selected, Select all/Deselect all, Escape or toggle exits select mode, i18n keys in EN/ES/BE/RU); else research cycle for new findings
 
 ### 2026-07-02 — feat: PWA offline mode for in-room facilitation (#16)
 - Done: installed `vite-plugin-pwa`; `VitePWA({ registerType: 'autoUpdate' })` in `vite.config.ts` with cache-first Workbox precaching (`globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}']`); `manifest.webmanifest` (name/short_name, brand-600 `#16a34a` theme colour, standalone display, scope/start_url) referencing new `public/pwa-192x192.png` / `pwa-512x512.png` icons (generated from the existing favicon design — green rounded square, white ↑ glyph); `src/pwa.d.ts` type reference; `src/components/UpdateToast.tsx` using `useRegisterSW` from `virtual:pwa-register/react` — shows a dismissable-by-reload toast with brand-coloured button when a new service worker is waiting; wired into `App.tsx`; i18n keys `app.update_available`, `app.reload` added to EN/ES/BE/RU; `npm run build` passes and emits `sw.js` + `workbox-*.js` in `dist/`

@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { ImprovementItem, Category } from '../types'
+import { readMovingMotivatorsSession, bottomMotivators, MOTIVATOR_EMOJI } from '../utils/movingMotivatorsImport'
 
 const CATEGORIES: Category[] = ['process', 'technical', 'people', 'product', 'other']
 
@@ -20,6 +21,8 @@ export default function AddItemModal({ onAdd, onClose, initialTitle }: Props) {
   const [owner, setOwner] = useState('')
   const [copilot, setCopilot] = useState('')
   const [dueDateStr, setDueDateStr] = useState('')
+  const [mmSession] = useState(() => readMovingMotivatorsSession())
+  const [showMmImport, setShowMmImport] = useState(false)
   const dialogRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -61,6 +64,12 @@ export default function AddItemModal({ onAdd, onClose, initialTitle }: Props) {
       dialogueNotes: '',
       dueDate,
     })
+  }
+
+  const applyMmSuggestion = (id: string, rank: number) => {
+    const name = t(`motivators.${id}`)
+    setTitle(t('add_form.import_mm.suggestion_title', { motivator: name }))
+    setDescription(t('add_form.import_mm.suggestion_description', { motivator: name, rank }))
   }
 
   return (
@@ -153,6 +162,37 @@ export default function AddItemModal({ onAdd, onClose, initialTitle }: Props) {
                 onChange={e => setDueDateStr(e.target.value)}
               />
             </div>
+
+            {mmSession && (
+              <div className="rounded-lg border border-gray-200 dark:border-gray-700">
+                <button
+                  type="button"
+                  onClick={() => setShowMmImport(v => !v)}
+                  aria-expanded={showMmImport}
+                  className="w-full flex items-center justify-between px-3 py-2 text-xs font-medium text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg"
+                >
+                  <span>🔄 {t('add_form.import_mm.toggle')}</span>
+                  <span>{showMmImport ? '−' : '+'}</span>
+                </button>
+                {showMmImport && (
+                  <div className="px-3 pb-3 space-y-2">
+                    <p className="text-xs text-gray-500 dark:text-gray-400">{t('add_form.import_mm.hint')}</p>
+                    <div className="flex flex-wrap gap-2">
+                      {bottomMotivators(mmSession, 3).map(({ id, rank }) => (
+                        <button
+                          key={id}
+                          type="button"
+                          onClick={() => applyMmSuggestion(id, rank)}
+                          className="px-3 py-1 rounded-lg text-xs font-medium border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                        >
+                          {MOTIVATOR_EMOJI[id] ?? ''} {t(`motivators.${id}`)}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         </div>
 

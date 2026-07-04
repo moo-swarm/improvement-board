@@ -8,6 +8,7 @@ import { buildKanbanUrl } from '../utils/kanbanLink'
 
 const COLUMNS: ImprovementStatus[] = ['identified', 'in_progress', 'done']
 const SPRINT_METRICS_URL = 'https://agile-toolkit.github.io/sprint-metrics/'
+const MOVING_MOTIVATORS_URL = 'https://agile-toolkit.github.io/moving-motivators/'
 
 type SortMode = 'default' | 'due' | 'stale' | 'votes'
 
@@ -21,11 +22,12 @@ interface Props {
   onResetVotes: () => void
   prefillTitle?: string
   fromSprintMetrics?: boolean
+  fromMovingMotivators?: boolean
   currentSprint: number
   onEndSprint: () => void
 }
 
-export default function BoardView({ items, onAdd, onUpdate, onDelete, onDialogue, onVote, onResetVotes, prefillTitle, fromSprintMetrics, currentSprint, onEndSprint }: Props) {
+export default function BoardView({ items, onAdd, onUpdate, onDelete, onDialogue, onVote, onResetVotes, prefillTitle, fromSprintMetrics, fromMovingMotivators, currentSprint, onEndSprint }: Props) {
   const { t } = useTranslation()
   const [showAdd, setShowAdd] = useState(false)
   const [sortMode, setSortMode] = useState<SortMode>('default')
@@ -108,6 +110,20 @@ export default function BoardView({ items, onAdd, onUpdate, onDelete, onDialogue
             className="ml-auto underline hover:text-amber-900 text-xs"
           >
             {t('board.open_sprint_metrics')}
+          </a>
+        </div>
+      )}
+      {fromMovingMotivators && (
+        <div className="mb-4 flex items-center gap-2 text-sm text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg px-3 py-2">
+          <span>🎯</span>
+          <span>{t('board.from_moving_motivators')}</span>
+          <a
+            href={MOVING_MOTIVATORS_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="ml-auto underline hover:text-amber-900 text-xs"
+          >
+            {t('board.open_moving_motivators')}
           </a>
         </div>
       )}

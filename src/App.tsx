@@ -87,6 +87,7 @@ export default function App() {
   const urlParams = useMemo(() => new URLSearchParams(window.location.search), [])
   const prefillTitle = urlParams.get('prefill') ?? undefined
   const fromSprintMetrics = urlParams.get('utm_source') === 'sprint-metrics'
+  const fromMovingMotivators = urlParams.get('utm_source') === 'moving-motivators'
 
   const updateItems = (updated: ImprovementItem[]) => {
     setItems(updated)
@@ -155,6 +156,7 @@ export default function App() {
             onResetVotes={handleResetVotes}
             prefillTitle={prefillTitle}
             fromSprintMetrics={fromSprintMetrics}
+            fromMovingMotivators={fromMovingMotivators}
             currentSprint={sprintHistory.length + 1}
             onEndSprint={handleEndSprint}
           />

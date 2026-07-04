@@ -52,6 +52,8 @@
     "start_dialogue": "Iniciar Diálogo",
     "from_sprint_metrics": "Abierto desde Sprint Metrics — el elemento de mejora está precompletado.",
     "open_sprint_metrics": "Abrir Sprint Metrics",
+    "from_moving_motivators": "Abierto desde Moving Motivators — el elemento de mejora está precompletado.",
+    "open_moving_motivators": "Abrir Moving Motivators",
     "suite_link_label": "Integración de suite",
     "due": "Vence",
     "due_today": "Vence hoy",
@@ -98,7 +100,25 @@
       "people": "Personas",
       "product": "Producto",
       "other": "Otro"
+    },
+    "import_mm": {
+      "toggle": "Importar desde Moving Motivators",
+      "hint": "Los motivadores con menor puntuación de tu equipo en la última sesión. Haz clic en uno para precompletar un ítem de mejora.",
+      "suggestion_title": "Mejorar {{motivator}}",
+      "suggestion_description": "El equipo clasificó {{motivator}} en el puesto {{rank}} de 10 en la última sesión de Moving Motivators."
     }
+  },
+  "motivators": {
+    "curiosity": "Curiosidad",
+    "honor": "Honor",
+    "acceptance": "Aceptación",
+    "mastery": "Maestría",
+    "power": "Poder",
+    "freedom": "Libertad",
+    "relatedness": "Relaciones",
+    "order": "Orden",
+    "goal": "Meta",
+    "status": "Estatus"
   },
   "dialogue": {
     "title": "Diálogo de Mejora",

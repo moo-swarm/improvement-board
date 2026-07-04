@@ -52,6 +52,8 @@
     "start_dialogue": "Пачаць Дыялог",
     "from_sprint_metrics": "Адкрыта з Sprint Metrics — элемент паляпшэння папярэдне запоўнены.",
     "open_sprint_metrics": "Адкрыць Sprint Metrics",
+    "from_moving_motivators": "Адкрыта з Moving Motivators — элемент паляпшэння папярэдне запоўнены.",
+    "open_moving_motivators": "Адкрыць Moving Motivators",
     "suite_link_label": "Інтэграцыя набору",
     "due": "Тэрмін",
     "due_today": "Тэрмін сёння",
@@ -98,7 +100,25 @@
       "people": "Людзі",
       "product": "Прадукт",
       "other": "Іншае"
+    },
+    "import_mm": {
+      "toggle": "Імпарт з Moving Motivators",
+      "hint": "Матыватары вашай каманды з найніжэйшым балам за апошнюю сесію. Націсніце на адзін, каб папярэдне запоўніць элемент паляпшэння.",
+      "suggestion_title": "Паляпшыць {{motivator}}",
+      "suggestion_description": "Каманда паставіла «{{motivator}}» на {{rank}}-е месца з 10 у апошняй сесіі Moving Motivators."
     }
+  },
+  "motivators": {
+    "curiosity": "Цікаўнасць",
+    "honor": "Гонар",
+    "acceptance": "Прыняцце",
+    "mastery": "Майстэрства",
+    "power": "Улада",
+    "freedom": "Свабода",
+    "relatedness": "Сувязі",
+    "order": "Парадак",
+    "goal": "Мэта",
+    "status": "Статус"
   },
   "dialogue": {
     "title": "Дыялог Паляпшэння",
