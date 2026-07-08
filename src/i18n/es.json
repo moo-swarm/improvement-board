@@ -78,7 +78,17 @@
     "reset_votes": "Restablecer votos",
     "reset_votes_confirm": "¿Restablecer todos los conteos de votos a cero?",
     "add_shortcut_hint": "Pulsa N para añadir un elemento",
-    "promote_to_change_planner": "Promover a Change Planner"
+    "promote_to_change_planner": "Promover a Change Planner",
+    "select_items": "Seleccionar elementos",
+    "select_item": "Seleccionar elemento",
+    "selected_count": "{{count}} seleccionado(s)",
+    "select_all": "Seleccionar todo",
+    "deselect_all": "Deseleccionar todo",
+    "mark_identified": "Marcar Identificado",
+    "mark_in_progress": "Marcar En Progreso",
+    "mark_done": "Marcar Hecho",
+    "delete_selected": "Eliminar seleccionados",
+    "delete_selected_confirm": "¿Eliminar {{count}} elemento(s) seleccionado(s)?"
   },
   "add_form": {
     "title": "Nuevo Ítem de Mejora",

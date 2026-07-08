@@ -17,18 +17,30 @@ interface Props {
   onDelete: () => void
   onDialogue?: () => void
   onVote?: () => void
+  selectMode?: boolean
+  selected?: boolean
+  onToggleSelect?: () => void
 }
 
-export default function ImprovementCard({ item, onMoveForward, onDelete, onDialogue, onVote }: Props) {
+export default function ImprovementCard({ item, onMoveForward, onDelete, onDialogue, onVote, selectMode, selected, onToggleSelect }: Props) {
   const { t } = useTranslation()
   const dueDateState = getDueDateState(item.dueDate, item.status === 'done')
   const ageState = getAgeState(item.updatedAt, item.status === 'done')
   const daysOld = ageDaysOld(item.updatedAt)
 
   return (
-    <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 p-4 shadow-sm">
+    <div className={`bg-white dark:bg-gray-900 rounded-xl border p-4 shadow-sm ${selected ? 'border-brand-500 ring-1 ring-brand-500' : 'border-gray-200 dark:border-gray-700'}`}>
       <div className="flex items-start justify-between gap-2 mb-2">
         <div className="flex items-center gap-1.5 flex-wrap">
+          {selectMode && (
+            <input
+              type="checkbox"
+              checked={!!selected}
+              onChange={onToggleSelect}
+              aria-label={t('board.select_item')}
+              className="mr-0.5 shrink-0"
+            />
+          )}
           <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${CATEGORY_COLORS[item.category]}`}>
             {t(`add_form.categories.${item.category}`)}
           </span>

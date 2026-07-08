@@ -20,6 +20,8 @@ interface Props {
   onDialogue: (item: ImprovementItem) => void
   onVote: (id: string) => void
   onResetVotes: () => void
+  onBulkStatus: (ids: string[], status: ImprovementStatus) => void
+  onBulkDelete: (ids: string[]) => void
   prefillTitle?: string
   fromSprintMetrics?: boolean
   fromMovingMotivators?: boolean
@@ -27,11 +29,13 @@ interface Props {
   onEndSprint: () => void
 }
 
-export default function BoardView({ items, onAdd, onUpdate, onDelete, onDialogue, onVote, onResetVotes, prefillTitle, fromSprintMetrics, fromMovingMotivators, currentSprint, onEndSprint }: Props) {
+export default function BoardView({ items, onAdd, onUpdate, onDelete, onDialogue, onVote, onResetVotes, onBulkStatus, onBulkDelete, prefillTitle, fromSprintMetrics, fromMovingMotivators, currentSprint, onEndSprint }: Props) {
   const { t } = useTranslation()
   const [showAdd, setShowAdd] = useState(false)
   const [sortMode, setSortMode] = useState<SortMode>('default')
   const [exportState, setExportState] = useState<'idle' | 'busy' | 'done'>('idle')
+  const [selectMode, setSelectMode] = useState(false)
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set())
   const boardRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -40,6 +44,11 @@ export default function BoardView({ items, onAdd, onUpdate, onDelete, onDialogue
 
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && selectMode) {
+        setSelectMode(false)
+        setSelectedIds(new Set())
+        return
+      }
       if (e.key !== 'n' && e.key !== 'N') return
       const tag = (e.target as HTMLElement).tagName
       if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return
@@ -48,7 +57,36 @@ export default function BoardView({ items, onAdd, onUpdate, onDelete, onDialogue
     }
     window.addEventListener('keydown', handleKey)
     return () => window.removeEventListener('keydown', handleKey)
-  }, [])
+  }, [selectMode])
+
+  const toggleSelectMode = () => {
+    setSelectMode(prev => !prev)
+    setSelectedIds(new Set())
+  }
+
+  const toggleSelectItem = (id: string) => {
+    setSelectedIds(prev => {
+      const next = new Set(prev)
+      if (next.has(id)) next.delete(id)
+      else next.add(id)
+      return next
+    })
+  }
+
+  const handleSelectAll = () => setSelectedIds(new Set(items.map(i => i.id)))
+  const handleDeselectAll = () => setSelectedIds(new Set())
+
+  const handleBulkMark = (status: ImprovementStatus) => {
+    onBulkStatus(Array.from(selectedIds), status)
+    setSelectedIds(new Set())
+  }
+
+  const handleBulkDeleteClick = () => {
+    if (window.confirm(t('board.delete_selected_confirm', { count: selectedIds.size }))) {
+      onBulkDelete(Array.from(selectedIds))
+      setSelectedIds(new Set())
+    }
+  }
 
   async function handleExport() {
     if (!boardRef.current || exportState === 'busy') return
@@ -98,7 +136,7 @@ export default function BoardView({ items, onAdd, onUpdate, onDelete, onDialogue
   }
 
   return (
-    <div>
+    <div className={selectMode && selectedIds.size > 0 ? 'pb-20' : undefined}>
       {fromSprintMetrics && (
         <div className="mb-4 flex items-center gap-2 text-sm text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg px-3 py-2">
           <span>📊</span>
@@ -212,6 +250,13 @@ export default function BoardView({ items, onAdd, onUpdate, onDelete, onDialogue
               {t('board.end_sprint')}
             </button>
           )}
+          <button
+            onClick={toggleSelectMode}
+            aria-pressed={selectMode}
+            className={`btn-secondary text-xs ${selectMode ? 'bg-brand-600 text-white' : ''}`}
+          >
+            ☑ {t('board.select_items')}
+          </button>
           <button onClick={() => setShowAdd(true)} title={t('board.add_shortcut_hint')} className="btn-primary">
             + {t('board.add')}
           </button>
@@ -249,6 +294,9 @@ export default function BoardView({ items, onAdd, onUpdate, onDelete, onDialogue
                   }
                   onDialogue={item.status === 'in_progress' ? () => onDialogue(item) : undefined}
                   onVote={() => onVote(item.id)}
+                  selectMode={selectMode}
+                  selected={selectedIds.has(item.id)}
+                  onToggleSelect={() => toggleSelectItem(item.id)}
                 />
               ))}
             </div>
@@ -274,6 +322,26 @@ export default function BoardView({ items, onAdd, onUpdate, onDelete, onDialogue
           onClose={() => setShowAdd(false)}
           initialTitle={prefillTitle}
         />
+      )}
+
+      {selectMode && selectedIds.size > 0 && (
+        <div className="fixed bottom-0 left-0 right-0 z-20 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 shadow-lg px-4 py-3">
+          <div className="max-w-5xl mx-auto flex items-center gap-2 flex-wrap justify-center sm:justify-between">
+            <span className="text-sm text-gray-600 dark:text-gray-300 font-medium">
+              {t('board.selected_count', { count: selectedIds.size })}
+            </span>
+            <div className="flex items-center gap-2 flex-wrap justify-center">
+              <button onClick={handleSelectAll} className="btn-secondary text-xs">{t('board.select_all')}</button>
+              <button onClick={handleDeselectAll} className="btn-secondary text-xs">{t('board.deselect_all')}</button>
+              <button onClick={() => handleBulkMark('identified')} className="btn-secondary text-xs">{t('board.mark_identified')}</button>
+              <button onClick={() => handleBulkMark('in_progress')} className="btn-secondary text-xs">{t('board.mark_in_progress')}</button>
+              <button onClick={() => handleBulkMark('done')} className="btn-secondary text-xs">{t('board.mark_done')}</button>
+              <button onClick={handleBulkDeleteClick} className="btn-secondary text-xs text-red-600 dark:text-red-400">
+                {t('board.delete_selected')}
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   )

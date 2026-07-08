@@ -21,6 +21,7 @@ Team improvement tracking aligned with Management 3.0 Improvement Dialogues / Co
 - [x] Keyboard accessibility — `AddItemModal` focus trap (Tab/Shift+Tab cycles within modal, Escape closes); `role="dialog"` + `aria-modal="true"` + `aria-labelledby` on modal; `aria-label` on delete (✕) and vote (▲) icon buttons in `ImprovementCard` and `ImprovementBoard`; `N` shortcut in Board view opens Add modal (skips inputs); `aria-pressed` on category toggle buttons; i18n key `board.add_shortcut_hint` in EN/ES/BE/RU
 - [x] PWA offline mode — `vite-plugin-pwa` cache-first service worker (`registerType: 'autoUpdate'`, precaches JS/CSS/HTML/icons); `manifest.webmanifest` with brand-600 (`#16a34a`) theme colour, standalone display, 192×192/512×512 icons; `UpdateToast` shows a reload prompt via `useRegisterSW` when a new version is cached; i18n keys `app.update_available`, `app.reload` in EN/ES/BE/RU
 - [x] Moving Motivators integration — reads `moving-motivators:lastSession` in `AddItemModal`; collapsible "Import from Moving Motivators" section suggests the bottom 3 ranked motivators as one-click item pre-fills; `?prefill=<title>&utm_source=moving-motivators` deep-link support with source banner (mirrors Sprint Metrics pattern); i18n keys in EN/ES/BE/RU
+- [x] Bulk status actions — "Select items" toggle in Board view header; checkbox per card in select mode (`ImprovementCard` `selectMode`/`selected`/`onToggleSelect` props); sticky bottom action bar (Mark Done/In Progress/Identified, Delete selected with confirm, Select all/Deselect all) shown when ≥1 item selected; Escape or re-clicking the toggle exits select mode and clears selection; all changes routed through existing `updateItems()` batch path via new `onBulkStatus`/`onBulkDelete` handlers in `App.tsx`; i18n keys in EN/ES/BE/RU
 
 ## Backlog
 
@@ -37,7 +38,7 @@ Team improvement tracking aligned with Management 3.0 Improvement Dialogues / Co
 - [x] [#15] Feature: item comment thread in Dialogue view (async team notes with timestamps)
 - [x] [#16] Feature: PWA offline mode for in-room facilitation
 - [x] [#17] Integration: Promote improvement item to Change Planner
-- [ ] [#18] Feature: bulk status actions (multi-select cards)
+- [x] [#18] Feature: bulk status actions (multi-select cards)
 - [x] [#19] Unify header: AppHeader component + LanguagePicker
 - [x] [#20] Feature: light/dark theme support (ThemeToggle + dark: Tailwind variants)
 
@@ -55,6 +56,12 @@ Team improvement tracking aligned with Management 3.0 Improvement Dialogues / Co
 - Re-run literal-key audit after large copy changes; keep `ru.json` in sync with `en.json`.
 
 ## Agent Log
+
+### 2026-07-08 — feat: bulk status actions in Board view (#18)
+- Done: `App.tsx` gained `handleBulkStatus(ids, status)` / `handleBulkDelete(ids)`, both routed through the existing `updateItems()` batch path (same as every other mutation); `BoardView.tsx` gained `selectMode`/`selectedIds` state, a "Select items" toggle button in the header (checkbox icon + text, `aria-pressed`), Escape-to-exit (extends the existing keydown handler alongside the `N` shortcut), Select all/Deselect all, and a sticky `fixed bottom-0` action bar (Mark Done/Mark In Progress/Mark Identified/Delete selected) shown only when ≥1 item is selected — board container gets `pb-20` while the bar is visible so it doesn't cover the last row of cards; `ImprovementCard.tsx` gained optional `selectMode`/`selected`/`onToggleSelect` props rendering a checkbox at the top-left of the card (selected cards get a brand-colored ring); "Delete selected" uses a simple `window.confirm` (same pattern as existing "Reset votes"/"End Sprint" actions), not a type-to-confirm modal — one of the issue's open questions, resolved by precedent; scoped to Board (list) view only per the issue's primary proposal (Kanban view was the issue's other open question, left for a future issue if requested); 10 new i18n keys (`board.select_items`, `select_item`, `selected_count`, `select_all`, `deselect_all`, `mark_identified`, `mark_in_progress`, `mark_done`, `delete_selected`, `delete_selected_confirm`) added to EN/ES/BE/RU; verified end-to-end with Playwright (toggle → checkboxes appear → select → action bar shows count → Mark Done updates status → Delete selected prompts confirm and removes items → Escape exits select mode); `npm run build` passes
+- Marked issue #18 as In Review (Projects v2 Status field cannot be set in this session — see prior entries — relying on BRIEF + labels)
+- Remaining: all previously-approved issues (#3, #7–#20) are now implemented, awaiting human "Done" close on the issue/Project board — none left unimplemented
+- Next task: check issues for human feedback; no unimplemented approved issues remain; run a research cycle for new findings (market/technical/integration/UX) next, max 3 new issues
 
 ### 2026-07-04 — feat: Moving Motivators → Improvement Board integration (#13)
 - Done: auto-approved #13 and #18 (both `needs-review`, 48+ days stale, classified as research/UX findings past the 7-day threshold) with an explanatory comment on each; implemented #13 — `src/utils/movingMotivatorsImport.ts` reads `moving-motivators:lastSession` (`{ ranked: MotivatorId[], ... }`) and exposes `bottomMotivators()` (worst-ranked first); `AddItemModal` shows a collapsible "Import from Moving Motivators" section (only when a session exists) listing the bottom 3 motivators as one-click buttons that pre-fill title/description; `App.tsx`/`BoardView.tsx` gained `fromMovingMotivators` (`?utm_source=moving-motivators`) mirroring the existing Sprint Metrics banner pattern; `motivators.*` + `add_form.import_mm.*` + `board.from_moving_motivators`/`open_moving_motivators` i18n keys added to EN/ES/BE/RU; `npm install` was required first (`vite-plugin-pwa` was in `package.json` but missing from `node_modules`, unrelated stale install, no lockfile change)

@@ -78,7 +78,17 @@
     "reset_votes": "Скінуць галасы",
     "reset_votes_confirm": "Скінуць усе лічыльнікі галасоў да нуля?",
     "add_shortcut_hint": "Націсніце N для дадання элемента",
-    "promote_to_change_planner": "Прасунуць у Change Planner"
+    "promote_to_change_planner": "Прасунуць у Change Planner",
+    "select_items": "Абраць элементы",
+    "select_item": "Абраць элемент",
+    "selected_count": "{{count}} абрана",
+    "select_all": "Абраць усе",
+    "deselect_all": "Зняць выбар",
+    "mark_identified": "Пазначыць Выяўлена",
+    "mark_in_progress": "Пазначыць У Працэсе",
+    "mark_done": "Пазначыць Гатова",
+    "delete_selected": "Выдаліць абраныя",
+    "delete_selected_confirm": "Выдаліць {{count}} абраны(х) элемент(аў)?"
   },
   "add_form": {
     "title": "Новы Элемент Паляпшэння",

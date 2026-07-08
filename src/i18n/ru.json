@@ -78,7 +78,17 @@
     "reset_votes": "Сбросить голоса",
     "reset_votes_confirm": "Сбросить все счётчики голосов до нуля?",
     "add_shortcut_hint": "Нажмите N для добавления элемента",
-    "promote_to_change_planner": "Повысить до Change Planner"
+    "promote_to_change_planner": "Повысить до Change Planner",
+    "select_items": "Выбрать элементы",
+    "select_item": "Выбрать элемент",
+    "selected_count": "{{count}} выбрано",
+    "select_all": "Выбрать все",
+    "deselect_all": "Снять выбор",
+    "mark_identified": "Отметить Выявлено",
+    "mark_in_progress": "Отметить В работе",
+    "mark_done": "Отметить Выполнено",
+    "delete_selected": "Удалить выбранные",
+    "delete_selected_confirm": "Удалить {{count}} выбранный(х) элемент(ов)?"
   },
   "add_form": {
     "title": "Новый элемент улучшения",

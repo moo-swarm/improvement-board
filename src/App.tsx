@@ -109,6 +109,16 @@ export default function App() {
     updateItems(items.map(i => ({ ...i, votes: 0 })))
   }
 
+  const handleBulkStatus = (ids: string[], status: ImprovementItem['status']) => {
+    const idSet = new Set(ids)
+    updateItems(items.map(i => (idSet.has(i.id) ? { ...i, status, updatedAt: Date.now() } : i)))
+  }
+
+  const handleBulkDelete = (ids: string[]) => {
+    const idSet = new Set(ids)
+    updateItems(items.filter(i => !idSet.has(i.id)))
+  }
+
   const handleEndSprint = () => {
     const doneItems = items.filter(i => i.status === 'done')
     if (doneItems.length === 0) return
@@ -154,6 +164,8 @@ export default function App() {
             }}
             onVote={handleVote}
             onResetVotes={handleResetVotes}
+            onBulkStatus={handleBulkStatus}
+            onBulkDelete={handleBulkDelete}
             prefillTitle={prefillTitle}
             fromSprintMetrics={fromSprintMetrics}
             fromMovingMotivators={fromMovingMotivators}

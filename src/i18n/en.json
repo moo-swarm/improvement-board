@@ -78,7 +78,17 @@
     "reset_votes": "Reset votes",
     "reset_votes_confirm": "Reset all vote counts to zero?",
     "add_shortcut_hint": "Press N to add a new item",
-    "promote_to_change_planner": "Promote to Change Planner"
+    "promote_to_change_planner": "Promote to Change Planner",
+    "select_items": "Select items",
+    "select_item": "Select item",
+    "selected_count": "{{count}} selected",
+    "select_all": "Select all",
+    "deselect_all": "Deselect all",
+    "mark_identified": "Mark Identified",
+    "mark_in_progress": "Mark In Progress",
+    "mark_done": "Mark Done",
+    "delete_selected": "Delete selected",
+    "delete_selected_confirm": "Delete {{count}} selected item(s)?"
   },
   "add_form": {
     "title": "New Improvement Item",
