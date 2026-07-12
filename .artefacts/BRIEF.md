@@ -26,6 +26,9 @@ Team improvement tracking aligned with Management 3.0 Improvement Dialogues / Co
 ## Backlog
 
 <!-- Research issues (`needs-review`) — agent appends after stable research runs -->
+- [ ] [#37] Feature: sprint history analytics tab (improvement velocity over time)
+- [ ] [#38] Integration: Scrum Facilitator → Improvement Board (import retro action items)
+- [ ] [#39] Feature: custom labels/tags on improvement items for cross-cutting themes
 - [x] [#3] Feature: Export board snapshot as PNG for stakeholder reporting
 - [x] [#7] Integration: link Improvement Board items to Kanban Designer
 - [x] [#8] Feature: team priority voting on improvement items
@@ -56,6 +59,11 @@ Team improvement tracking aligned with Management 3.0 Improvement Dialogues / Co
 - Re-run literal-key audit after large copy changes; keep `ru.json` in sync with `en.json`.
 
 ## Agent Log
+
+### 2026-07-12 — research: sprint history analytics + Scrum Facilitator integration + custom tags
+- Done: confirmed all 10 open `approved` issues (#3,#7,#8,#9,#10,#11,#12,#15,#17,#19) are already fully implemented in source — cross-checked against App.tsx/types.ts/components; created 3 new `needs-review` issues: #37 (sprint history analytics tab using existing `improvement-board:sprintHistory` key, pure-SVG bar chart, no new deps), #38 (Scrum Facilitator → IB retro action item import, same pattern as existing Moving Motivators import), #39 (custom labels/tags on ImprovementItem, tag filter bar in Board/Kanban views); all 3 added to Backlog in BRIEF.md
+- Remaining: open issues #3,#7-#12,#15,#17,#19 all implemented, awaiting human Done close; #37/#38/#39 awaiting review (7-day auto-approve threshold 2026-07-19)
+- Next task: check issues for human feedback; implement first approved in issue-number order (#37 sprint history analytics next if approved — new HistoryView.tsx with SVG bar chart, 'history' Screen value, nav.history i18n key, reads `improvement-board:sprintHistory`)
 
 ### 2026-07-08 — feat: bulk status actions in Board view (#18)
 - Done: `App.tsx` gained `handleBulkStatus(ids, status)` / `handleBulkDelete(ids)`, both routed through the existing `updateItems()` batch path (same as every other mutation); `BoardView.tsx` gained `selectMode`/`selectedIds` state, a "Select items" toggle button in the header (checkbox icon + text, `aria-pressed`), Escape-to-exit (extends the existing keydown handler alongside the `N` shortcut), Select all/Deselect all, and a sticky `fixed bottom-0` action bar (Mark Done/Mark In Progress/Mark Identified/Delete selected) shown only when ≥1 item is selected — board container gets `pb-20` while the bar is visible so it doesn't cover the last row of cards; `ImprovementCard.tsx` gained optional `selectMode`/`selected`/`onToggleSelect` props rendering a checkbox at the top-left of the card (selected cards get a brand-colored ring); "Delete selected" uses a simple `window.confirm` (same pattern as existing "Reset votes"/"End Sprint" actions), not a type-to-confirm modal — one of the issue's open questions, resolved by precedent; scoped to Board (list) view only per the issue's primary proposal (Kanban view was the issue's other open question, left for a future issue if requested); 10 new i18n keys (`board.select_items`, `select_item`, `selected_count`, `select_all`, `deselect_all`, `mark_identified`, `mark_in_progress`, `mark_done`, `delete_selected`, `delete_selected_confirm`) added to EN/ES/BE/RU; verified end-to-end with Playwright (toggle → checkboxes appear → select → action bar shows count → Mark Done updates status → Delete selected prompts confirm and removes items → Escape exits select mode); `npm run build` passes
