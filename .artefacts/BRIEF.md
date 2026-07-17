@@ -26,6 +26,9 @@ Team improvement tracking aligned with Management 3.0 Improvement Dialogues / Co
 ## Backlog
 
 <!-- Research issues (`needs-review`) — agent appends after stable research runs -->
+- [ ] [#40] Integration: Planning Poker → Improvement Board effort estimation deep-link
+- [ ] [#41] Feature: CSV/text export of all improvement items for management reporting
+- [ ] [#42] UX: Inline quick-edit of item title in Board and Kanban views
 - [ ] [#37] Feature: sprint history analytics tab (improvement velocity over time)
 - [ ] [#38] Integration: Scrum Facilitator → Improvement Board (import retro action items)
 - [ ] [#39] Feature: custom labels/tags on improvement items for cross-cutting themes
@@ -59,6 +62,11 @@ Team improvement tracking aligned with Management 3.0 Improvement Dialogues / Co
 - Re-run literal-key audit after large copy changes; keep `ru.json` in sync with `en.json`.
 
 ## Agent Log
+
+### 2026-07-17 — research: Planning Poker integration + CSV export + inline quick-edit
+- Done: confirmed all 10 open `approved` issues (#3,#7,#8,#9,#10,#11,#12,#15,#17,#19) remain fully implemented and await human Done close; #37/#38/#39 (`needs-review`, created 2026-07-12) not yet at 7-day auto-approve threshold (2026-07-19); created 3 new `needs-review` issues: #40 (Planning Poker deep-link + effort badge via `pp-session-history` localStorage, new `src/utils/planningPokerLink.ts`, dice icon button on each card, i18n keys `board.estimate_in_poker` + `board.effort_badge` in EN/ES/BE/RU), #41 (CSV download of all items — title/category/status/owner/copilot/due date/votes/comment count/created/updated, pure JS Blob, no new deps, i18n keys `board.export_csv` + `board.export_csv_done`), #42 (inline quick-edit of card title on double-click — local editing state + inputRef, Enter/blur saves via existing onUpdate path, Escape reverts, hover underline affordance, no new deps, no new i18n keys); all 3 added to Backlog in BRIEF.md
+- Remaining: #37/#38/#39 reach auto-approve threshold 2026-07-19; all 10 approved issues awaiting human Done close
+- Next task: check issues for human feedback; auto-approve #37/#38/#39 on 2026-07-19 or after if still needs-review; implement first approved in issue-number order (#37 sprint history analytics — new HistoryView.tsx, pure-SVG bar chart, reads `improvement-board:sprintHistory`, new 'history' Screen value, nav.history i18n key in EN/ES/BE/RU)
 
 ### 2026-07-12 — research: sprint history analytics + Scrum Facilitator integration + custom tags
 - Done: confirmed all 10 open `approved` issues (#3,#7,#8,#9,#10,#11,#12,#15,#17,#19) are already fully implemented in source — cross-checked against App.tsx/types.ts/components; created 3 new `needs-review` issues: #37 (sprint history analytics tab using existing `improvement-board:sprintHistory` key, pure-SVG bar chart, no new deps), #38 (Scrum Facilitator → IB retro action item import, same pattern as existing Moving Motivators import), #39 (custom labels/tags on ImprovementItem, tag filter bar in Board/Kanban views); all 3 added to Backlog in BRIEF.md
