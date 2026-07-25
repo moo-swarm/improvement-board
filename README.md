@@ -4,7 +4,7 @@ A team improvement tracking tool based on Management 3.0's Improvement Dialogues
 
 Part of the [Agile Tools](https://github.com/bthos) suite built on Management 3.0 and ICAgile source materials.
 
-See `.artefacts/GOAL.md` for why this app exists and `.artefacts/ROADMAP.md` for what's shipped and queued next.
+See `GOAL.md` for why this app exists and `ROADMAP.md` for what's shipped and queued next.
 
 ## Stack
 React 18 · TypeScript · Vite · Tailwind CSS · react-i18next (EN/ES/BE/RU)
