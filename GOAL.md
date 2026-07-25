@@ -24,3 +24,11 @@ anything changed. Persistence over sprints *is* the product.
 - Not a performance-management instrument; it tracks systems, not people.
 
 *Repo: `agile-toolkit/improvement-board`*
+
+---
+
+## Latitude
+
+Every goal above names an outcome, not a mechanism. Any roadmap that moves a
+signal without crossing a boundary is fair game — including approaches nobody
+in this category has tried. Invention is expected, not merely permitted.
