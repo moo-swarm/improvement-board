@@ -14,11 +14,22 @@ React 18 · TypeScript · Vite · Tailwind CSS · react-i18next (EN/ES/BE/RU)
 npm install       # install dependencies
 npm run dev       # start Vite dev server
 npm run build     # tsc typecheck + production build
+npm test          # vitest unit tests
 npm run preview   # preview the production build locally
 ```
 
 ## Deploy
 GitHub Pages via GitHub Actions on push to `main`.
+
+## Decision latency tracking
+
+Improvement items stall when nobody owns the decision they depend on. Any item can be flagged **Decision required** from its board card, with a decision owner (free text) and a decision model — DACI, Consent, Manager decides, Other. Flagging records when the need for the decision was opened, and cards in both the list board and the Kanban view grow a dot badge that ages green → amber → red through fresh / aging (>7 days) / stale (>21 days), mirroring the existing due-date indicators, with a days-since-opened tooltip. A **By decision** sort mode lifts decision-required items to the top of each column, oldest open decision first.
+
+When a flagged item reaches Done, its latency is stamped automatically — once, at the single `updateItems` choke point every mutation flows through, so re-opening an item later keeps its first resolution stamp. The collapsible **Sprint archive & decisions** panel at the bottom of the board reports median decision latency grouped by owner across archived items, busiest owners first, with unowned decisions bucketed separately under Unassigned.
+
+Decision tracking adds five optional fields to stored items; nothing else about storage changes — older exports, cross-app deep links, and other suite readers ignore the new fields unchanged.
+
+See [Estimate vs forecast](https://github.com/moo-swarm/agile-toolkit.github.io/blob/main/docs/estimate-vs-forecast.md) for the sibling idea in Sprint Metrics: measuring systems instead of asking people for promises.
 
 ## localStorage keys
 

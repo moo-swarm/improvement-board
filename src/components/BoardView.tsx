@@ -1,16 +1,18 @@
 import { useState, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import html2canvas from 'html2canvas'
-import type { ImprovementItem, ImprovementStatus } from '../types'
+import type { ImprovementItem, ImprovementStatus, SprintArchive } from '../types'
 import ImprovementCard from './ImprovementCard'
 import AddItemModal from './AddItemModal'
+import SprintSummaryView from './SprintSummaryView'
 import { buildKanbanUrl } from '../utils/kanbanLink'
+import { isDecisionItem, sortForDecisions } from '../utils/decision'
 
 const COLUMNS: ImprovementStatus[] = ['identified', 'in_progress', 'done']
 const SPRINT_METRICS_URL = 'https://agile-toolkit.github.io/sprint-metrics/'
 const MOVING_MOTIVATORS_URL = 'https://agile-toolkit.github.io/moving-motivators/'
 
-type SortMode = 'default' | 'due' | 'stale' | 'votes'
+type SortMode = 'default' | 'due' | 'stale' | 'votes' | 'decision'
 
 interface Props {
   items: ImprovementItem[]
@@ -27,9 +29,10 @@ interface Props {
   fromMovingMotivators?: boolean
   currentSprint: number
   onEndSprint: () => void
+  sprintHistory: SprintArchive[]
 }
 
-export default function BoardView({ items, onAdd, onUpdate, onDelete, onDialogue, onVote, onResetVotes, onBulkStatus, onBulkDelete, prefillTitle, fromSprintMetrics, fromMovingMotivators, currentSprint, onEndSprint }: Props) {
+export default function BoardView({ items, onAdd, onUpdate, onDelete, onDialogue, onVote, onResetVotes, onBulkStatus, onBulkDelete, prefillTitle, fromSprintMetrics, fromMovingMotivators, currentSprint, onEndSprint, sprintHistory }: Props) {
   const { t } = useTranslation()
   const [showAdd, setShowAdd] = useState(false)
   const [sortMode, setSortMode] = useState<SortMode>('default')
@@ -132,6 +135,10 @@ export default function BoardView({ items, onAdd, onUpdate, onDelete, onDialogue
     if (sortMode === 'votes') {
       return [...filtered].sort((a, b) => (b.votes ?? 0) - (a.votes ?? 0))
     }
+    if (sortMode === 'decision') {
+      // delegates to the pure, unit-tested comparator (DR-E3-4) — no inline logic here
+      return sortForDecisions(filtered)
+    }
     return filtered
   }
 
@@ -206,6 +213,16 @@ export default function BoardView({ items, onAdd, onUpdate, onDelete, onDialogue
             >
               {t('board.sort_votes')}
             </button>
+            {items.some(isDecisionItem) && (
+              <button
+                onClick={() => setSortMode('decision')}
+                className={`px-3 py-1.5 font-medium transition-colors border-l border-gray-200 dark:border-gray-700 ${
+                  sortMode === 'decision' ? 'bg-brand-600 text-white' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800'
+                }`}
+              >
+                {t('board.sort_decision')}
+              </button>
+            )}
           </div>
           {items.some(i => (i.votes ?? 0) > 0) && (
             <button
@@ -297,12 +314,15 @@ export default function BoardView({ items, onAdd, onUpdate, onDelete, onDialogue
                   selectMode={selectMode}
                   selected={selectedIds.has(item.id)}
                   onToggleSelect={() => toggleSelectItem(item.id)}
+                  onUpdate={onUpdate}
                 />
               ))}
             </div>
           </div>
         ))}
       </div>
+
+      <SprintSummaryView sprintHistory={sprintHistory} />
 
       <div className="mt-8 pt-4 border-t border-gray-100 dark:border-gray-800 flex items-center justify-between text-xs text-gray-400 dark:text-gray-500">
         <span>{t('board.suite_link_label')}</span>

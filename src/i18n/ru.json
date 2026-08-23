@@ -88,7 +88,29 @@
     "mark_in_progress": "Отметить В работе",
     "mark_done": "Отметить Выполнено",
     "delete_selected": "Удалить выбранные",
-    "delete_selected_confirm": "Удалить {{count}} выбранный(х) элемент(ов)?"
+    "delete_selected_confirm": "Удалить {{count}} выбранный(х) элемент(ов)?",
+    "sort_decision": "По решению",
+    "decision_badge_title": "{{days}}д с момента открытия",
+    "decision_owner_missing": "Не назначен",
+    "decision_required": "Требуется решение",
+    "decision_owner_label": "Ответственный за решение",
+    "decision_model_label": "Модель решения",
+    "decision_model_daci": "DACI",
+    "decision_model_consent": "Консент",
+    "decision_model_manager": "Решает руководитель",
+    "decision_model_other": "Другое"
+  },
+  "archive": {
+    "title": "Архив спринтов и решений",
+    "explainer": "При завершении спринта его выполненные задачи попадают сюда. Задачи с отмеченным решением фиксируют свою задержку при завершении.",
+    "empty": "Заархивированных спринтов пока нет — завершите спринт с выполненными задачами, чтобы собрать историю.",
+    "sprint_n": "Спринт {{n}}",
+    "done_count": "выполнено: {{count}}",
+    "latency_title": "Задержка решений по ответственным",
+    "latency_owner_col": "Ответственный",
+    "latency_median_days": "Медиана (дней)",
+    "latency_days_short": "{{days}} д",
+    "latency_no_data": "Закрытых решений пока нет."
   },
   "add_form": {
     "title": "Новый элемент улучшения",

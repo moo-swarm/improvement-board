@@ -5,15 +5,15 @@
 
 ## Project-Specific Configuration
 
-- **Test command:** `<your test command, e.g. npm test or pytest>`
-- **Build command:** `<your build command, e.g. npm run build or make>`
-- **Version files:** `<comma-separated list of files to version-bump, or "none", e.g. package.json, manifest.json>`
+- **Test command:** `npm test`
+- **Build command:** `npm run build`
+- **Version files:** `package.json`
 - **Artifacts directory:** `.artefacts/`
 
 ## Project Context
 
 > Optional. Describe the project so agents have background without reading the whole codebase.
 
-- **What it is:** `<one sentence>`
-- **Tech stack:** `<e.g. TypeScript, React, Vite>`
-- **Key conventions:** `<e.g. functional components, no classes, tests co-located>`
+- **What it is:** Improvement board for agile teams — items flow identified → in progress → done, with copilot dialogues, kanban view, and sprint archiving.
+- **Tech stack:** TypeScript, React, Vite, Tailwind CSS, i18next (en/es/be/ru)
+- **Key conventions:** functional components, no classes; pure logic in `src/utils/` with co-located `*.test.ts` (vitest, node env); localStorage persistence under `improvement-board*` keys; all item writes flow through App `updateItems`.

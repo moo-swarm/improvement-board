@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import html2canvas from 'html2canvas'
 import type { ImprovementItem, TeamMember, Category, ImprovementStatus } from '../types'
 import { getDueDateState, dueBadgeClasses, formatDueDate, getAgeState, ageDaysOld } from '../utils/dueDate'
+import { decisionAgeState, decisionAgeDays } from '../utils/decision'
 import { buildKanbanUrl } from '../utils/kanbanLink'
 import { buildChangePlannerUrl } from '../utils/changePlannerLink'
 
@@ -366,6 +367,15 @@ function ItemCard({
   const dueDateState = getDueDateState(item.dueDate, item.status === 'done')
   const ageState = getAgeState(item.updatedAt, item.status === 'done')
   const daysOld = ageDaysOld(item.updatedAt)
+  const decisionState = decisionAgeState(item.decisionOpenedAt, item.status === 'done')
+  const decisionDays = item.decisionOpenedAt != null ? decisionAgeDays(item.decisionOpenedAt) : 0
+  const decisionDotClasses: Record<string, string> = {
+    fresh: 'bg-brand-400',
+    aging: 'bg-amber-400',
+    stale: 'bg-red-500',
+    done: 'bg-gray-300 dark:bg-gray-600',
+    none: '',
+  }
 
   return (
     <div className="bg-white dark:bg-gray-900 rounded-lg border border-slate-200 dark:border-gray-700 shadow-sm p-3">
@@ -400,6 +410,12 @@ function ItemCard({
           <span
             className="inline-block w-2 h-2 rounded-full bg-red-500 shrink-0"
             title={t('board.age_stale_tooltip', { days: daysOld })}
+          />
+        )}
+        {item.decisionRequired === true && item.decisionOpenedAt != null && (
+          <span
+            className={`inline-block w-2 h-2 rounded-full shrink-0 ${decisionDotClasses[decisionState] ?? ''}`}
+            title={t('board.decision_badge_title', { days: decisionDays })}
           />
         )}
         {(copilot || item.copilot) && (

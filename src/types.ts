@@ -40,4 +40,15 @@ export interface ImprovementItem {
   dueDate?: number
   /** Team upvote count for priority sorting */
   votes?: number
+  /** Decision-latency tracking: this item is blocked on an explicit decision (AC3.1) */
+  decisionRequired?: boolean
+  /** Who owns making the decision (free text); missing ⇒ grouped as unassigned in reports */
+  decisionOwner?: string
+  /** When the need for a decision was recognised (ms); stamped once when the checkbox is ticked */
+  decisionOpenedAt?: number
+  /** Which decision model applies */
+  decisionModel?: 'daci' | 'consent' | 'manager' | 'other'
+  /** First time the item reached done while decision-required (ms); auto-stamped at the updateItems choke point.
+   *  Kept across done → undone → done: latency measures first resolution, re-stamping would flatter the number. */
+  decisionResolvedAt?: number
 }

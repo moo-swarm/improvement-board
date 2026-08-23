@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { Screen, ImprovementItem, TeamMember, SprintArchive, ItemComment } from './types'
+import { stampDecisionResolutions } from './utils/decision'
 import AppHeader from './components/AppHeader'
 import ThemeToggle from './components/ThemeToggle'
 import BoardView from './components/BoardView'
@@ -89,10 +90,14 @@ export default function App() {
   const fromSprintMetrics = urlParams.get('utm_source') === 'sprint-metrics'
   const fromMovingMotivators = urlParams.get('utm_source') === 'moving-motivators'
 
+  // Single choke point for ALL item mutations (BoardView onUpdate, kanban onItems/moveItem,
+  // bulk status, votes, dialogue comments): decision-required items reaching done get their
+  // first decisionResolvedAt stamped here (E3).
   const updateItems = (updated: ImprovementItem[]) => {
-    setItems(updated)
-    saveItems(updated)
-    saveSession(updated, members)
+    const stamped = stampDecisionResolutions(items, updated, Date.now())
+    setItems(stamped)
+    saveItems(stamped)
+    saveSession(stamped, members)
   }
 
   const updateMembers = (next: TeamMember[]) => {
@@ -171,6 +176,7 @@ export default function App() {
             fromMovingMotivators={fromMovingMotivators}
             currentSprint={sprintHistory.length + 1}
             onEndSprint={handleEndSprint}
+            sprintHistory={sprintHistory}
           />
         )}
         {screen === 'kanban' && (

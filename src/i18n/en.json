@@ -88,7 +88,29 @@
     "mark_in_progress": "Mark In Progress",
     "mark_done": "Mark Done",
     "delete_selected": "Delete selected",
-    "delete_selected_confirm": "Delete {{count}} selected item(s)?"
+    "delete_selected_confirm": "Delete {{count}} selected item(s)?",
+    "sort_decision": "By decision",
+    "decision_badge_title": "{{days}}d since opened",
+    "decision_owner_missing": "Unassigned",
+    "decision_required": "Decision required",
+    "decision_owner_label": "Decision owner",
+    "decision_model_label": "Decision model",
+    "decision_model_daci": "DACI",
+    "decision_model_consent": "Consent",
+    "decision_model_manager": "Manager decides",
+    "decision_model_other": "Other"
+  },
+  "archive": {
+    "title": "Sprint archive & decisions",
+    "explainer": "Ending a sprint archives its done items here. Decision-required items record their latency when they reach done.",
+    "empty": "No archived sprints yet — end a sprint with done items to build history.",
+    "sprint_n": "Sprint {{n}}",
+    "done_count": "{{count}} done item(s)",
+    "latency_title": "Decision latency by owner",
+    "latency_owner_col": "Owner",
+    "latency_median_days": "Median (days)",
+    "latency_days_short": "{{days}} d",
+    "latency_no_data": "No resolved decisions yet."
   },
   "add_form": {
     "title": "New Improvement Item",

@@ -88,7 +88,29 @@
     "mark_in_progress": "Marcar En Progreso",
     "mark_done": "Marcar Hecho",
     "delete_selected": "Eliminar seleccionados",
-    "delete_selected_confirm": "¿Eliminar {{count}} elemento(s) seleccionado(s)?"
+    "delete_selected_confirm": "¿Eliminar {{count}} elemento(s) seleccionado(s)?",
+    "sort_decision": "Por decisión",
+    "decision_badge_title": "{{days}}d desde que se abrió",
+    "decision_owner_missing": "Sin asignar",
+    "decision_required": "Decisión requerida",
+    "decision_owner_label": "Responsable de la decisión",
+    "decision_model_label": "Modelo de decisión",
+    "decision_model_daci": "DACI",
+    "decision_model_consent": "Consentimiento",
+    "decision_model_manager": "Decide el manager",
+    "decision_model_other": "Otro"
+  },
+  "archive": {
+    "title": "Archivo de sprints y decisiones",
+    "explainer": "Al cerrar un sprint, sus elementos completados se archivan aquí. Los elementos con decisión requerida registran su latencia al completarse.",
+    "empty": "Aún no hay sprints archivados — cierra un sprint con elementos completados para crear historial.",
+    "sprint_n": "Sprint {{n}}",
+    "done_count": "{{count}} elemento(s) completado(s)",
+    "latency_title": "Latencia de decisiones por responsable",
+    "latency_owner_col": "Responsable",
+    "latency_median_days": "Mediana (días)",
+    "latency_days_short": "{{days}} d",
+    "latency_no_data": "Aún no hay decisiones resueltas."
   },
   "add_form": {
     "title": "Nuevo Ítem de Mejora",

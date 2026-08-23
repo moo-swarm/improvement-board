@@ -88,7 +88,29 @@
     "mark_in_progress": "Пазначыць У Працэсе",
     "mark_done": "Пазначыць Гатова",
     "delete_selected": "Выдаліць абраныя",
-    "delete_selected_confirm": "Выдаліць {{count}} абраны(х) элемент(аў)?"
+    "delete_selected_confirm": "Выдаліць {{count}} абраны(х) элемент(аў)?",
+    "sort_decision": "Па рашэнні",
+    "decision_badge_title": "{{days}}д з моманту адкрыцця",
+    "decision_owner_missing": "Не прызначана",
+    "decision_required": "Патрэбнае рашэнне",
+    "decision_owner_label": "Адказны за рашэнне",
+    "decision_model_label": "Мадэль рашэння",
+    "decision_model_daci": "DACI",
+    "decision_model_consent": "Кансэнсус",
+    "decision_model_manager": "Вырашае кіраўнік",
+    "decision_model_other": "Іншае"
+  },
+  "archive": {
+    "title": "Архіў спрынтаў і рашэнняў",
+    "explainer": "Пры завяршэнні спрынту яго выкананыя задачи трапляюць сюда. Задачы з пазначаным рашэннем фіксуюць сваю затрымку пры завяршэнні.",
+    "empty": "Заархіваваных спрынтаў пакуль няма — завяршыце спрынт з выкананымі задачамі, каб сабраць гісторыю.",
+    "sprint_n": "Спрынт {{n}}",
+    "done_count": "завершана: {{count}}",
+    "latency_title": "Затрымка рашэнняў паводле адказных",
+    "latency_owner_col": "Адказны",
+    "latency_median_days": "Мэдыяна (дзён)",
+    "latency_days_short": "{{days}} дз",
+    "latency_no_data": "Закрытых рашэнняў пакуль няма."
   },
   "add_form": {
     "title": "Новы Элемент Паляпшэння",
