@@ -17,6 +17,7 @@ export default function AddItemModal({ onAdd, onClose, initialTitle }: Props) {
   const { t } = useTranslation()
   const [title, setTitle] = useState(initialTitle ?? '')
   const [description, setDescription] = useState('')
+  const [killCriteria, setKillCriteria] = useState('')
   const [category, setCategory] = useState<Category>('process')
   const [owner, setOwner] = useState('')
   const [copilot, setCopilot] = useState('')
@@ -55,6 +56,7 @@ export default function AddItemModal({ onAdd, onClose, initialTitle }: Props) {
       id: crypto.randomUUID(),
       title: title.trim(),
       description: description.trim(),
+      killCriteria: killCriteria.trim() || undefined,
       category,
       status: 'identified',
       owner: owner.trim(),
@@ -108,6 +110,17 @@ export default function AddItemModal({ onAdd, onClose, initialTitle }: Props) {
                 placeholder={t('add_form.placeholder_description')}
                 value={description}
                 onChange={e => setDescription(e.target.value)}
+              />
+            </div>
+
+            <div>
+              <label className="label">{t('add_form.label_kill_criteria')}</label>
+              <textarea
+                className="input resize-none"
+                rows={2}
+                placeholder={t('add_form.placeholder_kill_criteria')}
+                value={killCriteria}
+                onChange={e => setKillCriteria(e.target.value)}
               />
             </div>
 

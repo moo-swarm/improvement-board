@@ -98,7 +98,13 @@
     "decision_model_daci": "DACI",
     "decision_model_consent": "Кансэнсус",
     "decision_model_manager": "Вырашае кіраўнік",
-    "decision_model_other": "Іншае"
+    "decision_model_other": "Іншае",
+    "kill_criteria_label": "Крытэрыі прыпынку",
+    "review_due": "Час перагледзець",
+    "mark_reviewed": "Пазначыць як разгледжанае",
+    "stop_item": "Спыніць…",
+    "saved_by_stopping": "Зберажона дзякуючы прыпынку",
+    "end_sprint_saved": "{{count}} зберажона дзякуючы прыпынку"
   },
   "archive": {
     "title": "Архіў спрынтаў і рашэнняў",
@@ -122,6 +128,8 @@
     "label_due_date": "Тэрмін (не абавязкова)",
     "placeholder_title": "Што трэба паляпшыць?",
     "placeholder_description": "Апішыце праблему або магчымасць...",
+    "label_kill_criteria": "Крытэрыі прыпынку",
+    "placeholder_kill_criteria": "Што прымусіць нас спыніцца?",
     "placeholder_owner": "Хто адказвае за гэта?",
     "placeholder_copilot": "Хто будзе трэнерам?",
     "submit": "Дадаць на Дошку",
@@ -139,6 +147,11 @@
       "suggestion_title": "Паляпшыць {{motivator}}",
       "suggestion_description": "Каманда паставіла «{{motivator}}» на {{rank}}-е месца з 10 у апошняй сесіі Moving Motivators."
     }
+  },
+  "stop_modal": {
+    "heading": "Добры крок. Што вызвалілася пасля прыпынку?",
+    "freed_placeholder": "напр., ~4 гадз/тыдзень, адна сустрэча",
+    "confirm": "Захаваць і закрыць элемент"
   },
   "motivators": {
     "curiosity": "Цікаўнасць",

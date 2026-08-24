@@ -98,7 +98,13 @@
     "decision_model_daci": "DACI",
     "decision_model_consent": "Consentimiento",
     "decision_model_manager": "Decide el manager",
-    "decision_model_other": "Otro"
+    "decision_model_other": "Otro",
+    "kill_criteria_label": "Criterios de cierre",
+    "review_due": "Revisión pendiente",
+    "mark_reviewed": "Marcar como revisado",
+    "stop_item": "Detener…",
+    "saved_by_stopping": "Ahorrado al detener",
+    "end_sprint_saved": "{{count}} ahorrado al detener"
   },
   "archive": {
     "title": "Archivo de sprints y decisiones",
@@ -122,6 +128,8 @@
     "label_due_date": "Fecha límite (opcional)",
     "placeholder_title": "¿Qué necesita mejorar?",
     "placeholder_description": "Describe el problema u oportunidad...",
+    "label_kill_criteria": "Criterios de cierre",
+    "placeholder_kill_criteria": "¿Qué nos haría dejar de hacer esto?",
     "placeholder_owner": "¿Quién es el responsable?",
     "placeholder_copilot": "¿Quién será el coach?",
     "submit": "Agregar al Tablero",
@@ -139,6 +147,11 @@
       "suggestion_title": "Mejorar {{motivator}}",
       "suggestion_description": "El equipo clasificó {{motivator}} en el puesto {{rank}} de 10 en la última sesión de Moving Motivators."
     }
+  },
+  "stop_modal": {
+    "heading": "Buena decisión. ¿Qué liberó el detenerlo?",
+    "freed_placeholder": "p. ej., ~4 h/semana, una reunión",
+    "confirm": "Guardar y cerrar el ítem"
   },
   "motivators": {
     "curiosity": "Curiosidad",

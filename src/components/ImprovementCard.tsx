@@ -4,6 +4,7 @@ import type { ImprovementItem } from '../types'
 import { getDueDateState, dueBadgeClasses, formatDueDate, getAgeState, ageDaysOld } from '../utils/dueDate'
 import { buildChangePlannerUrl } from '../utils/changePlannerLink'
 import { decisionAgeState, decisionAgeDays, type DecisionAgeState } from '../utils/decision'
+import { DEFAULT_REVIEW_INTERVAL_DAYS, isReviewDue } from '../utils/sunset'
 
 const CATEGORY_COLORS: Record<string, string> = {
   process: 'bg-blue-100 text-blue-700',
@@ -34,16 +35,22 @@ interface Props {
   onToggleSelect?: () => void
   /** Present on the board view only; enables inline decision-tracking edits */
   onUpdate?: (item: ImprovementItem) => void
+  /** E2 stop flow (both card variants — UX decision 5); opens the StopItemModal upstream */
+  onStop?: () => void
+  /** Per-board sunset-review interval in days (DR-E2-3); defaults to 14 */
+  reviewIntervalDays?: number
 }
 
-export default function ImprovementCard({ item, onMoveForward, onDelete, onDialogue, onVote, selectMode, selected, onToggleSelect, onUpdate }: Props) {
+export default function ImprovementCard({ item, onMoveForward, onDelete, onDialogue, onVote, selectMode, selected, onToggleSelect, onUpdate, onStop, reviewIntervalDays = DEFAULT_REVIEW_INTERVAL_DAYS }: Props) {
   const { t } = useTranslation()
   const [decisionOpen, setDecisionOpen] = useState(false)
+  const [criteriaOpen, setCriteriaOpen] = useState(false)
   const dueDateState = getDueDateState(item.dueDate, item.status === 'done')
   const ageState = getAgeState(item.updatedAt, item.status === 'done')
   const daysOld = ageDaysOld(item.updatedAt)
   const decisionState = decisionAgeState(item.decisionOpenedAt, item.status === 'done')
   const decisionDays = item.decisionOpenedAt != null ? decisionAgeDays(item.decisionOpenedAt) : 0
+  const reviewDue = isReviewDue(item, Date.now(), reviewIntervalDays)
 
   const toggleDecisionRequired = () => {
     if (!onUpdate) return
@@ -103,6 +110,14 @@ export default function ImprovementCard({ item, onMoveForward, onDelete, onDialo
       {item.description && (
         <p className="text-xs text-gray-500 dark:text-gray-400 mb-2 leading-relaxed">{item.description}</p>
       )}
+      {item.killCriteria && (
+        <div
+          className="text-xs text-gray-500 dark:text-gray-400 mb-2 truncate"
+          title={`${t('board.kill_criteria_label')}: ${item.killCriteria}`}
+        >
+          ⚑ {item.killCriteria}
+        </div>
+      )}
       <div className="text-xs text-gray-400 dark:text-gray-500 space-y-0.5 mb-2">
         <div>{t('board.owner')}: <span className="text-gray-600 dark:text-gray-300">{item.owner || '—'}</span></div>
         <div>
@@ -110,6 +125,20 @@ export default function ImprovementCard({ item, onMoveForward, onDelete, onDialo
           <span className="text-gray-600 dark:text-gray-300">{item.copilot || t('board.no_copilot')}</span>
         </div>
       </div>
+      {reviewDue && onUpdate && (
+        <div className="mb-2">
+          {/* Click-to-complete (UX decision 3): badge sets lastReviewedAt = now, no confirm */}
+          <button
+            type="button"
+            onClick={() => onUpdate({ ...item, lastReviewedAt: Date.now() })}
+            title={t('board.mark_reviewed')}
+            aria-label={t('board.mark_reviewed')}
+            className="text-xs px-2 py-0.5 rounded-full font-medium bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-400 hover:bg-amber-200 dark:hover:bg-amber-900/60 transition-colors"
+          >
+            {t('board.review_due')}
+          </button>
+        </div>
+      )}
       {onUpdate && (
         <div className="mb-2">
           <button
@@ -167,6 +196,30 @@ export default function ImprovementCard({ item, onMoveForward, onDelete, onDialo
           )}
         </div>
       )}
+      {onUpdate && (
+        <div className="mb-2">
+          <button
+            type="button"
+            onClick={() => setCriteriaOpen(v => !v)}
+            aria-expanded={criteriaOpen}
+            className="text-xs text-gray-400 hover:text-brand-600 transition-colors"
+          >
+            ✎ {t('board.kill_criteria_label')}
+          </button>
+          {criteriaOpen && (
+            <div className="mt-2">
+              <textarea
+                value={item.killCriteria ?? ''}
+                rows={2}
+                aria-label={t('board.kill_criteria_label')}
+                placeholder={t('add_form.placeholder_kill_criteria')}
+                onChange={e => onUpdate({ ...item, killCriteria: e.target.value })}
+                className="w-full text-xs bg-transparent border border-gray-200 rounded px-2 py-1 text-gray-900 focus:outline-none focus:ring-1 focus:ring-brand-400 dark:border-gray-700 dark:text-gray-100 resize-none"
+              />
+            </div>
+          )}
+        </div>
+      )}
       {dueDateState !== 'none' && item.dueDate && (
         <div className="mb-3">
           <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${dueBadgeClasses(dueDateState)}`}>
@@ -194,6 +247,18 @@ export default function ImprovementCard({ item, onMoveForward, onDelete, onDialo
         <div className="flex items-center gap-2 shrink-0">
           {(item.comments?.length ?? 0) > 0 && (
             <span className="text-xs text-gray-400 dark:text-gray-500">💬 {item.comments!.length}</span>
+          )}
+          {/* Stop is a separate verb from delete (UX decision 1): neutral, not red, not ✕.
+              Done items completed — they were never stopped, so the action hides there. */}
+          {onStop && item.status !== 'done' && (
+            <button
+              type="button"
+              onClick={onStop}
+              className="flex items-center gap-1 text-xs text-gray-400 dark:text-gray-500 hover:text-brand-600 transition-colors"
+            >
+              <span>⏹</span>
+              <span>{t('board.stop_item')}</span>
+            </button>
           )}
           <a
             href={buildChangePlannerUrl(item)}

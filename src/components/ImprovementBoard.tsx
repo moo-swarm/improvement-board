@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useState, useMemo, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import html2canvas from 'html2canvas'
 import type { ImprovementItem, TeamMember, Category, ImprovementStatus } from '../types'
@@ -6,6 +6,13 @@ import { getDueDateState, dueBadgeClasses, formatDueDate, getAgeState, ageDaysOl
 import { decisionAgeState, decisionAgeDays } from '../utils/decision'
 import { buildKanbanUrl } from '../utils/kanbanLink'
 import { buildChangePlannerUrl } from '../utils/changePlannerLink'
+import StopItemModal from './StopItemModal'
+import {
+  DEFAULT_REVIEW_INTERVAL_DAYS,
+  REVIEW_INTERVAL_KEY,
+  isReviewDue,
+  parseReviewIntervalDays,
+} from '../utils/sunset'
 
 interface Props {
   items: ImprovementItem[]
@@ -15,6 +22,10 @@ interface Props {
   onResetVotes: () => void
   currentSprint: number
   onEndSprint: () => void
+  /** E2 stop flow (both card variants — UX decision 5) */
+  onStopItem: (id: string, freedEffort?: string) => void
+  /** Cumulative suite-lifetime counter (log.length); chip hidden at 0 */
+  savedByStopping: number
 }
 
 const STATUSES: ImprovementStatus[] = ['identified', 'in_progress', 'done']
@@ -36,12 +47,20 @@ const CAT_BADGE: Record<Category, string> = {
 
 type SortMode = 'default' | 'due' | 'stale' | 'votes'
 
-export default function ImprovementBoard({ items, members, onItems, onVote, onResetVotes, currentSprint, onEndSprint }: Props) {
+export default function ImprovementBoard({ items, members, onItems, onVote, onResetVotes, currentSprint, onEndSprint, onStopItem, savedByStopping }: Props) {
   const { t } = useTranslation()
   const [adding, setAdding] = useState(false)
   const [sortMode, setSortMode] = useState<SortMode>('default')
   const [exportState, setExportState] = useState<'idle' | 'busy' | 'done'>('idle')
+  const [stoppingId, setStoppingId] = useState<string | null>(null)
   const boardRef = useRef<HTMLDivElement>(null)
+
+  // Per-board review interval (DR-E2-3): validated localStorage value or default; no UI v1.
+  const reviewIntervalDays = useMemo(
+    () => parseReviewIntervalDays(localStorage.getItem(REVIEW_INTERVAL_KEY)) ?? DEFAULT_REVIEW_INTERVAL_DAYS,
+    []
+  )
+  const stoppingOpen = stoppingId != null
 
   async function handleExport() {
     if (!boardRef.current || exportState === 'busy') return
@@ -67,6 +86,7 @@ export default function ImprovementBoard({ items, members, onItems, onVote, onRe
   const [form, setForm] = useState({
     title: '',
     description: '',
+    killCriteria: '',
     category: 'process' as Category,
     copilotName: '',
     dueDateStr: '',
@@ -79,6 +99,7 @@ export default function ImprovementBoard({ items, members, onItems, onVote, onRe
       id: crypto.randomUUID(),
       title: form.title.trim(),
       description: form.description.trim(),
+      killCriteria: form.killCriteria.trim() || undefined,
       category: form.category,
       status: 'identified',
       owner: '',
@@ -89,7 +110,7 @@ export default function ImprovementBoard({ items, members, onItems, onVote, onRe
       dueDate,
     }
     onItems([...items, item])
-    setForm({ title: '', description: '', category: 'process', copilotName: '', dueDateStr: '' })
+    setForm({ title: '', description: '', killCriteria: '', category: 'process', copilotName: '', dueDateStr: '' })
     setAdding(false)
   }
 
@@ -109,6 +130,23 @@ export default function ImprovementBoard({ items, members, onItems, onVote, onRe
     onItems(
       items.map(i =>
         i.id === id ? { ...i, outcome, updatedAt: Date.now() } : i
+      )
+    )
+  }
+
+  function updateKillCriteria(id: string, killCriteria: string) {
+    onItems(
+      items.map(i =>
+        i.id === id ? { ...i, killCriteria, updatedAt: Date.now() } : i
+      )
+    )
+  }
+
+  // Click-to-complete review (UX Flow B.3): single click stamps lastReviewedAt, no confirm
+  function markReviewed(id: string) {
+    onItems(
+      items.map(i =>
+        i.id === id ? { ...i, lastReviewedAt: Date.now() } : i
       )
     )
   }
@@ -217,7 +255,12 @@ export default function ImprovementBoard({ items, members, onItems, onVote, onRe
               type="button"
               onClick={() => {
                 const count = items.filter(i => i.status === 'done').length
-                if (window.confirm(t('board.end_sprint_confirm', { count, next: currentSprint + 1 }))) {
+                // E2: retro moment carries the win — same composition as BoardView
+                let message = t('board.end_sprint_confirm', { count, next: currentSprint + 1 })
+                if (savedByStopping > 0) {
+                  message += `\n\n★ ${t('board.end_sprint_saved', { count: savedByStopping })}`
+                }
+                if (window.confirm(message)) {
                   onEndSprint()
                 }
               }}
@@ -236,6 +279,18 @@ export default function ImprovementBoard({ items, members, onItems, onVote, onRe
         </div>
       </div>
 
+      {/* E2 session-summary chip (UX Flow C.4): hidden entirely at 0 */}
+      {savedByStopping > 0 && (
+        <div>
+          <span
+            className="inline-flex items-center gap-1.5 bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-400 text-xs font-medium px-3 py-1.5 rounded-lg"
+            title={t('board.saved_by_stopping')}
+          >
+            ★ {t('board.saved_by_stopping')}: {savedByStopping}
+          </span>
+        </div>
+      )}
+
       {adding && (
         <div className="bg-white dark:bg-gray-900 border border-slate-200 dark:border-gray-700 rounded-xl p-4 shadow-sm space-y-3">
           <input
@@ -251,6 +306,14 @@ export default function ImprovementBoard({ items, members, onItems, onVote, onRe
             placeholder={t('kanban.descriptionPlaceholder')}
             rows={2}
             onChange={e => setForm(f => ({ ...f, description: e.target.value }))}
+            className="w-full bg-white dark:bg-gray-900 border border-slate-300 dark:border-gray-700 text-gray-900 dark:text-gray-100 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400 resize-none"
+          />
+          <textarea
+            value={form.killCriteria}
+            placeholder={t('add_form.placeholder_kill_criteria')}
+            aria-label={t('add_form.label_kill_criteria')}
+            rows={2}
+            onChange={e => setForm(f => ({ ...f, killCriteria: e.target.value }))}
             className="w-full bg-white dark:bg-gray-900 border border-slate-300 dark:border-gray-700 text-gray-900 dark:text-gray-100 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400 resize-none"
           />
           <div className="flex gap-3 flex-wrap">
@@ -326,7 +389,11 @@ export default function ImprovementBoard({ items, members, onItems, onVote, onRe
                   onMove={moveItem}
                   onDelete={deleteItem}
                   onOutcome={updateOutcome}
+                  onCriteria={updateKillCriteria}
+                  onMarkReviewed={markReviewed}
+                  onStop={setStoppingId}
                   onVote={onVote}
+                  reviewIntervalDays={reviewIntervalDays}
                   t={t}
                 />
               ))}
@@ -337,6 +404,16 @@ export default function ImprovementBoard({ items, members, onItems, onVote, onRe
           </div>
         ))}
       </div>
+
+      {stoppingOpen && (
+        <StopItemModal
+          onConfirm={freedEffort => {
+            onStopItem(stoppingId!, freedEffort)
+            setStoppingId(null)
+          }}
+          onClose={() => setStoppingId(null)}
+        />
+      )}
     </div>
   )
 }
@@ -349,7 +426,11 @@ function ItemCard({
   onMove,
   onDelete,
   onOutcome,
+  onCriteria,
+  onMarkReviewed,
+  onStop,
   onVote,
+  reviewIntervalDays,
   t,
 }: {
   item: ImprovementItem
@@ -359,7 +440,11 @@ function ItemCard({
   onMove: (id: string, s: ImprovementStatus) => void
   onDelete: (id: string) => void
   onOutcome: (id: string, o: string) => void
+  onCriteria: (id: string, v: string) => void
+  onMarkReviewed: (id: string) => void
+  onStop: (id: string) => void
   onVote: (id: string) => void
+  reviewIntervalDays: number
   t: (k: string, opts?: Record<string, unknown>) => string
 }) {
   const [expanded, setExpanded] = useState(false)
@@ -369,6 +454,7 @@ function ItemCard({
   const daysOld = ageDaysOld(item.updatedAt)
   const decisionState = decisionAgeState(item.decisionOpenedAt, item.status === 'done')
   const decisionDays = item.decisionOpenedAt != null ? decisionAgeDays(item.decisionOpenedAt) : 0
+  const reviewDue = isReviewDue(item, Date.now(), reviewIntervalDays)
   const decisionDotClasses: Record<string, string> = {
     fresh: 'bg-brand-400',
     aging: 'bg-amber-400',
@@ -396,6 +482,14 @@ function ItemCard({
           ×
         </button>
       </div>
+      {item.killCriteria && (
+        <div
+          className="text-xs text-slate-500 dark:text-gray-400 mt-0.5 truncate"
+          title={`${t('board.kill_criteria_label')}: ${item.killCriteria}`}
+        >
+          ⚑ {item.killCriteria}
+        </div>
+      )}
       <div className="flex items-center gap-1.5 mt-1.5 flex-wrap">
         <span className={`text-xs px-1.5 py-0.5 rounded-full ${catBadge}`}>
           {t(`add_form.categories.${item.category}`)}
@@ -432,8 +526,29 @@ function ItemCard({
               : `${t('board.due')}: ${formatDueDate(item.dueDate)}`}
           </span>
         )}
+        {reviewDue && (
+          <button
+            type="button"
+            onClick={() => onMarkReviewed(item.id)}
+            title={t('board.mark_reviewed')}
+            aria-label={t('board.mark_reviewed')}
+            className="text-xs px-1.5 py-0.5 rounded-full font-medium bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-400 hover:bg-amber-200 dark:hover:bg-amber-900/60 transition-colors"
+          >
+            {t('board.review_due')}
+          </button>
+        )}
         {(item.comments?.length ?? 0) > 0 && (
           <span className="text-xs text-slate-400 dark:text-gray-500">💬 {item.comments!.length}</span>
+        )}
+        {/* Stop is a separate verb from delete (UX decision 1); done items hide it */}
+        {item.status !== 'done' && (
+          <button
+            type="button"
+            onClick={() => onStop(item.id)}
+            className="flex items-center gap-0.5 text-xs text-slate-400 dark:text-gray-500 hover:text-brand-600 transition-colors"
+          >
+            ⏹ {t('board.stop_item')}
+          </button>
         )}
         <a
           href={buildChangePlannerUrl(item)}
@@ -459,6 +574,14 @@ function ItemCard({
       {expanded && (
         <div className="mt-2 space-y-2">
           {item.description && <p className="text-xs text-slate-500 dark:text-gray-400">{item.description}</p>}
+          <textarea
+            value={item.killCriteria ?? ''}
+            placeholder={t('add_form.placeholder_kill_criteria')}
+            aria-label={t('board.kill_criteria_label')}
+            rows={2}
+            onChange={e => onCriteria(item.id, e.target.value)}
+            className="w-full text-xs bg-white dark:bg-gray-900 border border-slate-200 dark:border-gray-700 text-gray-900 dark:text-gray-100 rounded px-2 py-1 focus:outline-none focus:ring-1 focus:ring-brand-400 resize-none"
+          />
           {item.status === 'done' && (
             <textarea
               value={item.outcome ?? ''}

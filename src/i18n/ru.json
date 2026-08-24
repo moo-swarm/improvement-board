@@ -98,7 +98,13 @@
     "decision_model_daci": "DACI",
     "decision_model_consent": "Консент",
     "decision_model_manager": "Решает руководитель",
-    "decision_model_other": "Другое"
+    "decision_model_other": "Другое",
+    "kill_criteria_label": "Критерии остановки",
+    "review_due": "Пора пересмотреть",
+    "mark_reviewed": "Отметить как рассмотренное",
+    "stop_item": "Остановить…",
+    "saved_by_stopping": "Сбережено остановкой",
+    "end_sprint_saved": "{{count}} сбережено остановками"
   },
   "archive": {
     "title": "Архив спринтов и решений",
@@ -122,6 +128,8 @@
     "label_due_date": "Срок (необязательно)",
     "placeholder_title": "Что нужно улучшить?",
     "placeholder_description": "Опишите проблему или возможность...",
+    "label_kill_criteria": "Критерии остановки",
+    "placeholder_kill_criteria": "Что заставит нас остановиться?",
     "placeholder_owner": "Кто отвечает?",
     "placeholder_copilot": "Кто будет коучем?",
     "submit": "Добавить на доску",
@@ -139,6 +147,11 @@
       "suggestion_title": "Улучшить «{{motivator}}»",
       "suggestion_description": "Команда поставила «{{motivator}}» на {{rank}}-е место из 10 в последней сессии Moving Motivators."
     }
+  },
+  "stop_modal": {
+    "heading": "Верное решение. Что освободила эта остановка?",
+    "freed_placeholder": "например, ~4 ч/неделю, одна встреча",
+    "confirm": "Сохранить и закрыть элемент"
   },
   "motivators": {
     "curiosity": "Любознательность",

@@ -98,7 +98,13 @@
     "decision_model_daci": "DACI",
     "decision_model_consent": "Consent",
     "decision_model_manager": "Manager decides",
-    "decision_model_other": "Other"
+    "decision_model_other": "Other",
+    "kill_criteria_label": "Kill criteria",
+    "review_due": "Review due",
+    "mark_reviewed": "Mark reviewed",
+    "stop_item": "Stop…",
+    "saved_by_stopping": "Saved by stopping",
+    "end_sprint_saved": "{{count}} saved by stopping"
   },
   "archive": {
     "title": "Sprint archive & decisions",
@@ -122,6 +128,8 @@
     "label_due_date": "Due date (optional)",
     "placeholder_title": "What needs to improve?",
     "placeholder_description": "Describe the problem or opportunity...",
+    "label_kill_criteria": "Kill criteria",
+    "placeholder_kill_criteria": "What would make us stop this?",
     "placeholder_owner": "Who owns this?",
     "placeholder_copilot": "Who will coach?",
     "submit": "Add to Board",
@@ -139,6 +147,11 @@
       "suggestion_title": "Improve {{motivator}}",
       "suggestion_description": "Team ranked {{motivator}} {{rank}} of 10 in the latest Moving Motivators session."
     }
+  },
+  "stop_modal": {
+    "heading": "Good call. What did stopping free up?",
+    "freed_placeholder": "e.g. ~4 h/week, one meeting",
+    "confirm": "Save & close item"
   },
   "motivators": {
     "curiosity": "Curiosity",

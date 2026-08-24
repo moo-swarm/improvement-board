@@ -1,7 +1,8 @@
 import { useState, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-import type { Screen, ImprovementItem, TeamMember, SprintArchive, ItemComment } from './types'
+import type { Screen, ImprovementItem, TeamMember, SprintArchive, ItemComment, StopItemRecord } from './types'
 import { stampDecisionResolutions } from './utils/decision'
+import { STOPPED_KEY, createStopRecord, parseStoppedLog } from './utils/sunset'
 import AppHeader from './components/AppHeader'
 import ThemeToggle from './components/ThemeToggle'
 import BoardView from './components/BoardView'
@@ -65,13 +66,20 @@ function loadSprintHistory(): SprintArchive[] {
   }
 }
 
-function saveSession(items: ImprovementItem[], members: TeamMember[]) {
+// savedByStopping is REQUIRED (no default): a silent 0 would regress the cumulative
+// counter on any path that forgets it. tsc enforces every call site passes the current
+// stoppedLog length — compile-time pin, since App wiring is not node-env testable.
+function saveSession(items: ImprovementItem[], members: TeamMember[], savedByStopping: number) {
   const session = {
     identified: items.filter(i => i.status === 'identified').length,
     inProgress: items.filter(i => i.status === 'in_progress').length,
     done: items.filter(i => i.status === 'done').length,
     total: items.length,
     memberCount: members.length,
+    // E2 (DR-E2-2): cumulative suite-lifetime counter, never resets. Hub dashboard reads
+    // this payload known-fields-only ⇒ additive-safe there; in-app surfaces are the
+    // toolbar chip + end-sprint confirm.
+    savedByStopping,
     lastUpdated: new Date().toISOString(),
   }
   localStorage.setItem(SESSION_KEY, JSON.stringify(session))
@@ -83,6 +91,9 @@ export default function App() {
   const [items, setItems] = useState<ImprovementItem[]>(loadItems)
   const [members, setMembers] = useState<TeamMember[]>(loadMembers)
   const [sprintHistory, setSprintHistory] = useState<SprintArchive[]>(loadSprintHistory)
+  const [stoppedLog, setStoppedLog] = useState<StopItemRecord[]>(() =>
+    parseStoppedLog(localStorage.getItem(STOPPED_KEY))
+  )
   const [dialogueId, setDialogueId] = useState<string | null>(null)
 
   const urlParams = useMemo(() => new URLSearchParams(window.location.search), [])
@@ -92,18 +103,31 @@ export default function App() {
 
   // Single choke point for ALL item mutations (BoardView onUpdate, kanban onItems/moveItem,
   // bulk status, votes, dialogue comments): decision-required items reaching done get their
-  // first decisionResolvedAt stamped here (E3).
-  const updateItems = (updated: ImprovementItem[]) => {
+  // first decisionResolvedAt stamped here (E3). stoppedCount defaults to the current log so
+  // ordinary paths re-save the same counter; handleStopItem passes the post-append value.
+  const updateItems = (updated: ImprovementItem[], stoppedCount = stoppedLog.length) => {
     const stamped = stampDecisionResolutions(items, updated, Date.now())
     setItems(stamped)
     saveItems(stamped)
-    saveSession(stamped, members)
+    saveSession(stamped, members, stoppedCount)
+  }
+
+  // E2 stop flow (DR-E2-1): append-only snapshot + removal through the choke point.
+  // Lookup-before-append makes double-click / stopping an already-removed id a no-op —
+  // no duplicate records. stampDecisionResolutions no-ops on removals.
+  const handleStopItem = (id: string, freedEffort?: string) => {
+    const item = items.find(i => i.id === id)
+    if (!item) return
+    const nextLog = [...stoppedLog, createStopRecord(item, freedEffort, Date.now())]
+    setStoppedLog(nextLog)
+    localStorage.setItem(STOPPED_KEY, JSON.stringify(nextLog))
+    updateItems(items.filter(i => i.id !== id), nextLog.length)
   }
 
   const updateMembers = (next: TeamMember[]) => {
     setMembers(next)
     saveMembers(next)
-    saveSession(items, next)
+    saveSession(items, next, stoppedLog.length)
   }
 
   const handleVote = (id: string) => {
@@ -177,6 +201,8 @@ export default function App() {
             currentSprint={sprintHistory.length + 1}
             onEndSprint={handleEndSprint}
             sprintHistory={sprintHistory}
+            onStopItem={handleStopItem}
+            savedByStopping={stoppedLog.length}
           />
         )}
         {screen === 'kanban' && (
@@ -188,6 +214,8 @@ export default function App() {
             onResetVotes={handleResetVotes}
             currentSprint={sprintHistory.length + 1}
             onEndSprint={handleEndSprint}
+            onStopItem={handleStopItem}
+            savedByStopping={stoppedLog.length}
           />
         )}
         {screen === 'team' && (

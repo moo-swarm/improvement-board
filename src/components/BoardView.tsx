@@ -1,12 +1,14 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import html2canvas from 'html2canvas'
 import type { ImprovementItem, ImprovementStatus, SprintArchive } from '../types'
 import ImprovementCard from './ImprovementCard'
 import AddItemModal from './AddItemModal'
 import SprintSummaryView from './SprintSummaryView'
+import StopItemModal from './StopItemModal'
 import { buildKanbanUrl } from '../utils/kanbanLink'
 import { isDecisionItem, sortForDecisions } from '../utils/decision'
+import { DEFAULT_REVIEW_INTERVAL_DAYS, REVIEW_INTERVAL_KEY, parseReviewIntervalDays } from '../utils/sunset'
 
 const COLUMNS: ImprovementStatus[] = ['identified', 'in_progress', 'done']
 const SPRINT_METRICS_URL = 'https://agile-toolkit.github.io/sprint-metrics/'
@@ -30,16 +32,28 @@ interface Props {
   currentSprint: number
   onEndSprint: () => void
   sprintHistory: SprintArchive[]
+  /** E2 stop flow: snapshot the item into the stopped log and remove it from the board */
+  onStopItem: (id: string, freedEffort?: string) => void
+  /** Cumulative suite-lifetime counter (log.length); chip hidden at 0 */
+  savedByStopping: number
 }
 
-export default function BoardView({ items, onAdd, onUpdate, onDelete, onDialogue, onVote, onResetVotes, onBulkStatus, onBulkDelete, prefillTitle, fromSprintMetrics, fromMovingMotivators, currentSprint, onEndSprint, sprintHistory }: Props) {
+export default function BoardView({ items, onAdd, onUpdate, onDelete, onDialogue, onVote, onResetVotes, onBulkStatus, onBulkDelete, prefillTitle, fromSprintMetrics, fromMovingMotivators, currentSprint, onEndSprint, sprintHistory, onStopItem, savedByStopping }: Props) {
   const { t } = useTranslation()
   const [showAdd, setShowAdd] = useState(false)
   const [sortMode, setSortMode] = useState<SortMode>('default')
   const [exportState, setExportState] = useState<'idle' | 'busy' | 'done'>('idle')
   const [selectMode, setSelectMode] = useState(false)
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set())
+  const [stoppingId, setStoppingId] = useState<string | null>(null)
   const boardRef = useRef<HTMLDivElement>(null)
+
+  // Per-board review interval (DR-E2-3): validated localStorage value or default; no UI v1.
+  const reviewIntervalDays = useMemo(
+    () => parseReviewIntervalDays(localStorage.getItem(REVIEW_INTERVAL_KEY)) ?? DEFAULT_REVIEW_INTERVAL_DAYS,
+    []
+  )
+  const stoppingItem = stoppingId ? items.find(i => i.id === stoppingId) : undefined
 
   useEffect(() => {
     if (prefillTitle) setShowAdd(true)
@@ -258,7 +272,12 @@ export default function BoardView({ items, onAdd, onUpdate, onDelete, onDialogue
             <button
               onClick={() => {
                 const count = items.filter(i => i.status === 'done').length
-                if (window.confirm(t('board.end_sprint_confirm', { count, next: currentSprint + 1 }))) {
+                // E2: retro moment carries the win — saved count appended when non-zero
+                let message = t('board.end_sprint_confirm', { count, next: currentSprint + 1 })
+                if (savedByStopping > 0) {
+                  message += `\n\n★ ${t('board.end_sprint_saved', { count: savedByStopping })}`
+                }
+                if (window.confirm(message)) {
                   onEndSprint()
                 }
               }}
@@ -284,6 +303,18 @@ export default function BoardView({ items, onAdd, onUpdate, onDelete, onDialogue
         <div className="text-center py-16 text-gray-400 dark:text-gray-500">
           <div className="text-5xl mb-4">📋</div>
           <p>{t('board.empty')}</p>
+        </div>
+      )}
+
+      {/* E2 session-summary chip strip (UX Flow C.4): hidden entirely at 0 — no empty-state noise */}
+      {savedByStopping > 0 && (
+        <div className="mb-4">
+          <span
+            className="inline-flex items-center gap-1.5 bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-400 text-xs font-medium px-3 py-1.5 rounded-lg"
+            title={t('board.saved_by_stopping')}
+          >
+            ★ {t('board.saved_by_stopping')}: {savedByStopping}
+          </span>
         </div>
       )}
 
@@ -315,6 +346,8 @@ export default function BoardView({ items, onAdd, onUpdate, onDelete, onDialogue
                   selected={selectedIds.has(item.id)}
                   onToggleSelect={() => toggleSelectItem(item.id)}
                   onUpdate={onUpdate}
+                  onStop={() => setStoppingId(item.id)}
+                  reviewIntervalDays={reviewIntervalDays}
                 />
               ))}
             </div>
@@ -341,6 +374,16 @@ export default function BoardView({ items, onAdd, onUpdate, onDelete, onDialogue
           onAdd={item => { onAdd(item); setShowAdd(false) }}
           onClose={() => setShowAdd(false)}
           initialTitle={prefillTitle}
+        />
+      )}
+
+      {stoppingItem && (
+        <StopItemModal
+          onConfirm={freedEffort => {
+            onStopItem(stoppingItem.id, freedEffort)
+            setStoppingId(null)
+          }}
+          onClose={() => setStoppingId(null)}
         />
       )}
 
