@@ -13,6 +13,8 @@ build/
 # Editor
 .vscode/
 .idea/
+.cursor/
+.claude/
 *.swp
 *.swo
 
